@@ -3,5 +3,7 @@
 https://github.com/ryuichiueda/LNPR_BOOK_CODES を使った講義用スライド
 
 
-* スライドURL: https://ryuichiueda.github.io/LNPR_SLIDES/
+## contents
+
+* 1章: https://ryuichiueda.github.io/LNPR_SLIDES/chap1.html
 
