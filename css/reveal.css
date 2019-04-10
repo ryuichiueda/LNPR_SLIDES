@@ -1249,7 +1249,7 @@ body {
 .reveal.rtl .slides h5,
 .reveal.rtl .slides h6 {
   direction: rtl;
-  font-size: 80%;
+  font-size: 70%;
   font-family: sans-serif; }
 
 .reveal.rtl pre,
