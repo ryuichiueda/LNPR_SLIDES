@@ -1,9 +1,9 @@
 # LNPR_SLIDES
 
-https://github.com/ryuichiueda/LNPR_BOOK_CODES ‚ğg‚Á‚½u‹`—pƒXƒ‰ƒCƒh
+https://github.com/ryuichiueda/LNPR_BOOK_CODES ã‚’ä½¿ã£ãŸè¬›ç¾©ç”¨ã‚¹ãƒ©ã‚¤ãƒ‰
 
 
 ## contents
 
-* 1Í: https://ryuichiueda.github.io/LNPR_SLIDES/chap1.html
+* 1ç« : https://ryuichiueda.github.io/LNPR_SLIDES/10min/chap1_10min.html
 
