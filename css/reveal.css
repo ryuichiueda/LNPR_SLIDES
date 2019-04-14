@@ -1252,7 +1252,7 @@ body {
   font-size: 70%;
   font-family: sans-serif; }
 
-ul>li {font-size:80%}
+ul>li {font-size:90%}
 
 .reveal.rtl pre,
 .reveal.rtl code {
@@ -1599,3 +1599,26 @@ ul>li {font-size:80%}
 
 .zoomed .reveal .roll span:after {
   visibility: hidden; }
+
+/*header/footer thanks to https://stackoverflow.com/questions/34706859/set-header-and-footer-reveal-js-presentation*/
+#header-left {
+    color:gray;
+    font-size: 40%;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+}
+#header-right {
+    color:gray;
+    font-size: 40%;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+}
+#footer-left {
+    color:gray;
+    font-size: 40%;
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+}
