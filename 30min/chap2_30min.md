@@ -13,5 +13,10 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 確率
+### 実験
 
+* ロボットを壁から離して置く（約200mm）
+* 2日間にわたって3秒ごとにセンサの値を記録
+    * 光センサとLiDARの1本のレーザー
+
+<img width="30%" src="../figs/sensor_experiment.jpg" />

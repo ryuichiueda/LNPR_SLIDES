@@ -11,5 +11,5 @@ https://github.com/ryuichiueda/LNPR_BOOK_CODES を使った講義用スライド
 
 ### 30分版
 
-* 2章: https://ryuichiueda.github.io/LNPR_SLIDES/30min/chap2_10min.html
+* 2章: https://ryuichiueda.github.io/LNPR_SLIDES/30min/chap2_30min.html
 
