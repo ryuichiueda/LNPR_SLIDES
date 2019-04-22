@@ -117,3 +117,4 @@ $
 * 誘拐
 
 <img width="40%" src="../figs/jamming.gif" />
+<img width="40%" src="../figs/kidnap.gif" />
