@@ -116,5 +116,9 @@ $
 * 引っかかり
 * 誘拐
 
+<div style="float:left">
 <img width="40%" src="../figs/jamming.gif" />
+</div>
+<div style="float:left">
 <img width="40%" src="../figs/kidnap.gif" />
+</div>
