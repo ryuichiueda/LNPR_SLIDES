@@ -114,13 +114,18 @@ $
 ### 他の誤差の例
 
 * 引っかかり
+    * ロボットの脱輪
+    * 指数分布で次に脱輪するまでの時間をシミュレーション
+    * 脱輪から抜け出すまでの時刻も指数分布で
 * 誘拐
+    * 人によるロボットの上げ下ろし
+    * これも指数分布
 
 <div>
 <div style="float:left">
-<img width="40%" src="../figs/jamming.gif" />
+<img width="100%" src="../figs/jamming.gif" />
 </div>
 <div style="float:left">
-<img width="40%" src="../figs/kidnap.gif" />
+<img width="100%" src="../figs/kidnap.gif" />
 </div>
 </div>
