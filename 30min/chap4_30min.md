@@ -21,9 +21,10 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 定常的に計測値がずれる（系統誤差・バイアス）
     * 壁だと思ったら人までの距離を計測（過失誤差）
 
-<div>
+<div style="float:left">
 <img width="40%" src="../figs/sensor_200_histgram.png" />
-
+</div>
+<div style="float:left">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RpPcmyXOcr4?start=2444" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
