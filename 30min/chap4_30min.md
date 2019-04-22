@@ -37,6 +37,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 前のスライドのムービー
     * モータへの指令値と実際の出力が少しずれている
         * 「ロボットがまっすぐ走らないんですよ」（当たり前）
+        * ひどい例: 床が違うと脚ロボットの動きは大きく変わる
 
 <iframe width="260" height="315" src="https://www.youtube.com/embed/wNm9dhWBqZM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -48,14 +49,71 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 路面からの雑音のシミュレーション
 
-* モデル: ある一定の<span style="color:red">確率</span>で小石を踏む
+* モデル化の例: ある一定の<span style="color:red">確率</span>で小石を踏む
     * 小石は穴でも岩でもなんでもよい
     * 以下のパラメータで頻度と深刻度が決まる
         * どれだけの確率で起こるか
         * 踏んだらどれだけロボットがずれるか
+    * [実装例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation2.ipynb)
+        * 前者を<span style="color:red">指数分布</span>、後者を<span style="color:red">ガウス分布</span>でモデル化
 
 ---
 
-### 出力のバイアス
+### 路面からの雑音のシミュレーション
+#### 「小石を踏む」のモデル化 
 
-指令値$(\nu \ \omega)^T$に同じだけ誤差を
+
+* 偶然に何か起こる確率は<span style="color:red">指数分布</span>に従う
+$$
+	p(t | \lambda ) = \lambda e^{-\lambda t} \  (t > 0)
+$$
+    * $t$: ロボットの移動量（道のり）
+    * $1/\lambda$: 小石を一つ踏みつけるまでの移動量の期待値
+    * 小石を踏んだときに次に踏むまでの時間をドロー
+$$
+	t \sim p(t | \lambda ) 
+$$
+* [Jupyter Notebookでの例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/distributions/exponential.ipynb)
+
+---
+
+### 路面からの雑音のシミュレーション
+#### 「小石を踏んで姿勢変化」のモデル化
+
+* ロボットの方向$\theta$に<span style="color:red">ガウス分布</span>に従う雑音を加える
+$$
+	p(\theta | \mu, \sigma^2 ) = \dfrac{1}{\sqrt{2\pi}\sigma} \exp\left[ - \dfrac{(\theta - \mu)^2}{2\sigma^2} \right] = \mathcal{N}(\theta | \mu, \sigma^2)
+$$
+* 手続き: ロボットの姿勢を$(x \ y \ \theta)^T$次のように更新
+$\begin{eqnarray}
+    (x \ y \ \theta)^T &\longleftarrow& (x \ y \ \theta)^T + (0 \ 0 \ \theta')^T \\\\
+    &\text{where}&\ \theta' \sim p(\theta | \mu, \sigma^2 )
+\end{eqnarray}$
+    * 位置はあまりずれないので雑音を加えず
+
+---
+
+### 出力のバイアスのシミュレーション
+
+* モータへの指令値$(\nu \ \omega)^T$を更新するごとに<span style="color:red">同じ割合だけ</span>雑音として加える（系統誤差）
+* 手続き
+    * 初期化: 
+$ \begin{pmatrix} \delta_\nu  \\\\ \delta_\omega \end{pmatrix}\sim \mathcal{N}\left[ \begin{pmatrix} \delta_\nu \\\\ \delta_\omega \end{pmatrix} \Big| \begin{pmatrix} 0 \\\\ 0 \end{pmatrix} , \begin{pmatrix} \sigma_\nu^2 & 0 \\\\ 0 & \sigma_\omega^2 \end{pmatrix} \right] $
+        * $\sigma_\nu, \sigma_\omega$: パラメータ
+    * その後: 
+$
+    (\nu \ \omega)^T \longleftarrow (\delta_\nu \nu \ \delta_\omega \omega)^T 
+$
+* [実装例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation_bias.ipynb)
+    * キャリブレーションで小さくすることは可能
+        * 根絶は無理
+    * 事前に予想ができないので厄介
+
+---
+
+### 他の誤差の例
+
+* 引っかかり
+* 誘拐
+
+<img width="40%" src="../figs/jamming.gif" />
