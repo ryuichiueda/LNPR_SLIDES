@@ -16,7 +16,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 実世界の不確かさ（センサ）
 
 * 例
-    * 同じものを計測しても毎回違う値（偶然雑音）
+    * 同じものを計測しても毎回違う値（偶然誤差・雑音）
     * 周囲に観測するものがない
     * 定常的に計測値がずれる（系統誤差・バイアス）
     * 壁だと思ったら人までの距離を計測（過失誤差）
@@ -44,6 +44,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ---
 
 ### 雑音のシミュレーション
+
+* 動きに関するもの
+* 観測に関するもの
 
 ---
 
@@ -121,9 +124,31 @@ $
 
 <div>
 <div style="float:left">
-<img width="200%" src="../figs/jamming.gif" />
+<img width="170%" src="../figs/jamming.gif" />
 </div>
 <div style="float:left">
-<img width="200%" src="../figs/kidnap.gif" />
+<img width="170%" src="../figs/kidnap.gif" />
 </div>
 </div>
+
+---
+
+### センサ値に混入する<br />雑音のシミュレーション
+
+* このスライドでの「雑音」: 偶然誤差の原因となる熱、電気的なゆらぎ
+   * 非常に多種多様だが、まとめるとガウス分布に従う
+       * 中心極限定理
+       * 例: 2章の200[mm]のセンサ値の分布
+* [実装例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation7.ipynb)
+   * $\boldsymbol{z'} \sim \mathcal{N}(\boldsymbol{z'} | \boldsymbol{z}, \Sigma_\boldsymbol{z})$
+
+---
+
+### センサ値に混入する<br />バイアスのシミュレーション
+
+* 長時間にわたって値を偏らせる要因
+    * 環境の違い、変化
+        * 例: 2章の600[mm]のセンサ値
+* 実装は移動に加えるバイアスと同じ
+    * 
+    * ランドマークまでの距離に比例した
