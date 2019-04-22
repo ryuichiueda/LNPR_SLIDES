@@ -150,5 +150,7 @@ $
     * 環境の違い、変化
         * 例: 2章の600[mm]のセンサ値
 * 実装は移動に加えるバイアスと同じ
-    * 
-    * ランドマークまでの距離に比例した
+    * [実装例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation8.ipynb)
+    * あらかじめバイアスの大きさを決めておく
+        * 距離: 距離に比例した量を足す
+        * 方向: 方向に無関係に決まった量を足す
