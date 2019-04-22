@@ -123,9 +123,9 @@ $
 
 <div>
 <div style="float:left">
-<img width="100%" src="../figs/jamming.gif" />
+<img width="200%" src="../figs/jamming.gif" />
 </div>
 <div style="float:left">
-<img width="100%" src="../figs/kidnap.gif" />
+<img width="200%" src="../figs/kidnap.gif" />
 </div>
 </div>
