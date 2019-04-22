@@ -15,8 +15,37 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 実験
 
-* ロボットを壁から離して置く（約200mm）
-* 2日間にわたって3秒ごとにセンサの値を記録
+* ロボットを決めた距離だけ壁から離して置く
+* 3秒ごとにセンサの値を記録（2日間）
     * 光センサとLiDARの1本のレーザー
 
 <img width="30%" src="../figs/sensor_experiment.jpg" />
+
+---
+
+### 得られたデータ
+
+* [200mm](https://raw.githubusercontent.com/ryuichiueda/LNPR_BOOK_CODES/master/section_sensor/sensor_data_200.txt)
+    * $1: 日付
+    * $2: 時分秒
+    * $3: 光センサの値
+    * $4: LiDAR（の1本のレーザの）値
+* LiDARの値の特性を調査してみましょう
+    * こんなにたくさんデータあるけどどうしよう？
+        * 統計学
+    * 以後、LiDARから得た値を「センサ値」と呼称
+
+---
+
+### 度数分布・ヒストグラム
+
+* 度数分布
+    * センサ値の範囲をいくつかの区間に分ける
+    * 各区間に属するセンサ値の数を集計
+* ヒストグラム
+    * 度数分布をグラフにしたもの
+    * 下図: 区間の幅1で描いたヒストグラム
+
+<img width="50%" src="../figs/sensor_200_histgram.png" />
+
+---
