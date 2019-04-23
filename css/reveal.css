@@ -1252,7 +1252,9 @@ body {
   font-size: 70%;
   font-family: sans-serif; }
 
-ul>li {font-size:90%}
+ul>li {font-size:85%}
+
+img {border-width:0}
 
 .reveal.rtl pre,
 .reveal.rtl code {
