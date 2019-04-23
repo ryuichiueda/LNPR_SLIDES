@@ -210,10 +210,12 @@ $\rightarrow$
 
 ### 確率の乗法定理・加法定理
 
-* 乗法定理: $p(z,t) = p(z|t)p(t) = p(t|z)p(z)$
-    * 同時分布を条件つき確率と条件の積に
-* 加法定理: $p(z) = \int_{-\infty}^{\infty} p(z,t) dt, p(t) = \int_{-\infty}^{\infty} p(z,t) dz$
-    * 周辺化の根拠
+* 乗法定理
+    * $p(z,t) = p(z|t)p(t) = p(t|z)p(z)$
+        * 同時分布を条件つき確率と条件の積に
+* 加法定理
+    * $p(z) = \int_{-\infty}^{\infty} p(z,t) dt, p(t) = \int_{-\infty}^{\infty} p(z,t) dz$
+        * 周辺化の根拠
 * アルゴリズムの導出の際に頻出
     * 今はあまりピンと来ないかもしれない
 
@@ -234,4 +236,32 @@ p(z|t) &= \dfrac{p(t|z)p(z)}{p(t)} = \eta p(t|z)p(z) \quad (\eta: \text{正規�
 
 ### 2次元のガウス分布
 
-* 定義: $p(\V{x}) = $
+* 光センサとLiDARの分布（700[mm], 12時台〜16時台のデータ）
+    * どちらの変数を周辺化してもガウス分布に当てはまる
+
+<img width="40%" src="../figs/lidar_light_200.png" />
+
+---
+
+### 多次元のガウス分布
+
+* 定義:
+    * $$\mathcal{N}(\boldsymbol{z} | \boldsymbol{\mu}, \Sigma) = \frac{1}{(2\pi)^{\frac{n}{2}}\sqrt{|\Sigma|}} \exp \left\\{-\frac{1}{2}(\boldsymbol{z}-\boldsymbol{\mu})^T\Sigma^{-1}(\boldsymbol{z}-\boldsymbol{\mu})\right\\}$$
+        * $n$: 次元、$\boldsymbol{\mu}$: 中心（$n$次元ベクトル）、$\Sigma$: 共分散行列（$n \times n$行列）
+* $n=2, \boldsymbol{z} = (x \ y)^T$のときの共分散行列
+    * $\Sigma = \begin{pmatrix}\sigma_x^2 & \sigma_{xy} \\\\ \sigma_{xy} & \sigma_y^2\end{pmatrix}$
+        * $\sigma_x^2, \sigma_y^2$: それぞれ$x, y$の分散
+        * $\sigma_{xy} = \frac{1}{N}\sum_{i=0}^{N-1}(x_i-\mu_x)(y_i-\mu_y)$: <span style="color:red">共分散</span>
+* よく分からない。センサデータを当てはめてみましょう
+
+---
+
+### ガウス分布の当てはめ
+
+* 2次元のデータ$\boldsymbol{z}_i = (x_i \ y_i)^T \ $<span style="font-size:70%">$(i=0,1,2,\dots,N-1)$</span>に対して
+    * $\boldsymbol{\mu} = \frac{1}{N}\sum_{i=0}^{N-1} \boldsymbol{z}_i = (19.9 \ 729.3)^T$
+    * $\Sigma = \begin{pmatrix}\sigma_x^2 & \sigma_{xy} \\\\ \sigma_{xy} & \sigma_y^2\end{pmatrix} = \begin{pmatrix}42.1 & -0.3 \\\\ -0.3 & 17.7\end{pmatrix}$
+
+<img width="30%" src="../figs/lidar_light_200.png" />
+$\rightarrow$
+<img width="40%" src="../figs/2d_gauss.png" />
