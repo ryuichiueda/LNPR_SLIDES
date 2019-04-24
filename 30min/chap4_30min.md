@@ -161,3 +161,12 @@ $
 
 * ファントム
 * 見落とし
+
+<div>
+<div style="float:left">
+<img width="170%" src="../figs/phantom.gif" />
+</div>
+<div style="float:left">
+<img width="170%" src="../figs/lost.gif" />
+</div>
+</div>
