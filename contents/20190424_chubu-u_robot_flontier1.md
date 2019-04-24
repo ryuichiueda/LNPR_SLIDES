@@ -1,8 +1,10 @@
 ## ロボットフロンティア
 
+### 第一回
+
 千葉工業大学 上田 隆一
 
-第一回
+<span style="font-size:60%">2019年4月24日</span>
 
 <p style="font-size:50%">
 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
