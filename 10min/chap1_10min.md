@@ -69,8 +69,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 確率ロボティクス
 
 * 今のような話をロボティクスに持ち込んだもの 
-* 扱われる問題
+* 扱う問題
     * 自己位置推定
     * 地図生成・SLAM
     * 行動決定（ナビゲーションや探査）
+    * その他推論
 
