@@ -14,8 +14,15 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-* 本日の内容
-    * [確率ロボティクスとは](https://ryuichiueda.github.io/LNPR_SLIDES/10min/chap1_10min.html)
-    * [確率統計の基礎](https://ryuichiueda.github.io/LNPR_SLIDES/30min/chap2_30min.html)
-    * [不確かさのモデル化](https://ryuichiueda.github.io/LNPR_SLIDES/30min/chap4_30min.html)
+### 本日の内容
+
+* [確率ロボティクスとは](https://ryuichiueda.github.io/LNPR_SLIDES/10min/chap1_10min.html)
+* [確率統計の基礎](https://ryuichiueda.github.io/LNPR_SLIDES/30min/chap2_30min.html)
+* [不確かさのモデル化](https://ryuichiueda.github.io/LNPR_SLIDES/30min/chap4_30min.html)
 * 次回は自己位置推定の話をします
+
+---
+
+### サンプルコード
+
+* https://github.com/ryuichiueda/LNPR_BOOK_CODES
