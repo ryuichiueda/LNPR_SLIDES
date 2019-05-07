@@ -85,7 +85,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 計算式の意味
         * 移動前の姿勢$\boldsymbol{x}'$が既知なら移動後の分布は状態遷移モデルと一致
         * 実際には移動前の姿勢は$b_\{t-1\}$で確率的にしか分からない<br />
-	    $\rightarrow$状態遷移モデルの期待値が$\hat{b}_t$となる
+            $\rightarrow$状態遷移モデルの期待値が$\hat{b}_t$となる
 
 <img width="50%" src="../figs/belief_state_trans.png" />
 
@@ -190,3 +190,27 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ---
 
 ### 重みの正規化とリサンプリング
+
+* まだ実装に足りないこと
+    * 重みの正規化
+    * 重みの偏りの是正
+        * 特定のいくつかのパーティクルに重みが集中<br />
+	$\rightarrow$他のパーティクルは存在しないのと同じ
+* 方法: <span style="color:red">リサンプリング</span>
+    * 手続き
+        1. パーティクルの集合から新しいパーティクルを$N$個選ぶ
+        1. 重みを$1/N$にする
+    * 下図: リサンプリングの一例（左: 前、右: 後）
+
+<img width="60%" src="../figs/resampling.png" />
+
+---
+
+### リサンプリングの方法
+
+* 単純な方法
+    * 以下を$N$回繰り返し
+        1. 古いパーティクルの集合から重みに比例する確率で1つパーティクルを選択
+        1. 選択したパーティクルの重みを$1/N$に変えて新しい集合に追加
+    * この方法は計算量が$O(N)$より大きい
+        * パーティクルの数$N$が2倍になると2倍よりも計算量が増える
