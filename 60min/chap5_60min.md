@@ -206,7 +206,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### リサンプリングの方法
+### リサンプリングの方法（単純なもの）
 
 * 単純な方法
     * 以下を$N$回繰り返し
@@ -214,3 +214,30 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         1. 選択したパーティクルの重みを$1/N$に変えて新しい集合に追加
     * この方法は計算量が$O(N)$より大きい
         * パーティクルの数$N$が2倍になると2倍よりも計算量が増える
+
+---
+
+### リサンプリングの方法<br />（系統サンプリング）
+
+* 手続き
+    1. パーティクル<span style="font-size:70%">（下図左）</span>の重みを棒グラフ状のリストに<span style="font-size:70%">（下図中）</span>
+        * 重みの合計を$W$とする（図の例: $W=10$。$N=10$）
+    1. 累積値$r \sim \mathcal{U}(0, W/N)$の要素から幅$W/N$ずつ$N$個だけリストの要素を選択し、対応するパーティクルを選択（下図右）
+* MCLではこれが使われる
+    * 計算量$N(O)$でしかも低バイアス
+
+![](../figs/systematic_sampling.png)
+
+
+---
+
+### 系統サンプリングの低バイアス性
+
+* 左: 単純なリサンプリング
+    * 何も観測していないのにパーティクルが複数のクラスタに分離
+        * 理由: 重みが同じでも選ばれないパーティクルが発生
+* 右: 系統サンプリングによるリサンプリング
+    * 全パーティクルの重みが同じなら全て選ばれる
+
+<img width="38%" src="../figs/mcl_simple_resampling.gif" />&nbsp;&nbsp;
+<img width="38%" src="../figs/mcl_sys_resampling.gif" />
