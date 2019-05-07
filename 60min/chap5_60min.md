@@ -48,7 +48,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $\boldsymbol{x}_0$: 最初の姿勢（分かっているとしましょう）
     * $\boldsymbol{u}_\{1:t\}$: 各時刻の制御指令
     * $\textbf{z}_\{1:t\}$: 各時刻のセンサ値のリスト
-	* ある時刻$s$のリスト$\textbf{z}_s$内には同時に得られた複数のセンサ値
+        * $\textbf{z}_s = \\{ \boldsymbol{z}_\{j,s\} | j=0,1,2,\dots, N_\text{m}-1 \\}$
+            * $\boldsymbol{z}_\{j,s\}$: 時刻$s$におけるランドマーク$j$のセンサ値
+            * $N_\text{m}$: ランドマークの数
 
 ---
 
@@ -126,6 +128,65 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 移動時の信念分布の更新
+### 移動時の更新（事前準備）
+
+* 状態遷移モデル$p(\boldsymbol{x} | \boldsymbol{x}', \boldsymbol{u}_t)$を作成
+* モデルの作り方の例
+    * ロボットを何度も決まった距離、角度だけ走らせて指令値と実際に進んだ量を記録$\rightarrow$確率分布を求める
+    * 下図: ロボットを4[m]前進させて向きのばらつきを調査
 
 
+<img width="30%" src="../figs/simulation_on.png" />
+
+---
+
+### 移動時の更新（アルゴリズム）
+
+* 初期化
+    * パーティクル: $\boldsymbol{x}^{(i)} \ (i=0,1,2,\dots,N-1)$を$\boldsymbol{x}_0$に置く
+* $\boldsymbol{u}_t$を反映する手続き
+    * $\boldsymbol{x}^{(i)} \sim p(\boldsymbol{x} | \boldsymbol{x}^{(i)}, \boldsymbol{u}_t) \qquad (i=0,1,2,\dots,N-1)$
+        * 元の姿勢を状態遷移して上書き
+
+<img width="40%" src="../figs/mcl_motion.gif" />
+
+---
+
+### パーティクルの分布
+
+* 信念分布との関係
+    * ある領域$X \in \mathcal{X}$中のパーティクルの数（を$N$で割ったもの）:<br />
+    その領域にロボットの姿勢がある確率の近似
+        * 左図: パーティクル100個の分布
+        * 右図: ロボットを100台動作させたときの分布
+
+<img width="35%" src="../figs/particles_vs_robots_particles.png" />&nbsp;
+<img width="35%" src="../figs/particles_vs_robots_robots.png" />
+
+---
+
+### センサ値の反映（事前分布）
+
+* 観測モデル$p(\textbf{z}_t | \boldsymbol{x})$を作成
+    * これも事前実験で求める
+        * ロボットに様々な姿勢からランドマークを観測させてセンサ値を記録
+    * 通常はランドマークごとに$p(\boldsymbol{z}_{j,t} | \boldsymbol{x})$を求める
+
+---
+
+### センサ値の反映（アルゴリズム）
+
+* 初期化
+    * パーティクルに<span style="color:red">重み$w^{(i)}$</span><br />を持たせて$1/N$で初期化
+    * 最終的なパーティクルの定義
+        * $\xi^{(i)} = (\boldsymbol{x}^{(i)}, w^{(i)})$
+* $\textbf{z}_t$を反映する手続き
+    * $w^{(i)} \longleftarrow p(\textbf{z}_t | \boldsymbol{x})w^{(i)}$
+        * センサ値が互いに独立なら<br/>$p(\textbf{z}\_t | \boldsymbol{x}) = \prod_{j=0}^\{N_\text{m}-1\} p(\boldsymbol{z}_\{j,t\} | \boldsymbol{x})$
+    * 重みはこのままだと消失 or 発散
+
+<img width="40%" src="../figs/mcl_sensor_update.gif" />
+
+---
+
+### 重みの正規化とリサンプリング
