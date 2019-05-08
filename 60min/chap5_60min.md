@@ -85,9 +85,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * ロボットの移動後の信念には$\boldsymbol{u}_t$が加わる（$b_\{t-1\}\rightarrow \hat{b}_t$）
     * ロボットがセンサ値を得ると、さらに$\textbf{z}_t$が加わる（$\hat{b}_t \rightarrow b_t$）
     * 上記の$b_\{t-1\}, \hat{b}_t, b_t$
-        * $b_\{t-1\}(\boldsymbol{x}) = p_t(\boldsymbol{x} = \boldsymbol{x}_t^* | \boldsymbol{x}_0, \boldsymbol{u}_\{1:t-1\}, \textbf{z}_\{1:t-1\})$
-        * $\hat{b}_t(\boldsymbol{x}) = p_t(\boldsymbol{x} = \boldsymbol{x}_t^* | \boldsymbol{x}_0, \boldsymbol{u}_\{1:t\}, \textbf{z}_\{1:t-1\})$
-        * $b_t(\boldsymbol{x}) = p_t(\boldsymbol{x} = \boldsymbol{x}_t^* | \boldsymbol{x}_0, \boldsymbol{u}_\{1:t\}, \textbf{z}_\{1:t\})$
+        * $b_\{t-1\}(\boldsymbol{x}) = p(\boldsymbol{x} = \boldsymbol{x}_\{t-1\}^* | \boldsymbol{x}_0, \boldsymbol{u}_\{1:t-1\}, \textbf{z}_\{1:t-1\})$
+        * $\hat{b}_t(\boldsymbol{x}) = p(\boldsymbol{x} = \boldsymbol{x}_t^* | \boldsymbol{x}_0, \boldsymbol{u}_\{1:t\}, \textbf{z}_\{1:t-1\})$
+        * $b_t(\boldsymbol{x}) = p(\boldsymbol{x} = \boldsymbol{x}_t^* | \boldsymbol{x}_0, \boldsymbol{u}_\{1:t\}, \textbf{z}_\{1:t\})$
 
 ---
 
@@ -180,7 +180,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### センサ値の反映（事前分布）
+### センサ値の反映（事前準備）
 
 * 観測モデル$p(\textbf{z}_t | \boldsymbol{x})$を作成
     * これも事前実験で求める
