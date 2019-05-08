@@ -263,3 +263,4 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * 移動ロボットの自己位置推定
     * 確率や統計の手法で計算
+    * これもロボティクス
