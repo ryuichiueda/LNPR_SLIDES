@@ -50,6 +50,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Kvja3ROYhB4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+---
+
+
 ### 何を計算しているのか
 
 * 分布$p_t(\boldsymbol{x} = \boldsymbol{x}_t^* | \boldsymbol{x}_0, \boldsymbol{u}_\{1:t\}, \textbf{z}_\{1:t\})$を計算
