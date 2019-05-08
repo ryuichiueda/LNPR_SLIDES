@@ -17,10 +17,10 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 本日の内容
 
 * [パーティクルフィルタを用いた自己位置推定](https://ryuichiueda.github.io/LNPR_SLIDES/60min/chap5_60min.html)
-    * コード: https://github.com/ryuichiueda/LNPR_BOOK_CODES/tree/master/section_particle_filter
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/tree/master/section_particle_filter)
 * [自己位置推定の諸問題](https://ryuichiueda.github.io/LNPR_SLIDES/10min/chap7_10min.html)
     * 大域的自己位置推定、誘拐ロボット問題、リセット
-    * コード: https://github.com/ryuichiueda/LNPR_BOOK_CODES/tree/master/section_advanced_localization
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/tree/master/section_advanced_localization)
 
 ---
 
