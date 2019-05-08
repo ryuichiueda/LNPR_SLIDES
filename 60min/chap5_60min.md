@@ -123,6 +123,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * 信念分布をパーティクルで近似
     * パーティクル（粒子）: ロボットの分身と考えておく
+    * 自己位置推定に使われるPF: MCL（Monte Carlo localization）と呼ばれる
 
 <img width="40%" src="../figs/mcl_complete2.gif" />
 
@@ -223,7 +224,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     1. パーティクル<span style="font-size:70%">（下図左）</span>の重みを棒グラフ状のリストに<span style="font-size:70%">（下図中）</span>
         * 重みの合計を$W$とする（図の例: $W=10$。$N=10$）
     1. 累積値$r \sim \mathcal{U}(0, W/N)$の要素から幅$W/N$ずつ$N$個だけリストの要素を選択し、対応するパーティクルを選択（下図右）
-* MCLではこれが使われる
+* PFではこれが使われる
     * 計算量$N(O)$でしかも低バイアス
 
 ![](../figs/systematic_sampling.png)
