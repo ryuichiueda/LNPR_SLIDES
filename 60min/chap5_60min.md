@@ -243,6 +243,18 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 <img width="38%" src="../figs/mcl_simple_resampling.gif" />&nbsp;&nbsp;
 <img width="38%" src="../figs/mcl_sys_resampling.gif" />
 
+---
+
+### パーティクルフィルタで自己位置推定するロボット1
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RpPcmyXOcr4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+### パーティクルフィルタで自己位置推定するロボット2
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Kvja3ROYhB4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ### まとめ
 
 * 移動ロボットの自己位置推定
