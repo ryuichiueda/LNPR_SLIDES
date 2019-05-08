@@ -242,3 +242,8 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 <img width="38%" src="../figs/mcl_simple_resampling.gif" />&nbsp;&nbsp;
 <img width="38%" src="../figs/mcl_sys_resampling.gif" />
+
+### まとめ
+
+* 移動ロボットの自己位置推定
+    * 確率や統計の手法で計算
