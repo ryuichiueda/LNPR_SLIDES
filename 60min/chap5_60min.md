@@ -20,7 +20,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 例: カルマンフィルタ（KF）<br />による実装
+### 例: [カルマンフィルタ](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_kalman_filter/kf4.ipynb)（KF）<br />による実装
 
 * 青い楕円が位置、青いヒゲが向きの不確かさを表す
     * 動くと不確かに
