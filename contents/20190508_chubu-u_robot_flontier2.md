@@ -22,8 +22,3 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 大域的自己位置推定、誘拐ロボット問題、リセット
     * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/tree/master/section_advanced_localization)
 
----
-
-### サンプルコード
-
-* https://github.com/ryuichiueda/LNPR_BOOK_CODES
