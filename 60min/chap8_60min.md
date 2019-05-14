@@ -183,3 +183,84 @@ p(\boldsymbol{x}\_\{1:t-1\} | \boldsymbol{x}\_0, \boldsymbol{u}\_\{1:t-1\}, \tex
     * （長い計算の末、このような簡単な形になることに注意）
 
 <img src="../figs/fastslam_1.0.gif" />
+
+---
+
+### <span style="text-transform:none">FastSLAM 2.0</span>
+
+* 今までの実装は「FastSLAM 1.0」
+* FastSLAM 2.0
+    * パーティクルを置きなおす範囲をセンサ値を使って狭める
+
+<img width="70%" src="../figs/fastslam2_diff.png" />
+
+---
+
+### 姿勢をドローする分布
+
+* センサの値も考慮した次の分布からドロー
+    * $\begin{align}&p(\boldsymbol{x}\_t | \boldsymbol{x}^{(i)}\_{t-1}, \hat{\textbf{m}}^{(i)}\_{t-1}, \boldsymbol{u}\_t, \boldsymbol{z}\_{j,t}) \\\\
+&= \eta \int
+p( \boldsymbol{z}\_{j,t} | \boldsymbol{x}\_t, \boldsymbol{m}\_j)
+\mathcal{N}(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}^{(i)}\_{j,t-1}, \Sigma\_{j,t-1}^{(i)})
+d\boldsymbol{m}\_j 
+\cdot p(\boldsymbol{x}\_t | \boldsymbol{x}^{(i)}\_{t-1}, \boldsymbol{u}\_t) 
+\end{align}$
+    * 状態遷移モデルにセンサ値を考慮した重み（積分の部分）をかける形になっている
+    * 積分を計算しないとドローできない
+
+---
+
+### 姿勢をドローする分布（計算結果）
+
+* 結果だけ示すと次のようなガウス分布に従ってドローすることに
+    * $\boldsymbol{x}_t^{(i)} \sim \mathcal{N}(\boldsymbol{\mu}_t, \Sigma_t)$
+        * $K = R\_t H\_{\boldsymbol{x}\_t}^T (Q\_{\boldsymbol{z}\_t} + H\_{\boldsymbol{x}\_t} R\_tH\_{\boldsymbol{x}\_t}^T)^{-1}$
+        * $\boldsymbol{\mu}\_t = K(\boldsymbol{z}\_t - \hat{\boldsymbol{z}}\_t ) + \hat{\boldsymbol{x}}\_t$
+        * $\Sigma\_t = (I - KH\_{\boldsymbol{x}\_t}) R\_t$
+    * 手順（式(8.58) 〜式(8.71)）
+        1. $p(\boldsymbol{x}\_t | \boldsymbol{x}^{(i)}\_{t-1}, \boldsymbol{u}\_t)$をガウス分布に
+        2. 積分の部分を$\boldsymbol{z}_t$のガウス分布に線型近似
+        3. 1と2のガウス分布の掛け算を$\boldsymbol{x}_t$のガウス分布に線型近似
+
+---
+
+### 重みの計算
+
+* 次の分布の値に比例
+    * $p(\boldsymbol{z}\_{j,t} | \boldsymbol{x}\_{t-1}^{(i)},\hat{\textbf{m}}\_{t-1}^{(i)},  \boldsymbol{u}\_t)$
+    * 前の時刻の姿勢が$\boldsymbol{x}\_\{t-1\}$だったときに$\boldsymbol{z}\_{j,t}$を得る確率
+    * = $\boldsymbol{z}\_{j,t}$を得たときの$\boldsymbol{x}_\{t-1\}$の尤度
+* 計算するとこうなる
+    * $\begin{align}&p(\boldsymbol{z}\_{j,t} | \boldsymbol{x}\_{t-1}^{(i)},\hat{\textbf{m}}\_{t-1}^{(i)},  \boldsymbol{u}\_t) \\\\
+&= \eta \int \int p(\boldsymbol{z}\_t | \boldsymbol{x}\_t, \boldsymbol{m}) \mathcal{N}(\boldsymbol{m} | \hat{\boldsymbol{m}}\_{t-1}^{(i)}, \Sigma\_{t-1}^{(i)}) d{\boldsymbol{m}} \cdot p(\boldsymbol{x}\_t | \boldsymbol{x}\_{t-1}^{(i)}, \boldsymbol{u}\_t) d{\boldsymbol{x}\_t}\end{align}$
+        * $\boldsymbol{x}_t$をドローするための式を$\boldsymbol{x}_t$で積分したもの
+    * 最終的に$\mathcal{N}(\boldsymbol{z}\_t | \hat{\boldsymbol{z}}\_t, H\_{\boldsymbol{x}\_t} R\_t H\_{\boldsymbol{x}\_t}^T + Q\_{\boldsymbol{z}\_t})$というガウス分布の値に
+        * 式(8.75)〜式(8.79)
+        * センサ値が複数の場合はこれを複数掛け算
+
+---
+
+### <span style="text-transform:none">FastSLAM 2.0</span>の実行結果
+
+* 左: FastSLAM 1.0、右: FastSLAM 2.0
+    * 一見違いはない
+
+<img src="../figs/fastslam_1.0.gif" />
+<img src="../figs/fastslam_2.0.gif" />
+
+---
+
+### 30秒後のパーティクル分布の比較
+
+* 上: FastSLAM 1.0、下: FastSLAM 2.0
+    * 2.0の方がサンプリングバイアスが小さい
+
+<br />
+<img width="25%" src="../figs/fastslam1_trial1.png" />
+<img width="25%" src="../figs/fastslam1_trial2.png" />
+<img width="25%" src="../figs/fastslam1_trial3.png" />
+<div style="margin:-35pt">&nbsp;</div>
+<img width="25%" src="../figs/fastslam2_trial1.png" />
+<img width="25%" src="../figs/fastslam2_trial2.png" />
+<img width="25%" src="../figs/fastslam2_trial3.png" />
