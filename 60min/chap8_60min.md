@@ -70,18 +70,37 @@ $\begin{align} &b\_t(\boldsymbol{x}\_\{1:t\}, \textbf{m}) \\\\
 
 ### <span style="text-transform:none">FastSLAM</span>
 
-* 次のようなパーティクルを定義
+* 次のようなパーティクルを定義して毎ステップ更新
     * $\xi_t^{(i)} = ( \boldsymbol{x}_{0:t}^{(i)}, w_t^{(i)}, \hat{\textbf{m}}_t^{(i)} )  \quad (i=0,1,2,\dots,N-1) $
 * $\hat{\textbf{m}}_t^{(i)}$は地図の推定値（分布）
     * $\hat{\textbf{m}}_t^{(i)} = \\{ \hat{\boldsymbol{m}}\_\{j,t\}^{(i)}, \Sigma\_\{j,t\}^{(i)} | j=0,1,2,\dots,N\_\textbf{m}-1 \\}$
         * $\hat{\boldsymbol{m}}\_\{j,t\}^{(i)}$: IDが$j$のランドマークの推定位置
 	* $\Sigma\_\{j,t\}^{(i)}$: 推定位置の共分散行列
-* 各パーティクルの軌跡$\boldsymbol{x}_{0:t}^{(i)}$は決定論的なので地図は$p(\textbf{m} | \boldsymbol{x}\_\{0:t\}, \textbf{z}\_\{1:t\})$から求められる
-    * <span style="color:red">課題: どうやって各パーティクルの軌跡$\boldsymbol{x}_{0:t}^{(i)}$を決めるのか？</span>
+
+<img width="40%" src="../figs/fastslam_particles.png" />
 
 ---
 
-### 移動時のパーティクルの処理
+### パーティクルの性質
+
+* 各パーティクルの軌跡$\boldsymbol{x}_{0:t}^{(i)}$は決定論的なので地図は$p(\textbf{m} | \boldsymbol{x}\_\{0:t\}, \textbf{z}\_\{1:t\})$から求められる
+
+<img width="60%" src="../figs/fastslam_particles.png" />
+
+---
+
+### <span style="text-transform:none">FastSLAM</span>の演算
+
+* A: ロボットが移動したら軌跡を更新
+* センサ値が得られたら
+    * B: 地図の初期化（B-1）と更新（B-2）
+    * C: パーティクルの重みを更新
+* これからA, B, Cと順に説明
+    * 注意: これから提示する式は長い計算の結果なのでテキストを参照のこと 
+
+---
+
+### A: 移動時のパーティクルの処理
 
 * この式の右辺左側の確率分布を変形してみましょう
     * $\hat{b}\_t(\boldsymbol{x}\_\{1:t\}, \textbf{m}) 
@@ -117,4 +136,50 @@ p(\boldsymbol{x}\_\{1:t-1\} | \boldsymbol{x}\_0, \boldsymbol{u}\_\{1:t-1\}, \tex
 
 ---
 
-### センサ値による信念の更新
+### B-1: センサ値による地図の初期化
+
+* ランドマークを初めて<br />観測したときの処理
+    * 位置の初期値: <span style="color:red">$\hat{\boldsymbol{m}}\_{t} = \hat{\boldsymbol{m}}$</span>
+    * 共分散行列の初期値: <br /><span style="color:red">$\Sigma\_t = ( H^T Q\_{\hat{\boldsymbol{m}}}^{-1} H )^{-1}$</span>
+* 記号
+    * $\hat{\boldsymbol{m}} = \boldsymbol{h}(\boldsymbol{z})$
+    （センサ値$\boldsymbol{z}$と<br />観測方程式$\boldsymbol{h}$
+    で求めた<br />ランドマークの位置）
+    * $H$は$\boldsymbol{h}$から作ったヤコビ行列
+    * $Q\_{\hat{\boldsymbol{m}}\_{t}}$はセンサ値の雑音の<br />共分散行列
+
+<img src="../figs/fastslam_init_landmarks.gif" />
+
+---
+
+### B-2: センサ値による地図の更新
+
+* ランドマーク1個の推定位置の更新
+    * 位置: <span style="color:red">$\hat{\boldsymbol{m}}\_t = K \left[\boldsymbol{z}\_t - \boldsymbol{h}(\hat{\boldsymbol{m}}\_{t-1}) \right] + \hat{\boldsymbol{m}}\_{t-1} $</span>
+    * 共分散行列: <span style="color:red">$\Sigma_t = (I - KH ) \Sigma_{t-1}$</span>
+        * ここで<span style="color:red">$K = \Sigma\_{t-1} H^T ( Q\_{\hat{\boldsymbol{m}}\_{t-1}} + H \Sigma\_{t-1} H^T )^{-1}$</span>
+        * $H, Q\_{\hat{\boldsymbol{m}}\_{t-1}}$に関しては前ページ参照
+        * $K$はカルマンフィルタのカルマンゲイン
+* 意味
+    * 位置$\hat{\boldsymbol{m}}\_t$は次の2つを足したもの
+        * 前の時刻の推定値$\hat{\boldsymbol{m}}\_\{t-1\}$
+        * 得られたセンサ値$\boldsymbol{z}\_t$と推定位置から得られるはずのセンサ値$\boldsymbol{h}(\hat{\boldsymbol{m}}\_{t-1})$の誤差に$K$をかけたもの
+    * 共分散は$KH\Sigma_{t-1}$の分だけ小さくなる
+
+実行例は次のページ
+
+---
+
+<img src="../figs/fastslam_update_landmarks.gif" />
+
+---
+
+### C: センサ値による重みの更新
+
+* 観測されたランドマークの全センサ値$\boldsymbol{z}\_{j,t} \in \textbf{z}\_t$に対して
+    * <span style="color:red">$w\_t^{(i)} = w\_{t-1}^{(i)} \prod\_{\boldsymbol{z}\_{j,t} \in \textbf{z}\_t} \mathcal{N}(\boldsymbol{z}\_{j,t} | \hat{\boldsymbol{z}}\_{j,t}, Q\_{\boldsymbol{z}\_{j,t}})$</span>
+        * $\hat{\boldsymbol{z}}\_\{t,j\} = \boldsymbol{h}(\hat{\boldsymbol{m}}\_{j,t-1}) - H\hat{\boldsymbol{m}}\_{j,t-1} + H \hat{\boldsymbol{m}}\_{j,t-1} = \boldsymbol{h}(\hat{\boldsymbol{m}}\_{j,t-1})$
+        * $Q\_{\boldsymbol{z}\_\{j,t\}} = H\Sigma\_{j,t-1} H^T + Q\_{\hat{\boldsymbol{m}}\_{j,t-1}}$
+    * （長い計算の末、このような簡単な形になることに注意）
+
+<img src="../figs/fastslam_1.0.gif" />
