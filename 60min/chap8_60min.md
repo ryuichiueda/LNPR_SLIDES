@@ -136,17 +136,28 @@ p(\boldsymbol{x}\_\{1:t-1\} | \boldsymbol{x}\_0, \boldsymbol{u}\_\{1:t-1\}, \tex
 
 ---
 
+
 ### B-1: センサ値による地図の初期化
 
-* ランドマークを初めて<br />観測したときの処理
-    * 位置の初期値: <span style="color:red">$\hat{\boldsymbol{m}}\_{t} = \hat{\boldsymbol{m}}$</span>
-    * 共分散行列の初期値: <br /><span style="color:red">$\Sigma\_t = ( H^T Q\_{\hat{\boldsymbol{m}}}^{-1} H )^{-1}$</span>
-* 記号
-    * $\hat{\boldsymbol{m}} = \boldsymbol{h}(\boldsymbol{z})$
-    （センサ値$\boldsymbol{z}$と<br />観測方程式$\boldsymbol{h}$
-    で求めた<br />ランドマークの位置）
-    * $H$は$\boldsymbol{h}$から作ったヤコビ行列
-    * $Q\_{\hat{\boldsymbol{m}}\_{t}}$はセンサ値の雑音の<br />共分散行列
+* ランドマークを初めて観測したときの処理
+    * 次の分布をガウス分布で近似して初期化
+        * $p(\boldsymbol{m} | \boldsymbol{z}\_t) = \eta \exp\left\\{ -\dfrac{1}{2}
+\left[ \boldsymbol{z}\_t - \boldsymbol{h}(\boldsymbol{m}) \right]^T Q\_{\boldsymbol{m}}^{-1} \left[ \boldsymbol{z}\_t - \boldsymbol{h}(\boldsymbol{m}) \right] \right\\}$
+            * $Q_{\boldsymbol{m}} = \begin{pmatrix} (\sigma_\ell \ell_{\boldsymbol{m}})^2 & 0 \\\\ 0 & \sigma_\varphi^2 \end{pmatrix}$
+            * $\boldsymbol{h}$: 観測方程式
+    * 近似方法: 観測方程式を線形化
+        * $\boldsymbol{h}(\boldsymbol{m}) = \hat{\boldsymbol{m}} + H (\boldsymbol{m} - \hat{\boldsymbol{m}})$
+            * $H$: $\boldsymbol{h}$のヤコビ行列
+            * $\hat{\boldsymbol{m}}$: センサ値を信じたときのランドマークの位置
+    * $Q\_{\boldsymbol{m}}$を$Q\_{\hat{\boldsymbol{m}}}$で近似
+
+---
+
+### B-1: 計算結果
+
+* 次の中心、共分散行列のガウス分布で初期化
+    * $\hat{\boldsymbol{m}}\_{t} = \hat{\boldsymbol{m}}$
+    * $\Sigma\_t = ( H^T Q\_{\hat{\boldsymbol{m}}}^{-1} H )^{-1}$
 
 <img src="../figs/fastslam_init_landmarks.gif" />
 
@@ -154,11 +165,25 @@ p(\boldsymbol{x}\_\{1:t-1\} | \boldsymbol{x}\_0, \boldsymbol{u}\_\{1:t-1\}, \tex
 
 ### B-2: センサ値による地図の更新
 
-* ランドマーク1個の推定位置の更新
+* 更新式（パーティクルごとに計算）
+    * 今のランドマークの信念分布に観測モデルの示す尤度をかけたもの
+        * $p(\boldsymbol{m} | \hat{\boldsymbol{m}}\_{t}, \Sigma\_{t}) = \eta p(\boldsymbol{z}\_{t}| \boldsymbol{m}, \boldsymbol{x}\_t) p(\boldsymbol{m} | \hat{\boldsymbol{m}}\_{t-1}, \Sigma\_{t-1})$
+$= \eta \exp\Big\\{ -\dfrac{1}{2} \left[ \boldsymbol{z}\_t - \boldsymbol{h}(\boldsymbol{m}) \right]^T Q\_{\boldsymbol{m}}^{-1} \left[ \boldsymbol{z}\_t - \boldsymbol{h}(\boldsymbol{m}) \right]$
+$-\dfrac{1}{2} ( \boldsymbol{m} - \hat{\boldsymbol{m}}\_{t-1})^T \Sigma\_{t-1}^{-1} ( \boldsymbol{m} - \hat{\boldsymbol{m}}\_{t-1}) \Big\\}$
+        * パーティクル、ランドマークのIDは省略
+        * この式を近似でガウス分布にする
+* 近似
+    * 観測方程式を線形化: $\boldsymbol{h}(\boldsymbol{m}) = \boldsymbol{h}(\hat{\boldsymbol{m}}\_{t-1}) + H (\boldsymbol{m} - \hat{\boldsymbol{m}}\_{t-1})$
+    * $Q\_{\boldsymbol{m}}$を$Q_{\hat{\boldsymbol{m}}_{t-1}}$で代用
+
+---
+
+### B-2: 計算結果
+
+* 次のガウス分布になる
     * 位置: <span style="color:red">$\hat{\boldsymbol{m}}\_t = K \left[\boldsymbol{z}\_t - \boldsymbol{h}(\hat{\boldsymbol{m}}\_{t-1}) \right] + \hat{\boldsymbol{m}}\_{t-1} $</span>
     * 共分散行列: <span style="color:red">$\Sigma_t = (I - KH ) \Sigma_{t-1}$</span>
         * ここで<span style="color:red">$K = \Sigma\_{t-1} H^T ( Q\_{\hat{\boldsymbol{m}}\_{t-1}} + H \Sigma\_{t-1} H^T )^{-1}$</span>
-        * $H, Q\_{\hat{\boldsymbol{m}}\_{t-1}}$に関しては前ページ参照
         * $K$はカルマンフィルタのカルマンゲイン
 * 意味
     * 位置$\hat{\boldsymbol{m}}\_t$は次の2つを足したもの
@@ -170,19 +195,45 @@ p(\boldsymbol{x}\_\{1:t-1\} | \boldsymbol{x}\_0, \boldsymbol{u}\_\{1:t-1\}, \tex
 
 ---
 
+### B-2: ここまでの実装でのSLAM
+
 <img src="../figs/fastslam_update_landmarks.gif" />
 
 ---
 
 ### C: センサ値による重みの更新
 
-* 観測されたランドマークの全センサ値$\boldsymbol{z}\_{j,t} \in \textbf{z}\_t$に対して
-    * <span style="color:red">$w\_t^{(i)} = w\_{t-1}^{(i)} \prod\_{\boldsymbol{z}\_{j,t} \in \textbf{z}\_t} \mathcal{N}(\boldsymbol{z}\_{j,t} | \hat{\boldsymbol{z}}\_{j,t}, Q\_{\boldsymbol{z}\_{j,t}})$</span>
-        * $\hat{\boldsymbol{z}}\_\{t,j\} = \boldsymbol{h}(\hat{\boldsymbol{m}}\_{j,t-1}) - H\hat{\boldsymbol{m}}\_{j,t-1} + H \hat{\boldsymbol{m}}\_{j,t-1} = \boldsymbol{h}(\hat{\boldsymbol{m}}\_{j,t-1})$
-        * $Q\_{\boldsymbol{z}\_\{j,t\}} = H\Sigma\_{j,t-1} H^T + Q\_{\hat{\boldsymbol{m}}\_{j,t-1}}$
-    * （長い計算の末、このような簡単な形になることに注意）
+* 重みの更新式
+    * $w\_t^{(i)} = w\_{t-1}^{(i)} \prod\_{\boldsymbol{z}\_\{j,t\} \in \textbf{z}\_t} \left\langle p(\boldsymbol{z}\_\{j,t\} | \boldsymbol{m}\_j, \boldsymbol{x}\_t^{(i)}) \right\rangle\_{ p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\}) }$
+        * ランドマークの位置が$p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\})$という確率分布で表されるときに、センサ値から考えられる姿勢$\boldsymbol{x}\_t^{(i)}$の尤度をかけたもの
+* 一つのセンサ値に関する計算
+    * $\left\langle p(\boldsymbol{z}\_\{j,t\} | \boldsymbol{m}\_j, \boldsymbol{x}\_t^{(i)}) \right\rangle\_{ p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\}) }$
+    $= \int p(\boldsymbol{z}\_\{j,t\} | \boldsymbol{m}\_j, \boldsymbol{x}\_t^{(i)}) p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\}) d\boldsymbol{m}_j $
+    * この式を$\boldsymbol{z}_\{j,t\}$のガウス分布にして$\boldsymbol{z}_\{j,t\}$の値を代入して尤度を求める
 
-<img src="../figs/fastslam_1.0.gif" />
+---
+
+### C: 計算方法
+
+* この式の積分の中身はランドマークの位置推定のときのものと同じ
+    * $\int p(\boldsymbol{z}\_\{j,t\} | \boldsymbol{m}\_j, \boldsymbol{x}\_t^{(i)}) p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\}) d\boldsymbol{m}_j $
+    * ランドマークの位置推定のときの計算結果から、上式の積分内の分布をガウス分布に
+        * ガウス分布の指数部は次のようになる（ランドマークのIDは省略）
+        * $ -\dfrac{1}{2} \big[ \boldsymbol{z}\_t - \boldsymbol{h}(\hat{\boldsymbol{m}}\_{t-1}) - H(\boldsymbol{m} - \hat{\boldsymbol{m}}\_{t-1} )  \big]^T Q\_{\hat{\boldsymbol{m}}\_{t-1}}^{-1} \big[ \text{（左の[ ]内と同じ）} \big]$
+          $-\dfrac{1}{2} ( \boldsymbol{m} - \hat{\boldsymbol{m}}\_{t-1})^T \Sigma\_{t-1}^{-1} ( \boldsymbol{m} - \hat{\boldsymbol{m}}\_{t-1})$
+    * この指数部を$\boldsymbol{z}_t$と$\boldsymbol{m}$の式に分離して、$\boldsymbol{m}$で積分して$\boldsymbol{z}_t$のガウス分布にする
+
+---
+
+### C: 計算結果
+
+* 次の中心、共分散行列を持つガウス分布に
+    * $\hat{\boldsymbol{z}}\_\{t,j\} = \boldsymbol{h}(\hat{\boldsymbol{m}}\_{j,t-1})$
+         * ランドマークの推定位置を信じた場合に期待されるセンサ値
+    * $Q\_{\boldsymbol{z}\_\{j,t\}} = H\Sigma\_{j,t-1} H^T + Q\_{\hat{\boldsymbol{m}}\_{j,t-1}}$
+* $\boldsymbol{z}\_\{t,j\}$の値を代入し、値を求めて重みにかける
+
+![](../figs/fastslam_1.0.gif)
 
 ---
 
