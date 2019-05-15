@@ -212,7 +212,7 @@ $-\dfrac{1}{2} ( \boldsymbol{m} - \hat{\boldsymbol{m}}\_{t-1})^T \Sigma\_{t-1}^{
         * $w\_t^{(i)} = p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) w\_{t-1}^{(i)}$
     * 重みにかける分布に地図を表す変数を与えて変形
         * $p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) = \int\_{\mathcal{M}} p(\textbf{z}\_t, \textbf{m} | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) d\textbf{m}$
-          $= p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) = \int p(\textbf{z}\_t | \textbf{m}, \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) p(\textbf{m} | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) d\textbf{m}$
+          $= \int p(\textbf{z}\_t | \textbf{m}, \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) p(\textbf{m} | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) d\textbf{m}$
           $= \int p(\textbf{z}\_t | \textbf{m}, \boldsymbol{x}\_{t}^{(i)}) p(\textbf{m} | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) d\textbf{m} = \int p(\textbf{z}\_t | \textbf{m}, \boldsymbol{x}\_{t}^{(i)}) p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)}) d\textbf{m}$
           $= \langle p(\textbf{z}\_t | \textbf{m}, \boldsymbol{x}\_{t}^{(i)}) \rangle_{p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)})} = \prod\_{\boldsymbol{z}\_\{j,t\} \in \textbf{z}\_t} \left\langle p(\boldsymbol{z}\_\{j,t\} | \boldsymbol{m}\_j, \boldsymbol{x}\_t^{(i)}) \right\rangle\_{ p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\}) }$
 
