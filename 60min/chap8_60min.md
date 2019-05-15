@@ -203,7 +203,24 @@ $-\dfrac{1}{2} ( \boldsymbol{m} - \hat{\boldsymbol{m}}\_{t-1})^T \Sigma\_{t-1}^{
 
 ### C: センサ値による重みの更新
 
-* 重みの更新式
+* センサ値で軌跡の推定値をどのように評価
+    * ベイズの定理から$\textbf{z}_t$が得られると
+        * $p(\boldsymbol{x}\_{1:t} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:t}, \textbf{z}\_{1:t}) = \eta p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}, \boldsymbol{u}\_{1:t}, \textbf{z}\_{1:t-1}) p(\boldsymbol{x}\_{1:t} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:t}, \textbf{z}\_{1:t-1})$
+    * 軌跡の分布をパーティクルの重みに置き換え
+        * $w\_t^{(i)} = p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \boldsymbol{u}\_{1:t}, \textbf{z}\_{1:t-1}) w\_{t-1}^{(i)}$
+    * 制御指令値は姿勢が確定するので不要
+        * $w\_t^{(i)} = p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) w\_{t-1}^{(i)}$
+    * 重みにかける分布に地図を表す変数を与えて変形
+        * $p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) = \int\_{\mathcal{M}} p(\textbf{z}\_t, \textbf{m} | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) d\textbf{m}$
+          $= p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) = \int p(\textbf{z}\_t | \textbf{m}, \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) p(\textbf{m} | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) d\textbf{m}$
+          $= \int p(\textbf{z}\_t | \textbf{m}, \boldsymbol{x}\_{t}^{(i)}) p(\textbf{m} | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) d\textbf{m} = \int p(\textbf{z}\_t | \textbf{m}, \boldsymbol{x}\_{t}^{(i)}) p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)}) d\textbf{m}$
+          $= \langle p(\textbf{z}\_t | \textbf{m}, \boldsymbol{x}\_{t}^{(i)}) \rangle_{p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)})} = \prod\_{\boldsymbol{z}\_\{j,t\} \in \textbf{z}\_t} \left\langle p(\boldsymbol{z}\_\{j,t\} | \boldsymbol{m}\_j, \boldsymbol{x}\_t^{(i)}) \right\rangle\_{ p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\}) }$
+
+---
+
+### C: センサ値による重みの更新（続き）
+
+* 結局、重みの更新式は次のようになる
     * $w\_t^{(i)} = w\_{t-1}^{(i)} \prod\_{\boldsymbol{z}\_\{j,t\} \in \textbf{z}\_t} \left\langle p(\boldsymbol{z}\_\{j,t\} | \boldsymbol{m}\_j, \boldsymbol{x}\_t^{(i)}) \right\rangle\_{ p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\}) }$
         * ランドマークの位置が$p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\})$という確率分布で表されるときに、センサ値から考えられる姿勢$\boldsymbol{x}\_t^{(i)}$の尤度をかけたもの
 * 一つのセンサ値に関する計算
@@ -213,7 +230,7 @@ $-\dfrac{1}{2} ( \boldsymbol{m} - \hat{\boldsymbol{m}}\_{t-1})^T \Sigma\_{t-1}^{
 
 ---
 
-### C: 計算方法
+### C: センサ値による重みの更新<br />（続きの続き）
 
 * この式の積分の中身はランドマークの位置推定のときのものと同じ
     * $\int p(\boldsymbol{z}\_\{j,t\} | \boldsymbol{m}\_j, \boldsymbol{x}\_t^{(i)}) p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\}) d\boldsymbol{m}_j $
