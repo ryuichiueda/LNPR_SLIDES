@@ -1,7 +1,6 @@
 ## 2. 確率統計の基礎
 
 千葉工業大学 上田 隆一
-2019年4月24日
 
 <br />
 
@@ -16,7 +15,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 実験
 
 * ロボットを決めた距離だけ壁から離して置く
-* 3秒ごとにセンサの値を記録（2日間）
+* 3秒ごとにセンサの値を記録（2〜3日間）
     * 光センサとLiDARの1本のレーザー
 
 <img width="30%" src="../figs/sensor_experiment.jpg" />
@@ -47,6 +46,33 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 下図: 区間の幅1で描いたヒストグラム
 
 <img width="50%" src="../figs/sensor_200_histgram.png" />
+
+>>>
+
+### 問題
+
+* ヒストグラムを出力してみましょう
+    * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb [3]
+
+
+---
+
+### 平均値、分散、標準偏差
+
+* 平均値（mean）: 全センサ値を足してセンサ値の個数$N$で割ったもの
+* 分散(variance): 各センサ値と平均値の差を求めてその2乗和を足し、
+    * $N$で割ったもの: 標本分散（$N$が小さいときに値が小さくなる）
+    * $N-1$で割ったもの: 不偏分散
+* 標準偏差: 分散の正の平方根
+
+>>>
+
+### 問題
+
+* センサ値の平均値、分散、標準偏差を求めてみましょう
+    * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb [4]-[7]
+    * 定義から
+    * PandasやNumPyで
 
 ---
 
