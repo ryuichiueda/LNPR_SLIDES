@@ -34,6 +34,13 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 統計学
     * 以後、LiDARから得た値を「センサ値」と呼称
 
+>>>
+
+### 演習
+
+* Pandasで`sensor_data_200.txt`を読み込んでみましょう
+    * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb [1]
+
 ---
 
 ### 度数分布・ヒストグラム
@@ -49,7 +56,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 >>>
 
-### 問題
+### 演習
 
 * ヒストグラムを出力してみましょう
     * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb [3]
@@ -67,7 +74,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 >>>
 
-### 問題
+### 演習
 
 * センサ値の平均値、分散、標準偏差を求めてみましょう
     * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb [4]-[7]
@@ -102,6 +109,15 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 <img width="40%" src="../figs/prob_200.png" />
 <img width="40%" src="../figs/simulated_sensor_200.png" />
 
+>>>
+
+### 演習
+
+* 元のデータから作った確率分布からドローを繰り返し、結果をヒストグラムにしてみましょう。
+    * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb [13]
+
+<img width="40%" src="../figs/simulated_sensor_200.png" />
+
 ---
 
 ### 確率分布のモデル
@@ -128,6 +144,15 @@ $\Longrightarrow$確率分布のモデル
 
 <img width="40%" src="../figs/gauss_200.png" />
 
+>>>
+
+### 演習
+
+* ガウス分布を描いてみましょう。
+    * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb
+       * 自分で数式を実装 [14]-[15]
+       * Scipyで [17]
+
 ---
 
 ### 期待値
@@ -140,6 +165,15 @@ $\Longrightarrow$確率分布のモデル
 * ガウス分布の性質
     * $\langle z \rangle_{p(z)} = \mu$
     * $\langle (z - \mu)^2 \rangle_{p(z)} = \sigma^2$
+
+>>>
+
+### 演習
+
+* サイコロ（どの出目も同じ確率で出るもの）の目の期待値を求めてみましょう
+    * 手計算で
+    * ノートブックで乱数を使って
+        * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/expectation.ipynb
 
 ---
 
