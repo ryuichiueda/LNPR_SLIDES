@@ -230,6 +230,15 @@ $\Longrightarrow$
 
 分けるとどちらもガウス分布状に
 
+>>>
+
+### 演習
+
+* `sensor_data_600.txt`に関してここまでのグラフを出してみましょう。
+    * コピペでかまいません
+    * ノートブック: https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_600.ipynb
+
+
 ---
 
 ### 2次元の確率分布（度数分布）
@@ -237,8 +246,18 @@ $\Longrightarrow$
 * 横軸: 時刻
 * 縦軸: センサ値
 * 2次元の確率分布$p(z,t)$（$z$: センサ値、$t$: 時刻）
-<br />
-<img width="50%" src="../figs/sensor_600_2d.png" />
+    * <span style="color:red">同時分布、結合分布</span>と呼ばれる
+
+![](../figs/sensor_600_2d.png)
+
+>>>
+
+### 演習
+
+* この図を描画してみましょう
+    * [lidar_600.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_600.ipynb) [8]
+
+![](../figs/sensor_600_2d.png)
 
 ---
 
@@ -254,6 +273,13 @@ $\Longrightarrow$
 <img width="30%" src="../figs/sensor_600_2d.png" />
 $\rightarrow$
 <img width="40%" src="../figs/sensor_histgram_600.png" />
+
+>>>
+
+### 演習
+
+* 同時分布のデータ$p(z,t)$からスタートして$p(z)$のグラフを描画してみましょう
+    * [lidar_600.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_600.ipynb) [6]-[11]
 
 ---
 
@@ -276,10 +302,18 @@ $\rightarrow$
     * $p(z,t) = p(z|t)p(t) = p(t|z)p(z)$
         * 同時分布を条件つき確率と条件の積に
 * 加法定理
-    * $p(z) = \int_{-\infty}^{\infty} p(z,t) dt, p(t) = \int_{-\infty}^{\infty} p(z,t) dz$
+    * $p(z) = \int_{-\infty}^{\infty} p(z,t) dt$
+    * $p(t) = \int_{-\infty}^{\infty} p(z,t) dz$
         * 周辺化の根拠
 * アルゴリズムの導出の際に頻出
     * 今はあまりピンと来ないかもしれない
+
+>>>
+
+### 演習
+
+* 同時分布$p(a,b,c|d)$から$c$と$b$の分布を乗法定理で順に分離してみましょう
+* $p(a|b)$に加法定理で変数$c$を追加して、さらに、積分内で$p(c)$の分布を乗法定理で分離してみましょう
 
 ---
 
@@ -293,6 +327,12 @@ p(z|t) &= \dfrac{p(t|z)p(z)}{p(t)} = \eta p(t|z)p(z) \quad (\eta: \text{正規�
     * 意味: 時間帯$t$と、$z$がどの時間帯で得られやすいかが分かると、$z$の分布$p(z)$くらいにしか分からなかったのが$p(z|t)$まで分かるようになる
     * 正規化定数$\eta$は$\int_{-\infty}^{\infty}p(z|t)dt=1$とするための調整の定数
 *  ベイズの定理もアルゴリズムの導出で出てきます
+
+>>>
+
+### 演習
+
+* $p(z,t)$から$p(z|t)$の式を導出してみましょう
 
 ---
 
@@ -328,6 +368,16 @@ p(z|t) &= \dfrac{p(t|z)p(z)}{p(t)} = \eta p(t|z)p(z) \quad (\eta: \text{正規�
 $\rightarrow$
 <img width="40%" src="../figs/2d_gauss.png" />
 
+>>>
+
+### 演習
+
+* この図を描画してみましょう
+    * [multi_gauss1.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/multi_gauss1.ipynb) [1]-[5]
+
+
+![](../figs/2d_gauss.png)
+
 ---
 
 ### 共分散の意味
@@ -339,6 +389,14 @@ $\rightarrow$
         * 右のガウス分布: $\Sigma = \begin{pmatrix} 100 & -25\sqrt{3} \\\\ -25\sqrt{3} & 50 \end{pmatrix}$ 
 
 <img width="40%" src="../figs/2d_gausses.png" />
+
+>>>
+
+### 演習
+
+* 2次元のガウス分布を描画してみましょう
+    * [multi_gauss3.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/multi_gauss3.ipynb)[1]
+
 
 ---
 
@@ -353,3 +411,9 @@ $\rightarrow$
     * 対角行列は長軸、短軸の長さの2乗を表す（固有値）
     * 回転行列は固有ベクトルの組み合わせ
 
+>>>
+
+### 演習
+
+* 共分散行列$\Sigma = \begin{pmatrix} 100 & -25\sqrt{3} \\\\ -25\sqrt{3} & 50 \end{pmatrix}$を固有値分解して、ガウス分布の長軸・短軸を描画してみましょう。
+    * [multi_gauss3.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/multi_gauss3.ipynb)[2]-[3]
