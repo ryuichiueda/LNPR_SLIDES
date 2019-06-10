@@ -12,4 +12,82 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 
+### 本章の内容
+
+* 3.1: 想定するロボット
+* 3.2: ロボットの動きの実装
+* 3.3: ロボットの観測の実装
+* 3.4: まとめ
+
+---
+
+### 想定するロボット
+
+* 対向2輪型の自律ロボット
+    * 駆動輪が二つ平行に取り付けられている
+    * 原点周りにその場で回転可能
+        * 原点: 両駆動輪の軸を結んだ中点
+    * 本書では平面を移動するものに限定
+
+<iframe width="372" height="210" src="https://www.youtube.com/embed/RpPcmyXOcr4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="372" height="210" src="https://www.youtube.com/embed/7xXnXHc0roA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+### ロボットの姿勢と制御指令
+
+* 姿勢: $\boldsymbol{x} = (x \ y \ \theta)^\top$
+    * 世界座標系$\Sigma_\text{world}$を定義してその上に定義
+    * $(x,y)$: 位置
+    * $\theta$: 向き
+        * $X$軸の向きを0[deg]にして$Y$軸方向を正とする
+* 制御指令: $\boldsymbol{u} = (\nu \ \omega)^\top$
+    * $\nu$: 速度
+    * $\omega$: 角速度
+
+<img width="25%" src="../figs/robot_motion1.png" /> 
+<img width="25%" src="../figs/robot_motion2.png" /> 
+
+---
+
+### ロボットの動き
+
+* 制御指令とロボットの世界座標系$\Sigma_\text{world}$での速度の関係
+    * $(\dot{x} \quad\dot{y} \quad\dot{\theta})^\top = ( \\nu\\cos\\theta \quad\\nu\\sin\\theta \quad\omega)^\top$
+* 問題
+    * 離散時刻$t=0,1,2,\dots,$を考え、姿勢$\boldsymbol{x}\_{t-1}$から姿勢$\boldsymbol{x}\_{t}$までの変化を求めてみましょう
+        * 各離散時刻間の実時間は$\Delta t$
+        * 姿勢$\boldsymbol{x}\_{t-1}$から姿勢$\boldsymbol{x}\_{t}$までの制御指令は$\boldsymbol{u}_t = (\nu \ \omega)^\top$で固定
+
+
+<img width="30%" src="../figs/robot_motion2.png" /> 
+<img width="27%" src="../figs/robot_motion.gif" /> 
+
+---
+
+* $\\omega_t = 0$のとき
+    * $\\begin{pmatrix} x_t \\\\ y_t \\\\ \\theta_t \\\\ \\end{pmatrix} = \\begin{pmatrix} x_{t-1} \\\\ y_{t-1} \\\\ \\theta_{t-1} \\\\ \\end{pmatrix} +  \\begin{pmatrix} \\nu_t\\cos \\theta_{t-1} \\\\ \\nu_t\\sin \\theta_{t-1} \\\\ \\omega_t \\end{pmatrix} \\Delta t$
+* $\\omega_t \neq 0$のとき
+    * $\\begin{pmatrix} x_t \\\\ y_t \\\\ \\theta_t \\\\ \\end{pmatrix} = \\begin{pmatrix} x_{t-1} \\\\ y_{t-1} \\\\ \\theta_{t-1} \\\\ \\end{pmatrix} + \\begin{pmatrix} \\nu_t\\omega_t^{-1}\\left\\{\\sin( \\theta_{t-1} + \\omega_t  \\Delta t ) - \\sin\\theta_{t-1} \\right\\} \\\\ \\nu_t\\omega_t^{-1}\\left\\{-\\cos( \\theta_{t-1} + \\omega_t \\Delta t ) + \\cos\\theta_{t-1} \\right\\} \\\\ \\omega_t \\Delta t \\end{pmatrix}$
+
+
+---
+
+### 状態方程式・状態遷移関数
+
+* 状態方程式
+    * 姿勢$\boldsymbol{x}$を<span style="color:red">状態</span>とみなしたときに、それがどのように遷移するかを表した式
+    * 離散系では$\boldsymbol{x}\_t = \boldsymbol{f}(\boldsymbol{x}\_{t-1}, \boldsymbol{u}_t)$という形
+    * 前ページの式もこのような形式になっている
+* 状態遷移関数
+    * $\boldsymbol{f}(\boldsymbol{x}\_{t-1}, \boldsymbol{u}_t)$のこと
+
+---
+
+### 実装
+
+* [ノートブック](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_robot/ideal_robot6.ipynb)
+    * 「エージェント」がロボットに乗って、そこから制御司令を出すという実装になっている
+* 状態遷移関数の実装
+
+![](../figs/state_transition.png)
