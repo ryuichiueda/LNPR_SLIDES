@@ -91,3 +91,15 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 状態遷移関数の実装
 
 ![](../figs/state_transition.png)
+
+---
+
+### ロボットの観測
+
+* 点ランドマークとカメラ
+    * ランドマークの集合（地図）: $\textbf{m} = \\{ \text{m}\_j | j=0,1,2,\dots,N\_\textbf{m} -1 \\}$
+    * ランドマーク$\text{m}\_j$の位置: $\boldsymbol{m}\_j = (m\_\{j,x\} \ m\_\{j,y\})^\top$
+* ランドマーク$\text{m}\_j$から得られるセンサ値
+    * 極座標で$\boldsymbol{z}_j = (\ell_j \ \varphi_j )^\top$
+
+<img width="60%" src="../figs/landmark_observation.png" />
