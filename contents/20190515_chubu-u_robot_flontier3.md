@@ -16,6 +16,6 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 本日の内容
 
-* [パーティクルフィルタを用いたSLAM](https://ryuichiueda.github.io/LNPR_SLIDES/60min/chap8_60min.html)
+* [パーティクルフィルタを用いたSLAM](https://ryuichiueda.github.io/LNPR_SLIDES/slides/chap8_60min.html)
     * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/tree/master/section_fastslam)
 
