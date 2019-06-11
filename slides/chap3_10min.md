@@ -86,7 +86,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 実装
 
-* [ノートブック](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_robot/ideal_robot6.ipynb)
+* [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_robot/ideal_robot6.ipynb)
     * 「エージェント」がロボットに乗って、そこから制御司令を出すという実装になっている
 * 状態遷移関数の実装
 
@@ -103,3 +103,34 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 極座標で$\boldsymbol{z}_j = (\ell_j \ \varphi_j )^\top$
 
 <img width="60%" src="../figs/landmark_observation.png" />
+
+---
+
+### 観測方程式・観測関数
+
+* 観測方程式 $\\boldsymbol\{z\}\_j = \\boldsymbol\{h\}_j (\\boldsymbol\{x\})$
+    * $\\boldsymbol\{h\}_j (\\boldsymbol\{x\}) = \\begin\{pmatrix\} \\sqrt\{(m\_\{j,x\} - x)^2 + (m\_\{j,y\} - y)^2\} \\\\ \\text\{atan2\}(m\_\{j,y\} - y, m\_\{j,x\} - x) - \\theta \\end\{pmatrix\}$
+        * 観測関数
+    * 姿勢$\boldsymbol{x}$と、$\boldsymbol{x}$で得られるセンサ値$\boldsymbol{z}_j$の関係を表すもの
+* SLAMではランドマークの位置も変数になる
+    * $\\boldsymbol\{h\}(\boldsymbol{x},\boldsymbol{m}_j )$
+
+<img width="50%" src="../figs/landmark_observation.png" />
+
+---
+
+### 実装
+
+* [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_robot/ideal_robot11.ipynb)
+    * ロボットにカメラをのせる
+        * シミュレーションのため、カメラオブジェクトに観測対象の地図を与えておく
+    * 観測方程式の実装
+
+![](../figs/observation_function.png)
+
+---
+
+### 最終的なロボットの挙動
+
+![](../figs/simulator_no_noise.gif)
+
