@@ -36,8 +36,8 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 実装する不確かさの原因
 
 * 雑音とバイアス
-    * 雑音: 離散時刻ごとに制御指令に乱数を混ぜる
-    * バイアス: 制御指令を一定量ずらす
+    * 雑音: 離散時刻ごとに制御指令に乱数を混ぜる（偶然誤差）
+    * バイアス: 制御指令を一定量ずらす（系統誤差）
         * ずらす量は最初に決める
     * この二つで様々な継続期間の誤差要因を代表
 * スタックと誘拐
@@ -61,4 +61,35 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 指数分布
 
 * $p(x | \lambda ) = \lambda e^{-\lambda x}  \qquad (x \ge 0)$
-    * $\lambda$: 
+    * $x$: 時間や距離など
+    * $\lambda$: $x$あたりに何かが起こる回数（期待値）
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/exponential.ipynb)
+
+![](../figs/exponential.png)
+<span style="font-size:50%">図: $\lambda = 1/5$の指数分布</span>
+
+---
+
+### 実装
+
+* [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation2.ipynb)
+    * 1[m]あたり小石5個
+    * 小石を踏んだら$\Delta\theta \sim \mathcal{N}(0, 3\text{[deg]})$だけ$\theta$をずらす
+
+![](../figs/motion_noise.gif)
+
+---
+
+### バイアスの実装
+
+* 速度$\nu$、角速度$\omega$にそれぞれ一定の誤差$\Delta\nu, \Delta\omega$を足す
+    * 乱数で初期値$\Delta\nu, \Delta\omega$の値を決めてずっとその値を使う
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation3.ipynb)のデフォルト値: $\Delta \nu \sim \mathcal{N}(0, 0.1^2)$、$\Delta \omega \sim \mathcal{N}(0, 0.1^2)$
+
+![](../figs/motion_bias.gif)
+
+---
+
+### スタック
+
+
