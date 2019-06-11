@@ -38,6 +38,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * モータへの指令値と実際の出力が少しずれている
         * 「ロボットがまっすぐ走らないんですよ」（当たり前）
         * ひどい例: 床が違うと脚ロボットの動きは大きく変わる
+        * もっとひどい例: 人がロボットを捕まえて離さない/別の場所に運ぶ
 
 <iframe width="260" height="315" src="https://www.youtube.com/embed/wNm9dhWBqZM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -52,13 +53,14 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 路面からの雑音のシミュレーション
 
-* モデル化の例: ある一定の<span style="color:red">確率</span>で小石を踏む
-    * 小石は穴でも岩でもなんでもよい
-    * 以下のパラメータで頻度と深刻度が決まる
+* モデル化の例: ある一定の<br /><span style="color:red">確率</span>で小石を踏む
+    * 以下のパラメータで頻度と<br />深刻度が決まる
         * どれだけの確率で起こるか
-        * 踏んだらどれだけロボットがずれるか
+        * 踏んだらどれだけロボットが<br />ずれるか
     * [実装例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation2.ipynb)
-        * 前者を<span style="color:red">指数分布</span>、後者を<span style="color:red">ガウス分布</span>でモデル化
+        * 前者を<span style="color:red">指数分布</span>、<br />後者を<span style="color:red">ガウス分布</span>でモデル化
+
+<img src="../figs/motion_noise.gif" />
 
 ---
 
@@ -68,14 +70,11 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * 偶然に何か起こる確率は<span style="color:red">指数分布</span>に従う
 $$
-	p(t | \lambda ) = \lambda e^{-\lambda t} \  (t > 0)
+	p(x | \lambda ) = \lambda e^{-\lambda x} \  (x > 0)
 $$
     * $t$: ロボットの移動量（道のり）
-    * $1/\lambda$: 小石を一つ踏みつけるまでの移動量の期待値
-    * 小石を踏んだときに次に踏むまでの時間をドロー
-$$
-	t \sim p(t | \lambda ) 
-$$
+    * $\lambda$: $t$あたりに踏む小石の数の期待値
+    * $t \sim p(t | \lambda )$で次に小石を踏むタイミングが決定できる
 * [Jupyter Notebookでの例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/distributions/exponential.ipynb)
 
 ---
@@ -107,40 +106,54 @@ $ \begin{pmatrix} \delta_\nu  \\\\ \delta_\omega \end{pmatrix}\sim \mathcal{N}\l
 $
     (\nu \ \omega)^T \longleftarrow (\delta_\nu \nu \ \delta_\omega \omega)^T 
 $
-* [実装例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation_bias.ipynb)
-    * キャリブレーションで小さくすることは可能
-        * 根絶は無理
-    * 事前に予想ができないので厄介
+
+
+---
+
+### [実装例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation_bias.ipynb)
+
+* キャリブレーションで小さくすることは可能
+    * 根絶は無理
+* 事前に予想ができないので厄介
+
+<img src="../figs/motion_bias.gif" />
 
 ---
 
 ### 他の誤差の例
 
-* 引っかかり（ロボットの脱輪など）
+* スタック（ロボットの脱輪など。左図）
     * 指数分布で次に脱輪するまでの時間をシミュレーション
     * 脱輪から抜け出すまでの時刻も指数分布で
-* 誘拐（人によるロボットの上げ下ろしなど）
-    * これも指数分布
+* 誘拐（人によるロボットの位置変更。右図）
+    * これも指数分布でタイミングを決定
+    * 置き直し姿勢は一様分布からドロー
 
-<div>
-<div style="float:left">
-<img width="170%" src="../figs/jamming.gif" />
-</div>
-<div style="float:left">
-<img width="170%" src="../figs/kidnap.gif" />
-</div>
-</div>
+<img width="30%" src="../figs/jamming.gif" />
+<img width="30%" src="../figs/kidnap.gif" />
 
 ---
 
 ### センサ値に混入する<br />雑音のシミュレーション
 
-* このスライドでの「雑音」: 偶然誤差の原因となる熱、電気的なゆらぎ
-   * 非常に多種多様だが、まとめるとガウス分布に従う
-       * 中心極限定理
-       * 例: 2章の200[mm]のセンサ値の分布
-* [実装例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation7.ipynb)
-   * $\boldsymbol{z'} \sim \mathcal{N}(\boldsymbol{z'} | \boldsymbol{z}, \Sigma_\boldsymbol{z})$
+* 本書で言うところの雑音: 偶然誤差の原因
+    * 熱、電気、光、風、水蒸気、・・・
+    * 非常に多種多様だが、まとめるとガウス分布に従う
+        * 例: 2章の200[mm]のセンサ値の分布
+        * 中心極限定理
+
+---
+
+### [実装例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation7.ipynb)
+
+* センサ値の距離、向き$\ell,\varphi$に毎回それぞれ$\Delta \ell, \Delta \varphi$を足す
+    * $\Delta\ell = \mathcal{N}[0, (\ell\sigma_\ell)^2 ] $
+        * 距離に比例する大きさの標準偏差
+    * $\Delta\varphi = \mathcal{N}[0, \sigma_\varphi^2] $
+        * 一定の標準偏差
+
+<img width="30%" src="../figs/sensor_noise.gif" />
+
 
 ---
 
@@ -155,18 +168,33 @@ $
         * 距離: 距離に比例した量を足す
         * 方向: 方向に無関係に決まった量を足す
 
+<img width="30%" src="../figs/sensor_bias.png" />
+
 ---
 
-### 他の誤差の例
+### ファントム
 
-* ファントム
-* 見落とし
+* 見えないはずのものが見えてしまう
+    * 偽陽性
 
-<div>
-<div style="float:left">
-<img width="170%" src="../figs/phantom.gif" />
-</div>
-<div style="float:left">
-<img width="170%" src="../figs/lost.gif" />
-</div>
-</div>
+![](../figs/phantom.gif)
+
+---
+
+### 見落とし
+
+* 見えるはずのものが見えない
+    * 偽陰性
+
+![](../figs/lost.gif)
+
+---
+
+### オクルージョン
+
+* 観測対象の手前にものがある
+    * カメラで大きさを測るとき: 小さく見えてしまう
+    * LiDARで壁までの距離を測るとき: 壁が手前に見えてしまう
+
+![](../figs/sensor_occlusion.gif)
+
