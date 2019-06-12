@@ -65,8 +65,11 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
+### 答え
+
 * $\\omega_t = 0$のとき
     * $\\begin{pmatrix} x_t \\\\ y_t \\\\ \\theta_t \\\\ \\end{pmatrix} = \\begin{pmatrix} x_{t-1} \\\\ y_{t-1} \\\\ \\theta_{t-1} \\\\ \\end{pmatrix} +  \\begin{pmatrix} \\nu_t\\cos \\theta_{t-1} \\\\ \\nu_t\\sin \\theta_{t-1} \\\\ \\omega_t \\end{pmatrix} \\Delta t$
+    * 極限をとると下の式と一致
 * $\\omega_t \neq 0$のとき
     * $\\begin{pmatrix} x_t \\\\ y_t \\\\ \\theta_t \\\\ \\end{pmatrix} = \\begin{pmatrix} x_{t-1} \\\\ y_{t-1} \\\\ \\theta_{t-1} \\\\ \\end{pmatrix} + \\begin{pmatrix} \\nu_t\\omega_t^{-1}\\left\\{\\sin( \\theta_{t-1} + \\omega_t  \\Delta t ) - \\sin\\theta_{t-1} \\right\\} \\\\ \\nu_t\\omega_t^{-1}\\left\\{-\\cos( \\theta_{t-1} + \\omega_t \\Delta t ) + \\cos\\theta_{t-1} \\right\\} \\\\ \\omega_t \\Delta t \\end{pmatrix}$
 
@@ -101,6 +104,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * ランドマーク$\text{m}\_j$の位置: $\boldsymbol{m}\_j = (m\_\{j,x\} \ m\_\{j,y\})^\top$
 * ランドマーク$\text{m}\_j$から得られるセンサ値
     * 極座標で$\boldsymbol{z}_j = (\ell_j \ \varphi_j )^\top$
+    * 問題: $\boldsymbol{z}_j$と$\boldsymbol{x}$の関係は？
 
 <img width="60%" src="../figs/landmark_observation.png" />
 
