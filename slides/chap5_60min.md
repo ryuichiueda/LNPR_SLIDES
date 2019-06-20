@@ -143,11 +143,35 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 移動時の更新（事前準備）
+### 移動時の更新（アルゴリズム）
 
-* 状態遷移モデル$p(\boldsymbol{x} | \boldsymbol{x}', \boldsymbol{u}_t)$を作成
-* モデルの作り方の例
-    * ロボットを何度も決まった距離、角度だけ走らせて指令値と実際に進んだ量を記録$\rightarrow$確率分布を求める
+* 初期化
+    * パーティクル: $\boldsymbol{x}^{(i)} \ (i=0,1,2,\dots,N-1)$を$\boldsymbol{x}_0$に置く
+* $\boldsymbol{u}_t$を反映する手続き
+    * $\boldsymbol{x}^{(i)} \sim p(\boldsymbol{x} | \boldsymbol{x}^{(i)}, \boldsymbol{u}_t) \qquad (i=0,1,2,\dots,N-1)$
+        * 元の姿勢を状態遷移して上書き
+    * <span style="color:red">状態遷移モデル$p(\boldsymbol{x} | \boldsymbol{x}', \boldsymbol{u}_t)$がMCL内部に実装されている必要あり</span>
+
+<img width="40%" src="../figs/mcl_motion.gif" />
+
+
+---
+
+### 状態遷移モデルの実装
+
+
+* 状態遷移モデルはロボットごと、環境ごとに異なる
+    * 事前になんらかの方法で同定する必要がある
+* 同定の方法
+    * 実験（統計をとる）、ロボットの動きを見て調整、勘と経験
+        * 最終的にロボットが動けばなんでもよい
+        * あまり真面目に求めても環境が変わると値がずれる
+
+---
+
+### 実験による状態遷移モデルの<br />パラメータ決定 1/3
+
+* ロボットを何度も決まった距離、角度だけ走らせて<br />指令値と実際に進んだ量を記録
     * 下図: ロボットを4[m]前進させて向きのばらつきを調査
     * このような実験から次ページからのような方法でモデルを作る
 
@@ -155,7 +179,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### モデル化の例 1
+### 実験による状態遷移モデルの<br />パラメータ決定 2/3
 
 * 単位移動量あたりの雑音がガウス分布に従うと仮定
     * 実際は指数分布などに従っているが、ガウス分布で近似
@@ -170,7 +194,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### モデル化の例 2
+### 実験による状態遷移モデルの<br />パラメータ決定 3/3
 
 * パラメータ$\rightarrow$制御指令への雑音
     * 速度、角速度に変換
@@ -185,18 +209,6 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 	
 
 
-
----
-
-### 移動時の更新（アルゴリズム）
-
-* 初期化
-    * パーティクル: $\boldsymbol{x}^{(i)} \ (i=0,1,2,\dots,N-1)$を$\boldsymbol{x}_0$に置く
-* $\boldsymbol{u}_t$を反映する手続き
-    * $\boldsymbol{x}^{(i)} \sim p(\boldsymbol{x} | \boldsymbol{x}^{(i)}, \boldsymbol{u}_t) \qquad (i=0,1,2,\dots,N-1)$
-        * 元の姿勢を状態遷移して上書き
-
-<img width="40%" src="../figs/mcl_motion.gif" />
 
 ---
 
@@ -216,7 +228,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### センサ値の反映（事前準備）
 
 * 観測モデル$p(\textbf{z}_t | \boldsymbol{x})$を作成
-    * これも事前実験で求める
+    * 多くの場合、事前実験で求める
         * ロボットに様々な姿勢からランドマークを観測させてセンサ値を記録
     * 通常はランドマークごとに$p(\boldsymbol{z}_{j,t} | \boldsymbol{x})$を求める
 
