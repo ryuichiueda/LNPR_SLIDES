@@ -23,3 +23,18 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 
 <img width="30%" src="../figs/belief_ellipse.png" />
+
+---
+
+### 移動後の信念分布の更新
+
+* 信念のパラメータを計算する必要がある
+    * MCLならパーティクルをロボットと同じように動かせばよかった
+* 式
+    * $\hat{b}\_t(\boldsymbol{x}) = \int\_{\boldsymbol{x}' \in \mathcal{X}} p(\boldsymbol{x} | \boldsymbol{x}', \boldsymbol{u}\_t) b\_{t-1}(\boldsymbol{x}')  d\boldsymbol{x}' = \big\langle p(\boldsymbol{x} | \boldsymbol{x}', \boldsymbol{u}\_t) \big\rangle\_{b\_{t-1}(\boldsymbol{x}')}$
+    * MCLと同じ
+    * ただし、<span style="color:red">これを計算してもガウス分布にならない</span>
+
+---
+
+### 計算

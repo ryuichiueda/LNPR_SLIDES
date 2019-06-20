@@ -149,9 +149,42 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * モデルの作り方の例
     * ロボットを何度も決まった距離、角度だけ走らせて指令値と実際に進んだ量を記録$\rightarrow$確率分布を求める
     * 下図: ロボットを4[m]前進させて向きのばらつきを調査
-
+    * このような実験から次ページからのような方法でモデルを作る
 
 <img width="30%" src="../figs/simulation_on.png" />
+
+---
+
+### モデル化の例 1
+
+* 単位移動量あたりの雑音がガウス分布に従うと仮定
+    * 実際は指数分布などに従っているが、ガウス分布で近似
+        * 中心極限定理
+* 雑音のパラメータを準備（ガウス分布の標準偏差）
+    * $\sigma_{\nu\nu}$: 直進1[m]で生じる道のりのばらつきの標準偏差
+    * $\sigma_{\nu\omega}$: 回転1[rad]で生じる道のりのばらつきの標準偏差
+    * $\sigma_{\omega\nu}$: 直進1[m]で生じるロボットの向きのばらつきの標準偏差
+    * $\sigma_{\omega\omega}$: 回転1[rad]で生じるロボットの向きのばらつきの標準偏差
+* 実験でとった値からこれらの値を計算
+    * 分散が移動量に比例することを利用
+
+---
+
+### モデル化の例 2
+
+* パラメータ$\rightarrow$制御指令への雑音
+    * 速度、角速度に変換
+* 手順
+    * 単位移動量あたりの雑音$\delta_{ab}$をドロー
+        * $\delta_{ab} \sim \mathcal{N}(0, \sigma_{ab}^2)$ （$a,b$には$\nu,\omega$が入る）
+    * 速度、角速度への雑音の量$\delta_{ab}'$に変換
+        * $\delta'\_{ab} = \delta\_{ab} \sqrt{|b|/\Delta t}$
+            * $\delta\_{ab}^2 : (\delta'\_{ab}\Delta t)^2 = 1 : |b|\Delta t$という関係から（分散が移動量に比例）
+    * 次の速度$\nu'$、角速度$\omega'$でパーティクルを動かす
+        * $\\begin{pmatrix} \\nu' \\\\ \\omega' \\end{pmatrix} = \\begin{pmatrix} \\nu \\\\ \\omega \\end{pmatrix} + \\begin{pmatrix} \delta_{\nu\nu}' + \delta_{\nu\omega}' \\\\ \delta_{\omega\nu}' + \delta_{\omega\omega}' \end{pmatrix}$
+	
+
+
 
 ---
 
