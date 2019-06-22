@@ -111,3 +111,13 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $F\_t = \\begin{pmatrix} \\partial f\_x(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial x\_{t-1} & \\partial f\_x(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial y\_{t-1} & \\partial f\_x(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial \\theta\_{t-1} \\\\ \\partial f\_y(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial x\_{t-1} & \\partial f\_y(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial y\_{t-1} & \\partial f\_y(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial \\theta\_{t-1} \\\\ \\partial f\_\\theta(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial x\_{t-1} & \\partial f\_\\theta(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial y\_{t-1} & \\partial f\_\\theta(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial \\theta\_{t-1} \\end{pmatrix} \\Bigg|\_{ \\boldsymbol{x}\_{t-1} = \\boldsymbol{\\mu}\_{t-1}}$
 $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\theta\_{t-1} + \\omega\_t\\Delta t) - \\cos \\theta\_{t-1} \\} \\\\ 0 & 1 & \\nu\_t\\omega\_t^{-1}\\{\\sin(\\theta\_{t-1} + \\omega\\Delta t) - \\sin \\theta\_{t-1} \\} \\\\ 0 & 0 & 1 \\end{pmatrix} \\Bigg|\_{ \\boldsymbol{x}\_{t-1} = \\boldsymbol{\\mu}\_{t-1}}$
 $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}} + \\omega\_t\\Delta t) - \\cos \\mu\_{\\theta\_{t-1}} \\} \\\\ 0 & 1 & \\nu\_t\\omega\_t^{-1}\\{\\sin(\\mu\_{\\theta\_{t-1}} + \\omega\_t\\Delta t) - \\sin \\mu\_{\\theta\_{t-1}} \\} \\\\ 0 & 0 & 1 \\end{pmatrix}$
+
+---
+
+### 状態遷移関数の線形化
+
+* $F_t$を使った信念分布の表現
+    * $\hat{b}\_t(\boldsymbol{x}) = \int\_{\boldsymbol{x}' \in \mathcal{X}} \exp \Big\\{ - \\dfrac{1}{2}\\left[ \\boldsymbol{x} - \\boldsymbol{f}(\\boldsymbol{\\mu}\_{t-1}, \\boldsymbol{u}\_t) - F\_t(\\boldsymbol{x}' - \\boldsymbol{\\mu}\_{t-1}) \\right]^\\top R\_t^{-1} \\big[ \cdots \\big] \\\\ - \\dfrac{1}{2}( \\boldsymbol{x}' - \\boldsymbol{\\mu}\_{t-1} )^\\top \\Sigma\_{t-1}^{-1} (  \cdots ) \Big\\} d\boldsymbol{x}'$
+* 付録B.1.9の結果を使うと$\hat{b}\_t$の中心と共分散行列は
+    * $\\hat{\\boldsymbol{\\mu}}\_t = \\boldsymbol{f}(\\boldsymbol{\\mu}\_{t-1}, \\boldsymbol{u}\_t)$
+    * $\\hat{\\Sigma}\_t = F\_t\\Sigma\_{t-1}F\_t^\\top + R\_t = F\_t\\Sigma\_{t-1}F\_t^\\top + A\_t M\_t A\_t^\\top$
