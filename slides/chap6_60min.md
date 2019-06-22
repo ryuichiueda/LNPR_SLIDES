@@ -121,3 +121,27 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 * 付録B.1.9の結果を使うと$\hat{b}\_t$の中心と共分散行列は
     * $\\hat{\\boldsymbol{\\mu}}\_t = \\boldsymbol{f}(\\boldsymbol{\\mu}\_{t-1}, \\boldsymbol{u}\_t)$
     * $\\hat{\\Sigma}\_t = F\_t\\Sigma\_{t-1}F\_t^\\top + R\_t = F\_t\\Sigma\_{t-1}F\_t^\\top + A\_t M\_t A\_t^\\top$
+
+---
+
+### 実装例 1/2
+
+* 行列$M_t, A_t, F_t$の実装
+
+![](../figs/kf3_2.png)
+
+---
+
+### 実装例 2/2
+
+![](../figs/kf3_3.png)
+
+* 注意: カルマンフィルタの場合、導出過程がコードに反映されないのでコードを読んでも理解不可能
+
+---
+
+### 動作
+
+* 観測がないので誤差楕円は広がっていく
+
+![](../figs/kalman_no_obs.gif)
