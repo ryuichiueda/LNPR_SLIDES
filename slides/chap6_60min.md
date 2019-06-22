@@ -100,6 +100,14 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 状態遷移関数の線形化
 
 * $\boldsymbol{f}(\boldsymbol{x}\_{t-1}, \boldsymbol{u}\_t) \approx \boldsymbol{f}(\boldsymbol{\mu}\_{t-1}, \boldsymbol{u}\_t) + F\_t(\boldsymbol{x}\_{t-1} - \boldsymbol{\mu}\_{t-1})$
+    * $F\_t = \\dfrac{\\partial \\boldsymbol{f}(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u})}{\\partial \\boldsymbol{x}\_{t-1}}\\Big|\_{ \\boldsymbol{x}\_{t-1} = \\boldsymbol{\\mu}\_{t-1}}$
     * 先ほどの線形化との違い:
         * 先ほどのは$\boldsymbol{u}$と$\boldsymbol{u}'$の誤差がどう$\boldsymbol{x}$に反映されるかを表したもので、これは$\boldsymbol{x}\_{t-1}$と分布の中心$\boldsymbol{\mu}\_{t-1}$とのズレがどのように遷移後に拡大するかを線形近似したもの
+* 次ページで$F_t$を求めます
 
+---
+
+* $F_t$の計算
+    * $F\_t = \\begin{pmatrix} \\partial f\_x(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial x\_{t-1} & \\partial f\_x(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial y\_{t-1} & \\partial f\_x(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial \\theta\_{t-1} \\\\ \\partial f\_y(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial x\_{t-1} & \\partial f\_y(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial y\_{t-1} & \\partial f\_y(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial \\theta\_{t-1} \\\\ \\partial f\_\\theta(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial x\_{t-1} & \\partial f\_\\theta(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial y\_{t-1} & \\partial f\_\\theta(\\boldsymbol{x}\_{t-1}, \\boldsymbol{u}) / \\partial \\theta\_{t-1} \\end{pmatrix} \\Bigg|\_{ \\boldsymbol{x}\_{t-1} = \\boldsymbol{\\mu}\_{t-1}}$
+$= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\theta\_{t-1} + \\omega\_t\\Delta t) - \\cos \\theta\_{t-1} \\} \\\\ 0 & 1 & \\nu\_t\\omega\_t^{-1}\\{\\sin(\\theta\_{t-1} + \\omega\\Delta t) - \\sin \\theta\_{t-1} \\} \\\\ 0 & 0 & 1 \\end{pmatrix} \\Bigg|\_{ \\boldsymbol{x}\_{t-1} = \\boldsymbol{\\mu}\_{t-1}}$
+$= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}} + \\omega\_t\\Delta t) - \\cos \\mu\_{\\theta\_{t-1}} \\} \\\\ 0 & 1 & \\nu\_t\\omega\_t^{-1}\\{\\sin(\\mu\_{\\theta\_{t-1}} + \\omega\_t\\Delta t) - \\sin \\mu\_{\\theta\_{t-1}} \\} \\\\ 0 & 0 & 1 \\end{pmatrix}$
