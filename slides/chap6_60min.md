@@ -54,7 +54,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 状態遷移モデルの近似 2/4
 
-* $\boldsymbol{x}\_t \sim p(\boldsymbol{x} | \boldsymbol{x}\_{t-1}, \boldsymbol{u}\_t)$を次のように近似
+* $\boldsymbol{x}\_t \sim p(\boldsymbol{x} | \boldsymbol{x}\_{t-1}, \boldsymbol{u}\_t)$を次のように<span style="color:red">線形近似</span>
     * $\boldsymbol{x}\_t \approx \boldsymbol{f}(\boldsymbol{x}\_{t-1}, \boldsymbol{u}\_t) + A\_t (\boldsymbol{u}\_t' - \boldsymbol{u}\_t)$
         * $\boldsymbol{f}$: 状態遷移関数
         * $A\_t = \dfrac{\partial \boldsymbol{f}}{\partial \boldsymbol{u}}\Big|\_{\boldsymbol{x}=\boldsymbol{x}\_{t-1},\boldsymbol{u}=\boldsymbol{u}\_t}$
@@ -79,5 +79,27 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * $\boldsymbol{x}\_t \approx \boldsymbol{f}(\boldsymbol{x}\_{t-1}, \boldsymbol{u}\_t) + A\_t (\boldsymbol{u}\_t' - \boldsymbol{u}\_t)$の分布は？<br />
     * $\Longrightarrow \boldsymbol{u}'$のばらつき$\boldsymbol{u}' \sim \mathcal{N}(\boldsymbol{u}, M_t)$が右辺の$\boldsymbol{f}(\boldsymbol{x}\_{t-1}, \boldsymbol{u}\_t)+$ $A\_t (\boldsymbol{u}\_t' - \boldsymbol{u}\_t)$で$XY\theta$空間に<span style="color:red">線形に</span>写像される
-* $\boldsymbol{x}\_t \sim \mathcal{N}(\boldsymbol{x}\_{t-1}, R_t)$とすると<span style="color:red">$R_t = A_t M_t A_t^\top$</span>
+* $\boldsymbol{x}\_t \sim \mathcal{N}(\boldsymbol{x}\_{t-1}, R_t)$とすると<br /><span style="color:red">$R_t = A_t M_t A_t^\top$</span>
     * 理由は付録B.1.10
+    * $R_t$には逆行列がないが、以後は逆行列が存在すると仮定
+        * 最終的には逆行列を用いないアルゴリズムになる
+
+---
+
+### 信念分布の遷移
+
+* 線形化した状態遷移モデルを使うと次のようになる
+    * $\\hat{b}\_t(\\boldsymbol{x}) =  \\int\_{\\boldsymbol{x}' \\in \\mathcal{X}} \\exp\\left\\{ -\\dfrac{1}{2} \\left[\\boldsymbol{x} - \\boldsymbol{f}(\\boldsymbol{x}',\\boldsymbol{u}\_t) \\right]^\\top R\_t^{-1} \\left[ \\boldsymbol{x} - \\boldsymbol{f}(\\boldsymbol{x}',\\boldsymbol{u}\_t) \\right] \\right\\} \\\\ \cdot \\exp\\left\\{ -\\dfrac{1}{2} (\\boldsymbol{x}' - \\boldsymbol{\\mu}\_{t-1})^\\top \\Sigma\_{t-1}^{-1} (\\boldsymbol{x}' - \\boldsymbol{\\mu}\_{t-1}) \\right\\}  d\\boldsymbol{x}'$
+    * この式を$\boldsymbol{x}$のガウス分布にするには・・・
+        * $\boldsymbol{x}'$を$\boldsymbol{f}$の外に出す
+        * 積分を計算して消去
+    * 方法: 状態遷移関数$\boldsymbol{f}$を線形近似
+
+---
+
+### 状態遷移関数の線形化
+
+* $\boldsymbol{f}(\boldsymbol{x}\_{t-1}, \boldsymbol{u}\_t) \approx \boldsymbol{f}(\boldsymbol{\mu}\_{t-1}, \boldsymbol{u}\_t) + F\_t(\boldsymbol{x}\_{t-1} - \boldsymbol{\mu}\_{t-1})$
+    * 先ほどの線形化との違い:
+        * 先ほどのは$\boldsymbol{u}$と$\boldsymbol{u}'$の誤差がどう$\boldsymbol{x}$に反映されるかを表したもので、これは$\boldsymbol{x}\_{t-1}$と分布の中心$\boldsymbol{\mu}\_{t-1}$とのズレがどのように遷移後に拡大するかを線形近似したもの
+
