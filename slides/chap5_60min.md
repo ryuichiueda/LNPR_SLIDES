@@ -225,15 +225,6 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### センサ値の反映（事前準備）
-
-* 観測モデル$p(\textbf{z}_t | \boldsymbol{x})$を作成
-    * 多くの場合、事前実験で求める
-        * ロボットに様々な姿勢からランドマークを観測させてセンサ値を記録
-    * 通常はランドマークごとに$p(\boldsymbol{z}_{j,t} | \boldsymbol{x})$を求める
-
----
-
 ### センサ値の反映（アルゴリズム）
 
 * 初期化
@@ -241,11 +232,28 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 最終的なパーティクルの定義
         * $\xi^{(i)} = (\boldsymbol{x}^{(i)}, w^{(i)})$
 * $\textbf{z}_t$を反映する手続き
-    * $w^{(i)} \longleftarrow p(\textbf{z}_t | \boldsymbol{x})w^{(i)}$
-        * センサ値が互いに独立なら<br/>$p(\textbf{z}\_t | \boldsymbol{x}) = \prod_{j=0}^\{N_\text{m}-1\} p(\boldsymbol{z}_\{j,t\} | \boldsymbol{x})$
-    * 重みはこのままだと消失 or 発散
+    * $w^{(i)} \longleftarrow L(\boldsymbol{x} | \textbf{z}_t)w^{(i)}$
+        * $L$: <span style="color:red">尤度関数</span>
+        * $L(\boldsymbol{x} | \textbf{z}_t) = p(\textbf{z}_t | \boldsymbol{x})$
+* 重みはこのままだと消失 or 発散
+
+
+<!--  * センサ値が互いに独立なら<br/>$p(\textbf{z}\_t | \boldsymbol{x}) = \prod_{j=0}^\{N_\text{m}-1\} p(\boldsymbol{z}_\{j,t\} | \boldsymbol{x})$ -->
+
 
 <img width="40%" src="../figs/mcl_sensor_update.gif" />
+
+
+---
+
+### センサ値の反映（事前準備）
+
+* 観測モデル$p(\textbf{z}_t | \boldsymbol{x})$を作成
+    * = 尤度関数$L(\boldsymbol{x} | \textbf{z}_t)$を作成
+* 多くの場合、事前実験で求める
+    * ロボットに様々な姿勢からランドマークを観測させてセンサ値を記録
+    * 単純に実装する場合、ランドマークごとに尤度関数$L\_{j,t}(\boldsymbol{x} | \boldsymbol{z}_{j,t})$を求める
+        * 点ランドマークが同時に二つ視界に入っても独立な観測とみなす 
 
 ---
 

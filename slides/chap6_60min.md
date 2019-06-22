@@ -145,3 +145,10 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 * 観測がないので誤差楕円は広がっていく
 
 ![](../figs/kalman_no_obs.gif)
+
+---
+
+### 観測後の信念分布の更新
+
+* $b\_t(\\boldsymbol{x}) = \\eta^{-1} L\_j(\\boldsymbol{x} | \\boldsymbol{z}\_{j,t}) \\hat{b}\_t(\\boldsymbol{x})$
+    * $L_j$は尤度関数
