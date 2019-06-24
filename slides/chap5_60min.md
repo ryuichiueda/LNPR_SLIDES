@@ -143,6 +143,20 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
+### パーティクルの分布
+
+* 信念分布との関係
+    * ある領域$X \in \mathcal{X}$中のパーティクルの数（を$N$で割ったもの）:<br />
+    その領域にロボットの姿勢がある確率の近似
+        * 左図: パーティクル100個の分布
+        * 右図: ロボットを100台動作させたときの分布
+    * この関係を満たすようにパーティクルを操作
+
+<img width="35%" src="../figs/particles_vs_robots_particles.png" />&nbsp;
+<img width="35%" src="../figs/particles_vs_robots_robots.png" />
+
+---
+
 ### 移動時の更新（アルゴリズム）
 
 * 初期化
@@ -209,20 +223,6 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 	
 
 
-
----
-
-### パーティクルの分布
-
-* 信念分布との関係
-    * ある領域$X \in \mathcal{X}$中のパーティクルの数（を$N$で割ったもの）:<br />
-    その領域にロボットの姿勢がある確率の近似
-        * 左図: パーティクル100個の分布
-        * 右図: ロボットを100台動作させたときの分布
-
-<img width="35%" src="../figs/particles_vs_robots_particles.png" />&nbsp;
-<img width="35%" src="../figs/particles_vs_robots_robots.png" />
-
 ---
 
 ### センサ値の反映（アルゴリズム）
@@ -232,13 +232,10 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 最終的なパーティクルの定義
         * $\xi^{(i)} = (\boldsymbol{x}^{(i)}, w^{(i)})$
 * $\textbf{z}_t$を反映する手続き
-    * $w^{(i)} \longleftarrow L(\boldsymbol{x} | \textbf{z}_t)w^{(i)}$
-        * $L$: <span style="color:red">尤度関数</span>
+    * $w^{(i)} \longleftarrow L(\boldsymbol{x}^{(i)} | \textbf{z}_t)w^{(i)}$
+        * $L$: <span style="color:red">尤度関数</span>（$\boldsymbol{x}^{(i)}$の評価関数）
         * $L(\boldsymbol{x} | \textbf{z}_t) = p(\textbf{z}_t | \boldsymbol{x})$
-* 重みはこのままだと消失 or 発散
-
-
-<!--  * センサ値が互いに独立なら<br/>$p(\textbf{z}\_t | \boldsymbol{x}) = \prod_{j=0}^\{N_\text{m}-1\} p(\boldsymbol{z}_\{j,t\} | \boldsymbol{x})$ -->
+* 重みはこのままだと消失or発散
 
 
 <img width="40%" src="../figs/mcl_sensor_update.gif" />
@@ -246,14 +243,21 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### センサ値の反映（事前準備）
+### 尤度関数の作成
 
-* 観測モデル$p(\textbf{z}_t | \boldsymbol{x})$を作成
-    * = 尤度関数$L(\boldsymbol{x} | \textbf{z}_t)$を作成
 * 多くの場合、事前実験で求める
     * ロボットに様々な姿勢からランドマークを観測させてセンサ値を記録
-    * 単純に実装する場合、ランドマークごとに尤度関数$L\_{j,t}(\boldsymbol{x} | \boldsymbol{z}_{j,t})$を求める
-        * 点ランドマークが同時に二つ視界に入っても独立な観測とみなす 
+    * なんらかのモデルで確率分布$p\_{j,t}(\boldsymbol{z}\_{j,t} | \boldsymbol{x})$を作る
+    * 変数を$\boldsymbol{z}\_{j,t}$でなく$\boldsymbol{x}$とする
+* 単純に実装する場合、ランドマークごとに尤度関数を実装
+    * ランドマークが同時に二つ視界に入っても独立な観測とみなす 
+        * 何度も$w^{(i)} \longleftarrow L(\boldsymbol{x}^{(i)} | \boldsymbol{z}\_{j,t})w^{(i)}$を繰り返す
+
+---
+
+### ベイズの定理との関係
+
+* $p(\boldsymbol{x}|\boldsymbol{z}\_{j,t}) = \eta p(\boldsymbol{x}|\boldsymbol{z}\_{j,t})p(\boldsymbol{x})$
 
 ---
 
