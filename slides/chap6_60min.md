@@ -152,3 +152,42 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 
 * $b\_t(\\boldsymbol{x}) = \\eta^{-1} L\_j(\\boldsymbol{x} | \\boldsymbol{z}\_{j,t}) \\hat{b}\_t(\\boldsymbol{x})$
     * $L_j$は尤度関数
+    * [MCLで使ったもの](https://ryuichiueda.github.io/LNPR_SLIDES/slides/chap5_60min.html?#/22)がそのまま使える
+        * たまたまガウス分布だったので
+* <span style="color:red">$b\_t(\\boldsymbol{x})$はガウス分布にならない</span>
+    * $L_j$は$\boldsymbol{x}$のガウス分布ではなく$\boldsymbol{z}\_{j,t}$のガウス分布
+    * $\boldsymbol{z}\_{j,t}$から予想される$\boldsymbol{x}$の分布は下図のようにドーナツ状に
+
+<img width="30%" src="../figs/donuts.png" />
+
+---
+
+### $b_t$の計算
+
+* もとの式
+    * $b(\\boldsymbol{x}) = \\eta^{-1} \\exp \\Big\\{ -\\dfrac{1}{2} \\left[ \\boldsymbol{z} - \\boldsymbol{h}(\\boldsymbol{x}) \\right]^T Q\_{\\boldsymbol{x}}^{-1} \\left[ \\boldsymbol{z} - \\boldsymbol{h}(\\boldsymbol{x}) \\right] \\\\ -\\dfrac{1}{2} ( \\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}} )^T \\hat{\\Sigma}^{-1} ( \\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}} ) \\Big\\}$
+    * $\boldsymbol{h}$は[観測関数](https://ryuichiueda.github.io/LNPR_SLIDES/slides/chap3_10min.html?#/9)
+    * 添字$t, j$は省略
+* 近似の方針
+    * $\boldsymbol{x}$のガウス分布にしたいので、$\boldsymbol{h}(\boldsymbol{x})$を線形近似して$\boldsymbol{x}$を外に
+
+---
+
+### 観測関数の線形近似
+
+* $\\boldsymbol{h}(\\boldsymbol{x}) \\approx \\boldsymbol{h}(\\hat{\\boldsymbol{\\mu}}) + H(\\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}})$
+    * $H = \\dfrac{\\partial \\boldsymbol{h}}{\\partial \\boldsymbol{x}}\\Big|\_{\\boldsymbol{x} = \\hat{\\boldsymbol{\\mu}}}$
+    * $\\boldsymbol{h}(\\hat{\\boldsymbol{\\mu}})$: 信念分布の中心で得られるセンサ値
+    * $H(\\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}})$: 中心から外れた姿勢からどれだけずれると<br />どれだけセンサ値が変わるか
+        * 当然、$\boldsymbol{x}$が$\\hat{\\boldsymbol{\\mu}}$から遠いほど近似誤差が生じる
+
+---
+
+### $H$の計算
+
+* $H = \\dfrac{\\partial \\boldsymbol{h}}{\\partial \\boldsymbol{x}}\\Big|\_{\\boldsymbol{x} = \\hat{\\boldsymbol{\\mu}}} \\\\ = \\begin{pmatrix} (x - m\_x)/\ell(\boldsymbol{x}) & (y - m\_y)/\ell(\boldsymbol{x}) & 0 \\\\ (m\_y - y)/\ell(\boldsymbol{x})^2 & (x - m\_x)/\ell(\boldsymbol{x})^2 & -1 \\end{pmatrix} \\Bigg|\_{\\boldsymbol{x} = \\boldsymbol{\\hat{\\mu}}} \\nonumber \\\\ = \\begin{pmatrix} (\\hat{\\mu}\_x - m\_x)/\\ell\_{\\hat{\\boldsymbol{\\mu}}} & (\\hat{\\mu}\_y - m\_y)/\\ell\_{\\hat{\\boldsymbol{\\mu}}} & 0 \\\\ (m\_y - \\hat{\\mu}\_y)/\\ell\_{\\hat{\\boldsymbol{\\mu}}}^2 & (\\hat{\\mu}\_x - m\_x)/\\ell\_{\\hat{\\boldsymbol{\\mu}}}^2 & -1 \\end{pmatrix}$
+    * ここで$\\ell\_{\\hat{\\boldsymbol{\\mu}}} = \\sqrt{(\\hat{\\mu}\_x - m\_x)^2 + (\\hat{\\mu}\_x - m\_y)^2}$
+
+---
+
+### $H$の計算
