@@ -257,7 +257,25 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### ベイズの定理との関係
 
-* $p(\boldsymbol{x}|\boldsymbol{z}\_{j,t}) = \eta p(\boldsymbol{x}|\boldsymbol{z}\_{j,t})p(\boldsymbol{x})$
+* $p(\boldsymbol{x}|\boldsymbol{z}\_{j,t}) = \eta p ( \boldsymbol{z}\_{j,t} | \boldsymbol{x}) p(\boldsymbol{x}) = \eta L (\boldsymbol{x}|\boldsymbol{z}\_{j,t}) p(\boldsymbol{x})$
+    * 任意の$\boldsymbol{x} \in \mathcal{X}$で成り立つ
+    * パーティクルのある姿勢の評価に使える
+
+---
+
+### シミュレータのカメラ用の尤度関数
+
+* センサ値の生成のモデルとしてガウス分布を仮定
+    * $\boldsymbol{z}_j \sim \mathcal{N}\left[ \boldsymbol{z} | \boldsymbol{h}_j(\boldsymbol{x}), Q_j(\boldsymbol{x}) \right]$
+        * 姿勢$\boldsymbol{x}$においてランドマーク$\text{m}_j$を観測したときのセンサ値$\boldsymbol{z}_j = (\ell_j \ \varphi_j )^\top$の性質をモデル化
+        * $\boldsymbol{h}_j$は[観測関数](https://ryuichiueda.github.io/LNPR_SLIDES/slides/chap3_10min.html?#/9)
+
+$Q_j(\V{x})$には, センサ値の
+偶然誤差と系統誤差を反映します. 
+* 次のようなモデルを準備
+    * $\boldsymbol{z} = \mathcal{N}(\boldsymbol{z}^* | Q )$
+        * $\boldsymbol{z}^*$: 姿勢$\boldsymbol{x}$で得られるはずのセンサ値
+        * $Q_j(\boldsymbol{x}) = \begin{pmatrix} [\ell_j(\boldsymbol{x})\sigma_\ell]^2 & 0 \\\\ 0 & \sigma^2_\varphi \end{pmatrix}$
 
 ---
 
@@ -321,4 +339,3 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * 移動ロボットの自己位置推定
     * 確率や統計の手法で計算
-    * これもロボティクス
