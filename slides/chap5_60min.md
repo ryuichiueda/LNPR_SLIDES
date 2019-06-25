@@ -269,13 +269,18 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $\boldsymbol{z}_j \sim \mathcal{N}\left[ \boldsymbol{z} | \boldsymbol{h}_j(\boldsymbol{x}), Q_j(\boldsymbol{x}) \right]$
         * 姿勢$\boldsymbol{x}$においてランドマーク$\text{m}_j$を観測したときのセンサ値$\boldsymbol{z}_j = (\ell_j \ \varphi_j )^\top$の性質をモデル化
         * $\boldsymbol{h}_j$は[観測関数](https://ryuichiueda.github.io/LNPR_SLIDES/slides/chap3_10min.html?#/9)
-
-$Q_j(\V{x})$には, センサ値の
-偶然誤差と系統誤差を反映します. 
-* 次のようなモデルを準備
-    * $\boldsymbol{z} = \mathcal{N}(\boldsymbol{z}^* | Q )$
-        * $\boldsymbol{z}^*$: 姿勢$\boldsymbol{x}$で得られるはずのセンサ値
         * $Q_j(\boldsymbol{x}) = \begin{pmatrix} [\ell_j(\boldsymbol{x})\sigma_\ell]^2 & 0 \\\\ 0 & \sigma^2_\varphi \end{pmatrix}$
+            * $\ell_j(\boldsymbol{x})$: 姿勢$\boldsymbol{x}$からランドマーク$\text{m}_j$までの距離
+            * $\sigma_\ell$: 距離あたりの距離計測の標準偏差
+            * $\sigma_\varphi$: 向きの計測の標準偏差
+
+
+---
+
+### 尤度関数のパラメータの算出
+
+* 移動の誤差モデルと同じく実験などから
+    * 標準偏差を大きめに見積もっておくとバイアスなどに強くなるが一度に得られる情報は小さくなる
 
 ---
 
