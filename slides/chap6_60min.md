@@ -170,6 +170,7 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
     * 添字$t, j$は省略
 * 近似の方針
     * $\boldsymbol{x}$のガウス分布にしたいので、$\boldsymbol{h}(\boldsymbol{x})$を線形近似して$\boldsymbol{x}$を外に
+    * $Q\_{\\boldsymbol{x}}$は$\boldsymbol{x} = \hat{\boldsymbol{\mu}}$として定数に近似
 
 ---
 
@@ -190,4 +191,10 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 
 ---
 
-### $H$の計算
+### 近似による$b_t$の計算
+
+* $b(\\boldsymbol{x}) = \\eta^{-1} \\exp \\Big\\{ -\\dfrac{1}{2} \\left[ \\boldsymbol{z} - \\boldsymbol{h}(\\hat{\\boldsymbol{\\mu}}) - H(\\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}})  \\right]^\\top Q^{-1} \\left[ ... \\right] \\\\ -\\dfrac{1}{2} ( \\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}} )^\\top \\hat\\Sigma^{-1} ( ... ) \\Big\\}$
+    * 添字は省略
+* 付録B.1.9の結果を使うと$b$の中心と共分散行列は次のように求まる
+    * $\\boldsymbol{\\mu} = \Sigma H^\top Q^{-1} (\boldsymbol{z} - \boldsymbol{h}(\hat{\boldsymbol{\mu}})) + \hat{\boldsymbol{\mu}}$
+    * $\\Sigma =  (H^\\top Q^{-1}H + \\hat\\Sigma^{-1} )^{-1}$
