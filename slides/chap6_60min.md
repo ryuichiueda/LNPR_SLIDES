@@ -124,7 +124,7 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 
 ---
 
-### 実装例 1/2
+### [移動後の更新の実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_kalman_filter/kf3.ipynb) 1/2
 
 * 行列$M_t, A_t, F_t$の実装
 
@@ -132,7 +132,7 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 
 ---
 
-### 実装例 2/2
+### [移動後の更新の実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_kalman_filter/kf3.ipynb) 2/2
 
 ![](../figs/kf3_3.png)
 
@@ -196,5 +196,45 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 * $b(\\boldsymbol{x}) = \\eta^{-1} \\exp \\Big\\{ -\\dfrac{1}{2} \\left[ \\boldsymbol{z} - \\boldsymbol{h}(\\hat{\\boldsymbol{\\mu}}) - H(\\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}})  \\right]^\\top Q^{-1} \\left[ ... \\right] \\\\ -\\dfrac{1}{2} ( \\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}} )^\\top \\hat\\Sigma^{-1} ( ... ) \\Big\\}$
     * 添字は省略
 * 付録B.1.9の結果を使うと$b$の中心と共分散行列は次のように求まる
-    * $\\boldsymbol{\\mu} = \Sigma H^\top Q^{-1} (\boldsymbol{z} - \boldsymbol{h}(\hat{\boldsymbol{\mu}})) + \hat{\boldsymbol{\mu}}$
-    * $\\Sigma =  (H^\\top Q^{-1}H + \\hat\\Sigma^{-1} )^{-1}$
+    * <span style="color:red">$\\boldsymbol{\\mu} = \Sigma H^\top Q^{-1} (\boldsymbol{z} - \boldsymbol{h}(\hat{\boldsymbol{\mu}})) + \hat{\boldsymbol{\mu}}$</span>
+    * <span style="color:red">$\\Sigma =  (H^\\top Q^{-1}H + \\hat\\Sigma^{-1} )^{-1}$</span>
+
+---
+
+### カルマンゲイン
+
+* 前のページで求まった更新をもう少し変形
+    * <span style="color:red">カルマンゲイン</span>$K = \Sigma H^\top Q^{-1}$を定義
+    * 更新前の行列を使うと<span style="color:red">$K = \hat\Sigma H^\top (H \hat\Sigma H^\top + Q )^{-1}$</span>
+* $K$を使った更新式
+    * <span style="color:red">$\\boldsymbol{\\mu}$</span>$ = \Sigma H^\top Q^{-1} (\boldsymbol{z} - \boldsymbol{h}(\hat{\boldsymbol{\mu}})) + \hat{\boldsymbol{\mu}}$<span style="color:red">$\ \ =K[\boldsymbol{z} - \boldsymbol{h}(\hat{\boldsymbol{\mu}})] + \hat{\boldsymbol{\mu}}$</span>
+        * 実際のセンサの値と分布の中心から予測されるセンサ値の違いに$K$をかけたもの
+    * <span style="color:red">$\\Sigma$</span>$= (H^\\top Q^{-1}H + \\hat\\Sigma^{-1} )^{-1} = \cdots$<span style="color:red">$\ \ = (I - KH)\hat{\Sigma}$</span>
+        * 元の共分散行列を$KH\hat{\Sigma}$だけ小さくしたもの
+* 実装には赤字で書いた式を用いる
+
+---
+
+### [観測後の更新の実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_kalman_filter/kf4.ipynb)
+
+![](../figs/kf4funcs.png)
+
+![](../figs/kf4_observation_update.png)
+
+---
+
+### 動作例
+
+![](../figs/kalman_filter.gif)
+
+---
+
+### まとめ: カルマンフィルタの更新則
+
+* 移動後の更新
+    * $\\hat{\\boldsymbol{\\mu}}\_t = \\boldsymbol{f}(\\boldsymbol{\\mu}\_{t-1}, \\boldsymbol{u}\_t)$
+    * $\\hat{\\Sigma}\_t = F\_t\\Sigma\_{t-1}F\_t^\\top + R\_t = F\_t\\Sigma\_{t-1}F\_t^\\top + A\_t M\_t A\_t^\\top$
+* 観測後の更新
+    * $K = \hat\Sigma_t H^\top (H \hat\Sigma_t H^\top + Q )^{-1}$
+    * $\\boldsymbol{\\mu}_t = K[\boldsymbol{z}\_\{j,t\} - \boldsymbol{h}_j(\hat{\boldsymbol{\mu}}_t)] + \hat{\boldsymbol{\mu}}_t$
+    * $\\Sigma_t = (I - KH)\hat{\Sigma}_t$
