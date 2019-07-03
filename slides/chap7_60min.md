@@ -35,7 +35,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### パーティクル数の決定 1/3
+### パーティクル数の決定 1/7
 
 * とりあえず分布の形状が決まったと仮定してパーティクルの数を求めておきましょう
 * 利用する指標: カルバック・ライブラー情報量（KL情報量、KLD）
@@ -45,7 +45,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### パーティクル数の決定 2/3
+### パーティクル数の決定 2/7
 
 * $XY\theta$空間を格子状に分割して離散状態を定義
     * $s_0,s_1,\dots,s_{k-1}$と名前をつける
@@ -58,13 +58,60 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### パーティクル数の決定 3/3
+### パーティクル数の決定 3/7
 
 * $D\_\\text{KL}(\\hat{P}||P^\*)$がある値$\varepsilon$以内に収まる確率を考える
     * $P[ D_\text{KL}(\hat{P}||P^*) \le \varepsilon ]$
     * $N$が増えると、この確率は大きくなる<br />（計算はできないけど）
 * さらに、この確率を$1-\delta$以上にしたいと仮定し、<br />閾値$\delta$を考える
     * 問題: 必要な$N$は?
+
+---
+
+### パーティクル数の決定 4/7
+
+* 今度は「$N$個のパーティクルを$P^*$にしたがってドローしたときに、各離散状態にそれぞれ$n_0, n_1, n_2,\dots, n_{k-1}$個入る確率」を考える
+    * この確率は次のような多項分布に従う
+        * $P^\*\_\\text{M}(n\_0, n\_1, \\dots, n\_{k-1} | p^\*\_0, p^\*\_1, \\dots, p^\*\_{k-1}) = \\dfrac{N!}{\\prod\_{j=0}^{k-1} (n\_j !) }\\prod\_{j=0}^{k-1} (p^\*\_j)^{n\_j}$
+        * 記号をまとめて$P^\*\_\\text{M}(\textbf{n} | \Theta^*)$と表現
+* さらに、実際に$N$個パーティクルを選んで$\hat{p}_j$が確定したとして$P^\*\_\\text{M}(\textbf{n} | \Theta^*)$を近似
+    * $\hat{P}\_\\text{M}(\textbf{n} | \hat{\Theta})$と表現
+        * $\hat\Theta = \{\hat{p}_0, \hat{p}_1, \dots, \hat{p}\_\{k-1\}\}$
+    * 解釈が難しいが、$\textbf{n}$はあくまで未定の変数で、$\hat\Theta$は$N$個サンプリングが済んだときに確定するパラメータ
+
+---
+
+### パーティクル数の決定 5/7
+
+* $P^\*\_\\text{M}(\textbf{n} | \Theta^*)$と$\hat{P}\_\\text{M}(\textbf{n} | \hat{\Theta})$の対数尤度比$\log \lambda_N$を計算
+    * $\\log \\lambda\_N = \\log \\dfrac{L(\\hat\\Theta | \\textbf{n})}{L(\\Theta^\* | \\textbf{n})} = \\log \\dfrac{ \\prod\_{j=0}^{k-1} \\hat{p}\_j^{n\_j} } { \\prod\_{j=0}^{k-1} {p^\*\_j}^{n\_j}} \\\\ =  \\log \\prod\_{j=0}^{k-1} ( \\hat{p}\_j / p^\*\_j )^{n\_j} = \\sum\_{j=0}^{k-1} \\log ( \\hat{p}\_j / p^\*\_j )^{n\_j} = \\sum\_{j=0}^{k-1} n\_j \\log ( \\hat{p}\_j / p^\*\_j )$
+* この対数尤度比は$\hat{P}\_\\text{M}(\textbf{n} | \hat{\Theta})$が最大となる$n_j = \hat{p}_j N$のときに最大になる。このとき
+    * $\\log \\lambda\_N = \\sum\_{j=0}^{k-1} \\hat{p}\_j N \\log ( \\hat{p}\_j / p^\*\_j ) = N \\sum\_{j=0}^{k-1} \\hat{p}\_j \\log ( \\hat{p}\_j / p^\*\_j ) \\\\ = N D\_\\text{KL}(\\hat{P}||P^\*)$
+
+---
+
+### パーティクル数の決定 6/7
+
+* 次の性質を使って$N$を求める問題となる
+    * $P[ D_\text{KL}(\hat{P}||P^*) \le \varepsilon ] \ge 1 - \delta \Longrightarrow$
+$P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
+    * $2\\log \\lambda\_N \sim \chi^2\_{k-1}$
+* $\chi^2_k$: 自由度$k$の<span style="color:red">カイ二乗分布</span>
+    * $\chi^2_k (x) = \dfrac{1}{2^{k/2} \Gamma(k/2) } x^{k/2-1} e^{-x/2}$
+        * $\Gamma(\alpha) = \int_0^\infty t^{\alpha-1}e^{-t} dt$（ガンマ関数）
+
+---
+
+### パーティクル数の決定 7/7
+
+* 次を満たす$y = 2\log \lambda_N$を求める
+    * $\int_0^y \chi^2_{k-1}(x) dx = 1 - \delta$
+* $2N\varepsilon > y$を満たす最小の$N$が必要なパーティクル数
+    * $N > \dfrac{y}{2\varepsilon}$
+* 下図: 信念分布が高い部分にかかる格子数と<br />必要なパーティクル数
+    * $\varepsilon = 0.1, \delta = 0.01$
+
+<img width="60%" src="../figs/kldtest.png" />
 
 ---
 
