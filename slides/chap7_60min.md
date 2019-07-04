@@ -265,7 +265,7 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
 * 左: オクルージョンを考慮していない尤度関数
     * 中心からパーティクルが動かない
         * ランドマークから遠いところの尤度が高くなりがちなので
-* 右: オクルージョンを考慮した尤度関数
+* 右: オクルージョンを考慮した尤度関数（[実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_advanced_localization/occlusion_free_mcl.ipynb)）
     * 異常なセンサ値は基本的に無視される
         * どのパーティクルの尤度も一様分布状のところで評価されるので同じ
 
