@@ -12,6 +12,10 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
+### 7.1 KLDサンプリング
+
+---
+
 ### パーティクルの数の可変化
 
 * 信念分布が広くなるほどパーティクルの密度が低くなり近似精度が低下
@@ -133,6 +137,10 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
 
 ---
 
+### 7.2 より難しい自己位置推定
+
+---
+
 ### 大域的自己位置推定
 
 * 初期姿勢$\boldsymbol{x}_0$を未知とする問題
@@ -150,6 +158,10 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
     * 一度信念を否定する必要があるけどMCLにそのような機能はない
 
 <img width="40%" src="../figs/mcl_kidnap.gif" />
+
+---
+
+### 7.3 推定の誤りの考慮
 
 ---
 
@@ -216,3 +228,46 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
 * 何回か連続で$\alpha$が閾値を下回ったらセンサリセット
 
 <img width="40%" src="../figs/expansion_sensor_reset.gif" />
+
+---
+
+### 7.4 MCLにおける変則的な分布の利用
+
+* ガウス分布で表現できない不確かさの例
+    * レーザレンジファインダーなどで壁までの距離を計測しているときに人がよく遮る
+    * 室温や湿度、外光でセンサの特性が変わる（そしてそのルールがよくわからない）
+        * 短期的にはガウス分布でも分布自体が動く
+* カルマンフィルタだと取り扱いが難しいがMCLだと尤度関数を作れば簡単
+
+---
+
+### [シミュレータに実装されている例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation11.ipynb)
+
+* カメラで点ランドマークの大きさを計測するときのオクルージョン
+    * 何かが遮って実際よりも小さく見える = 遠く見える
+
+![](../figs/occlusion.gif)
+
+---
+
+### 尤度関数の設計
+
+* オクルージョンの場合は片側を一様分布状にすることが多い
+    * 下図: シミュレーションのモデルに対する尤度関数
+        * 計測距離$\ell$が実際の距離$\ell^*$より遠くなることがあるので、そちらの尤度を大きく見積もる<br />
+![](../figs/phantom_likelihood.png)
+    * LiDARの場合は逆にセンサ値が実際より近くなるので反対側が一様分布になる
+
+---
+
+### 非ガウス分布状の尤度関数の効果
+
+* 左: オクルージョンを考慮していない尤度関数
+    * 中心からパーティクルが動かない
+        * ランドマークから遠いところの尤度が高くなりがちなので
+* 右: オクルージョンを考慮した尤度関数
+    * 異常なセンサ値は基本的に無視される
+        * どのパーティクルの尤度も一様分布状のところで評価されるので同じ
+
+<img width="35%" src="../figs/occlusion_mcl.gif" />
+<img width="35%" src="../figs/occlusion_free_mcl.gif" />
