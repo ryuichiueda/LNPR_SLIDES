@@ -49,7 +49,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * $XY\theta$空間を格子状に分割して離散状態を定義
     * $s_0,s_1,\dots,s_{k-1}$と名前をつける
-* $b^\*, b$の各離散状態中の確率を、それぞれ$p^\*_j = P^\*(\boldsymbol{x} \in s_j), \hat{p}_j = \hat{P}(\boldsymbol{x} \in s_j)$とする
+    * 統計学的には「ビン」と呼ばれる
+    * $k$: ビンの数
+* $b^\*, b$の各ビンに対応する確率を、それぞれ$p^\*_j = P^\*(\boldsymbol{x} \in s_j), \hat{p}_j = \hat{P}(\boldsymbol{x} \in s_j)$とする
     * $p^*_j$: 密度の積分値
     * $\hat{p}_j$: 重みの和
 * 二つの分布の比較
@@ -70,7 +72,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### パーティクル数の決定 4/7
 
-* 今度は「$N$個のパーティクルを$P^*$にしたがってドローしたときに、各離散状態にそれぞれ$n_0, n_1, n_2,\dots, n_{k-1}$個入る確率」を考える
+* 今度は「$N$個のパーティクルを$P^*$にしたがってドローしたときに、各ビンにそれぞれ$n_0, n_1, n_2,\dots, n_{k-1}$個入る確率」を考える
     * この確率は次のような多項分布に従う
         * $P^\*\_\\text{M}(n\_0, n\_1, \\dots, n\_{k-1} | p^\*\_0, p^\*\_1, \\dots, p^\*\_{k-1}) = \\dfrac{N!}{\\prod\_{j=0}^{k-1} (n\_j !) }\\prod\_{j=0}^{k-1} (p^\*\_j)^{n\_j}$
         * 記号をまとめて$P^\*\_\\text{M}(\textbf{n} | \Theta^*)$と表現
@@ -108,10 +110,26 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
     * $\int_0^y \chi^2_{k-1}(x) dx = 1 - \delta$
 * $2N\varepsilon > y$を満たす最小の$N$が必要なパーティクル数
     * $N > \dfrac{y}{2\varepsilon}$
-* 下図: 信念分布が高い部分にかかる格子数と<br />必要なパーティクル数
+* 下図: 信念分布が高い部分にかかるビンの数と<br />必要なパーティクル数
     * $\varepsilon = 0.1, \delta = 0.01$
 
 <img width="60%" src="../figs/kldtest.png" />
+
+---
+
+### サンプリングのアルゴリズム
+
+1. 元のパーティクルの分布から一つずつパーティクルをドローして$p(\boldsymbol{x}'|\boldsymbol{x},\boldsymbol{u}_t)$で移動
+1. パーティクルの入っているビンの数を数える
+    * パーティクルを移動するごとに新しいビンに入ったらカウンターを増加
+1. ビンの数に対応する必要なパーティクルの数を算出
+1. ドローした数が3の数を上回ったら終了
+
+---
+
+### [実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_advanced_localization/kld_mcl.ipynb)
+
+![](../figs/kld.gif)
 
 ---
 
