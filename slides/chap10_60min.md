@@ -12,7 +12,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 移動ロボットの行動決定
+### 1. 移動ロボットの行動決定
 
 * 移動だけならば探索手法を利用して経路を算出
 * ロボットにはもう少し難しい判断も必要
@@ -79,3 +79,47 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
         * 行動、報酬は$\boldsymbol{x}$から決定される
 * エピソードの評価値の平均値が$V(\boldsymbol{x}_0)$
     * $V^\Pi(\boldsymbol{x}\_0) = \left\langle \sum\_{t=1}^\top r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) + V(\boldsymbol{x}\_T) \right\rangle\_{p(\boldsymbol{x}\_{1:T}|\boldsymbol{x}\_0, \Pi)}$
+
+---
+
+### 価値関数の性質（1/2）
+
+* 漸化式にできる
+    * $V^\Pi(\boldsymbol{x}\_0) = \left\langle r(\boldsymbol{x}\_0, a\_1, \boldsymbol{x}\_1) + \sum\_{t =2}^T r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) + V(\boldsymbol{x}\_T)  \right\rangle\_{p(\boldsymbol{x}\_{1:T}|\boldsymbol{x}\_0, \Pi)} \\\\ \hspace{-2em}= \Big\langle r(\boldsymbol{x}\_0, a\_1, \boldsymbol{x}\_1) \Big\rangle\_{p(\boldsymbol{x}\_{1:T}|\boldsymbol{x}\_0, \Pi)} + \left\langle \sum\_{t =2}^T r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) + V(\boldsymbol{x}\_T)  \right\rangle\_{p(\boldsymbol{x}\_{1:T}|\boldsymbol{x}\_0, \Pi)} \\\\ \hspace{-2em}= \Big\langle r(\boldsymbol{x}\_0, a\_1, \boldsymbol{x}\_1) \Big\rangle\_{p(\boldsymbol{x}\_1 | \boldsymbol{x}\_0, \Pi )} + \left\langle \sum\_{t =2}^T r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) + V(\boldsymbol{x}\_T)  \right\rangle\_{p(\boldsymbol{x}\_{2:T}|\boldsymbol{x}\_1, \boldsymbol{x}\_0, \Pi)p(\boldsymbol{x}\_1 | \boldsymbol{x}\_0, \Pi)} \\\\ \hspace{-2em}= \Big\langle r(\boldsymbol{x}\_0, a\_1, \boldsymbol{x}\_1) \Big\rangle\_{p(\boldsymbol{x}\_1 | \boldsymbol{x}\_0, a\_1 )} + \left\langle \left\langle \sum\_{t =2}^T r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) + V(\boldsymbol{x}\_T)  \right\rangle\_{p(\boldsymbol{x}\_{2:T}|\boldsymbol{x}\_1, \Pi)} \right\rangle\_{p(\boldsymbol{x}\_1 | \boldsymbol{x}\_0, a\_1)} \\\\ \hspace{-2em}= \Big\langle r(\boldsymbol{x}\_0, a\_1, \boldsymbol{x}\_1) \Big\rangle\_{p(\boldsymbol{x}\_1 | \boldsymbol{x}\_0, a\_1 )} + \left\langle V^\Pi(\boldsymbol{x}\_1) \right\rangle\_{p(\boldsymbol{x}\_1 | \boldsymbol{x}\_0, a\_1)} \\\\ \hspace{-2em}= \Big\langle r(\boldsymbol{x}\_0, a\_1, \boldsymbol{x}\_1) + V^\Pi(\boldsymbol{x}\_1) \Big\rangle\_{p(\boldsymbol{x}\_1 | \boldsymbol{x}\_0, a\_1)}$
+
+---
+
+### 価値関数の性質（2/2）
+
+* 漸化式にすると状態が初期状態かどうかは関係なく価値$V(\boldsymbol{x})$が決まることが分かる
+    * <span style="color:red">$V^\Pi(\boldsymbol{x}) = \left\langle r(\boldsymbol{x}, a, \boldsymbol{x}') + V^\Pi(\boldsymbol{x}') \right\rangle_{p(\boldsymbol{x}'| \boldsymbol{x}, a)}$</span>
+* 遷移後の状態の価値が分かるなら次のことが成り立つ
+    * 遷移前の状態の価値も分かる
+    * $a$を変えて価値が高くなるなら$\Pi$を変更すればよい
+    * 現在の状態での行動を考えるときに次の状態でどんな行動をとるか考えなくてよい
+
+---
+
+### 10.2. 経路計画問題
+
+* 右図の環境での移動を考える
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/puddle_world3.ipynb)
+    * ゴールが一つ
+    * 水たまり
+* 行動
+    * 前進、右回転、左回転の3種類
+* 報酬を(次の項目の和)$\times$(-1)で
+    * 水たまりに入った時間$\times$深さ$\times$係数
+    * ゴールまでの移動時間
+* 右の行動例（[コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/puddle_world4.ipynb)）:
+    * 水たまり無視でゴールへ直行
+    * 評価を高めるように改善したい
+
+<img width="40%" src="../figs/puddle_world4.gif" />
+
+
+---
+
+### 10.3. 方策の評価
+
+
