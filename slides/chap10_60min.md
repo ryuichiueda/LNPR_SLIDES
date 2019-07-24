@@ -191,6 +191,8 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
         * 離散状態を一通り更新することをスイープと呼ぶ
         * 収束まで何スイープも繰り返し
     * 終端状態から、終端状態までにステップ数のかかる状態へ価値が伝播していき、収束する
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation6.ipynb)
+    * 図: 左から10, 20, 50スイープ後
 
 <img width="30%" src="../figs/policy_evaluation_10sweeps.png" />
 <img width="30%" src="../figs/policy_evaluation_20sweeps.png" />
@@ -201,7 +203,29 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 
 ### 計算結果
 
+
 * 92スイープ目で収束
+    * しきい値処理で止める
+        * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation7.ipynb)
     * 図: ロボットの向きが左向き（$180 \le \theta \lt 190$）のときの価値
 
 <img width="60%" src="../figs/policy_evaluation_end_sweeps.png" />
+
+---
+
+### 価値反復
+
+* 価値が最大になる行動をつかって価値を更新し続ける
+    * $V(s) \longleftarrow \max_{a \in \mathcal{A}} \sum_{s'} P(s' | s, a) \left[ R(s, a, s') + V(s') \right]$
+        * $(s \in \mathcal{S} - \mathcal{S}_\text{f})$
+    * 収束すると<span style="color:red">最適状態価値関数$V^*$</span>が求まる
+    * 事前に方策は不要
+* 最終的に方策も決まる
+    * $\Pi^\*(s) = \text{argmax}\_{a \in \mathcal{A}} \sum_{s'} P(s' | s, a) \left[ R(s, a, s') + V^*(s') \right]$
+        * <span style="color:red">$\Pi^\*$: 最適方策</span>
+
+---
+
+### 価値反復の実行例
+
+* [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/dynamic_programming2.ipynb)
