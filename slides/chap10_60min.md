@@ -123,7 +123,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 ### 10.3 方策の評価
 
 * ある方策$\Pi: \mathcal{X} \rightarrow \mathcal{A}$の価値関数$V^\Pi$を求めたい
-* 方法
+* 方法（次のスライドから）
     * 状態空間を離散化
     * 方策に対して各離散状態での価値を求める
 
@@ -136,6 +136,19 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
     * [別の離散化の例](https://www.semanticscholar.org/paper/Vector-quantization-for-state-action-map-Ueda-Fukase/3c8cb20cac652e0f7fd4e5f967ee2418e62ba3b5)
 * 各区画: 離散状態、あるいはセルと呼ぶ
     * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation1.ipynb)
+
+---
+
+### 価値の初期化
+
+* 離散状態に価値を割り振る
+    * 終端状態の価値を適切に設定
+        * 連続的な空間からの近似になるので平均をとったり最悪の値にしたりと場合に応じて適切に
+    * 終端状態以外の状態については適当に値を設定しておく
+        * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation2.ipynb)
+
+
+<img width="40%" src="../figs/init_value1.png" />
 
 ---
 
