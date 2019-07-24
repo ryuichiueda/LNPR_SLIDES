@@ -163,18 +163,44 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 
 ---
 
-### 評価の方法
+### 状態遷移モデルの離散化
 
-* 先ほどの式を離散空間に適用したものを利用
-    * $V^\Pi(s) = \left\langle r(s, a, s') + V^\Pi(s') \right\rangle_{p(s'| s, a)}$
-* 手順
-    1. 方策$\Pi$、状態遷移モデル、報酬モデルを離散空間に合わせる
-    1. 終端状態の価値関数の値を適切に初期化
-    1. 終端状態以外の価値関数の値を適当に初期化
-    1. 各離散状態に対して上の式で価値関数の値を更新し続ける<br />（収束まで）
+* $p(\boldsymbol{x}|\boldsymbol{x}', a)$から$P(s|s', a)$を求める
+    * 計算で済むなら計算で
+        * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation4.ipynb)ではモンテカルロ法で求めている
+
+<img width="80%" src="../figs/divide_transition.png" />
 
 ---
 
-### 離散状態の実装
+### 報酬モデルの離散化
 
-* 
+* 状態遷移モデルの離散化と同じ
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation5.ipynb): こちらもモンテカルロ法で求めている
+
+<img width="60%" src="../figs/digitized_reward.png" />
+
+
+---
+
+### 方策評価アルゴリズム
+
+* 離散空間での価値の性質を表した式を利用
+    * $V^\Pi(s) = \left\langle r(s, a, s') + V^\Pi(s') \right\rangle_{p(s'| s, a)}$
+    * 各離散状態に対して上の式で価値関数の値を更新し続ける
+        * 離散状態を一通り更新することをスイープと呼ぶ
+        * 収束まで何スイープも繰り返し
+    * 終端状態から、終端状態までにステップ数のかかる状態へ価値が伝播していき、収束する
+
+<img width="30%" src="../figs/policy_evaluation_10sweeps.png" />
+<img width="30%" src="../figs/policy_evaluation_20sweeps.png" />
+<img width="30%" src="../figs/policy_evaluation_50sweeps.png" />
+
+
+---
+
+### 計算結果
+
+* 92スイープ目で収束
+
+<img width="30%" src="../figs/policy_evaluation_end_sweeps.png" />
