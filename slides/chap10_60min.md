@@ -12,7 +12,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 1. 移動ロボットの行動決定
+### 10.1 移動ロボットの行動決定
 
 * 移動だけならば探索手法を利用して経路を算出
 * ロボットにはもう少し難しい判断も必要
@@ -120,6 +120,37 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 
 ---
 
-### 10.3. 方策の評価
+### 10.3 方策の評価
 
+* ある方策$\Pi: \mathcal{X} \rightarrow \mathcal{A}$の価値関数$V^\Pi$を求めたい
+* 方法
+    * 状態空間を離散化
+    * 方策に対して各離散状態での価値を求める
 
+---
+
+### 離散化の方法
+
+* 次のように空間を均等に分割<br />
+<img width="60%" src="../figs/divide.png" /><br />
+    * [別の離散化の例](https://www.semanticscholar.org/paper/Vector-quantization-for-state-action-map-Ueda-Fukase/3c8cb20cac652e0f7fd4e5f967ee2418e62ba3b5)
+* 各区画: 離散状態、あるいはセルと呼ぶ
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation1.ipynb)
+
+---
+
+### 評価の方法
+
+* 先ほどの式を離散空間に適用したものを利用
+    * $V^\Pi(s) = \left\langle r(s, a, s') + V^\Pi(s') \right\rangle_{p(s'| s, a)}$
+* 手順
+    1. 方策$\Pi$、状態遷移モデル、報酬モデルを離散空間に合わせる
+    1. 終端状態の価値関数の値を適切に初期化
+    1. 終端状態以外の価値関数の値を適当に初期化
+    1. 各離散状態に対して上の式で価値関数の値を更新し続ける<br />（収束まで）
+
+---
+
+### 離散状態の実装
+
+* 
