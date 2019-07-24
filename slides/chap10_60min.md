@@ -152,6 +152,17 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 
 ---
 
+### 方策の離散化
+
+* ゴールにまっすぐ行く方策の離散化
+    * 各離散状態の中央の状態でとる行動で代表することに
+        * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation3.ipynb)
+        * 図: ロボットの向きが左向き（$180 \le \theta \lt 190$）のときの行動
+
+<img width="50%" src="../figs/init_policy.png" />
+
+---
+
 ### 評価の方法
 
 * 先ほどの式を離散空間に適用したものを利用
