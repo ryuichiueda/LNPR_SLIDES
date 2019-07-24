@@ -202,5 +202,6 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 ### 計算結果
 
 * 92スイープ目で収束
+    * 図: ロボットの向きが左向き（$180 \le \theta \lt 190$）のときの価値
 
-<img width="30%" src="../figs/policy_evaluation_end_sweeps.png" />
+<img width="60%" src="../figs/policy_evaluation_end_sweeps.png" />
