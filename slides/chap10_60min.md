@@ -229,3 +229,23 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 ### 価値反復の実行例
 
 * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/dynamic_programming2.ipynb)
+    * 120スイープで収束
+    * 上図: 10, 20, 120スイープ後の状態価値関数（$180 \le \theta \lt 190$）
+    * 下図: 10, 20, 120スイープ後の方策（$180 \le \theta \lt 190$）
+
+<br />
+<img width="25%" src="../figs/value_iteration_10sweeps.png" />
+<img width="25%" src="../figs/value_iteration_20sweeps.png" />
+<img width="25%" src="../figs/value_iteration_conv.png" /> 
+<br />
+<img width="25%" src="../figs/value_iteration_10sweeps_p.png" />
+<img width="25%" src="../figs/value_iteration_20sweeps_p.png" />
+<img width="25%" src="../figs/value_iteration_conv_p.png" /> 
+
+---
+
+### 得られた方策によるロボットの行動
+
+* [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/dp_policy_agent.ipynb)
+
+<img width="50%" src="../figs/optimal_policy.gif" /> 
