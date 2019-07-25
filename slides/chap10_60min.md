@@ -40,7 +40,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 ### 行動の評価
 
 * どう動いて、結果どうなったかを数値化
-    * $J(\boldsymbol{x}\_{0:T}, a\_{1:T}) = \sum\_{t=1}^\top r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) + V\_\text{f}(\boldsymbol{x}\_T)$
+    * $J(\boldsymbol{x}\_{0:T}, a\_{1:T}) = \sum\_{t=1}^T r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) + V\_\text{f}(\boldsymbol{x}\_T)$
         * $r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) \in \Re$: 状態遷移ごとに与える評価を決める関数
             * 報酬モデルと呼ぶ
             * 値を報酬と呼ぶ
@@ -78,7 +78,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
     * あるエピソードが生成される確率: $p(\boldsymbol{x}\_{1:T}|\boldsymbol{x}\_0, \Pi)$
         * 行動、報酬は$\boldsymbol{x}$から決定される
 * エピソードの評価値の平均値が$V(\boldsymbol{x}_0)$
-    * $V^\Pi(\boldsymbol{x}\_0) = \left\langle \sum\_{t=1}^\top r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) + V(\boldsymbol{x}\_T) \right\rangle\_{p(\boldsymbol{x}\_{1:T}|\boldsymbol{x}\_0, \Pi)}$
+    * $V^\Pi(\boldsymbol{x}\_0) = \left\langle \sum\_{t=1}^T r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) + V(\boldsymbol{x}\_T) \right\rangle\_{p(\boldsymbol{x}\_{1:T}|\boldsymbol{x}\_0, \Pi)}$
 
 ---
 
