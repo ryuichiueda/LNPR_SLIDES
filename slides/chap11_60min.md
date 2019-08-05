@@ -57,3 +57,51 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 1. ロボットを行動させながらQ値の更新
     * 行動して報酬を観測したら前ページの式で更新
     * <span style="color:red">どう行動させるか</span>は重要な問題
+        * 実装の説明のときに説明します
+
+---
+
+### 実装の準備
+
+* [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_reinforcement_learning/q1.ipynb)
+    * `QAgent`クラスに、とりあえずゴールにまっすぐ向かう方策（PuddleIgnoreAgent）を実装しておく（`policy`メソッド）<br />
+<img width="35%" src="../figs/q_puddle_ignore.png" />
+* PuddleIgnoreAgentの方策評価`policy_evaluation.ipynb`の結果をファイルに書き出し
+
+---
+
+### 状態価値関数の実装と初期化
+
+* [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_reinforcement_learning/q2.ipynb)
+    * `StateInfo`クラス: 各状態のQ値やQ値から得られる行動を管理
+        * `greedy`メソッド: Q値が最大の行動を返す
+    * `QAgent`クラスの`set_action_value_function`メソッドで初期化
+        * PuddleIgnoreAgentの方策評価`policy_evaluation.ipynb`の結果を流用
+            * この方策をQ学習で改善していく
+        * Q値の初期値の与え方
+            * `PuddleIgnoreAgent`と一致する行動に対するQ値: 方策評価で得られた状態価値
+            * 一致しない行動に対するQ値: 方策評価で得られた状態価値を少し下げる
+    * これで、Q値経由で`PuddleIgnoreAgent`の方策が再現される
+
+---
+
+### 現段階での方策の問題
+
+* Q値から導かれる方策以外をエージェントが試さない
+    * 現状の方策で得られる行動以外のQ値が変更されない
+    * もっと良い方策を探せない
+* <span style="color:red">たまに現状のQ値で良いとされない行動を選ぶ</span>ことが必要
+    * 選びすぎるとゴールに行かなかったりあまりにも無駄が多くなったりするので適度に
+    * Q学習の場合はどんな行動をとってもQ値の計算に悪影響がない
+        * なぜでしょうか
+
+---
+
+### 探索的な方策
+
+* 本の実装例では「$\varepsilon$-グリーディ方策」を実装
+    * Q値の示す最適な行動以外の行動を、ある決まった確率でランダムに選択
+        * 最も単純
+* 他にボルツマン方策など
+* $\varepsilon$-グリーディ方策の実装
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_reinforcement_learning/q3.ipynb)
