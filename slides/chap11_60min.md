@@ -132,3 +132,116 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $\theta$は$180\sim 190$[deg]の区間に固定
 
 <img width="80%" src="../figs/q_result_value_function.png" />
+
+---
+
+### 11.2 <span style="text-transform:none">Sarsa</span>
+
+* 次の更新式を使う
+    * <span style="color:red">$Q(s,a) \longleftarrow (1 - \alpha)Q(s,a) + \alpha \left[ r + Q(s',a') \right]$</span>
+    * 参考: Q学習の更新式
+        * $Q(s,a) \longleftarrow (1 - \alpha)Q(s,a) + \alpha \left[ r + \max_{a'} Q(s',a') \right]$
+* Q学習と異なり、具体的な行動$a'$を選んで$Q(s',a')$で$Q(s,a)$を更新
+    * $s,a,r,s',a'$が確定してから更新$\rightarrow$Sarsa
+    * 学習中に使っている方策の価値関数を求めていることになる（<span style="color:red">on-policy</span>）<br />
+      $\longleftrightarrow$Q学習では最適方策の価値関数を求めている（<span style="color:red">off-policy</span>）
+
+---
+
+### <span style="text-transform:none">Sarsa</span>の実装
+
+* [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_reinforcement_learning/sarsa1.ipynb)
+    * Q学習からちょっと変えるだけ
+	* $a'$を使う
+	* 更新式をSarsaのものに
+
+---
+
+### 学習結果: 方策から得られる行動
+
+<img width="64%" src="../figs/sarsa_result_traj.png" />
+
+* 水たまりを避ける行動が早く生成される
+    * $a'$で水たまりに突っ込んだ場合に$Q(s,a)$の値が悪くなる
+    * Q学習より良いということではない
+
+---
+
+### 学習結果: 状態価値関数
+
+<img width="80%" src="../figs/sarsa_result_value_function.png" />
+
+
+---
+
+### 11.3 <span style="text-transform:none">$n$-step Sarsa</span>
+
+* ある行動選択で、ある$Q(s,a)$が大きく変わる<br />
+  $\rightarrow$エピソード中のそれ以前の状態行動対の価値も変えた方がいい
+    * Q学習でもSarsaでも不可能
+* 価値の更新を数ステップ遅らす$\rightarrow n$-step Sarsa<br />
+$=$ 現在の状態行動対の価値+得た報酬を$n$ステップ前の状態行動対の価値に反映 
+
+---
+
+### <span style="text-transform:none">$n$-step Sarsa</span>の更新式の導出
+
+* 元のSarsaの式を少し書き換える
+    * $Q(s,a) \longleftarrow (1 - \alpha)Q(s,a) + \alpha \left[ r^{(1)} + Q(s^{(1)},a^{(1)}) \right]$ 
+        * $(n)$は、現在の状態行動対から$n$ステップ先の状態行動対
+* 2ステップ先まで更新を先延ばし
+    * $Q(s,a) \longleftarrow (1 - \alpha)Q(s,a) + \alpha \left[ r^{(1)} + r^{(2)} + Q(s^{(2)},a^{(2)}) \right]$
+* $n$ステップ先まで更新を先延ばし
+    * $Q(s,a) \longleftarrow (1 - \alpha)Q(s,a) + \alpha \left[ \sum_{i=1}^n r^{(i)} + Q(s^{(n)},a^{(n)}) \right]$
+* $n$ステップ前の$Q$値を最新の状態行動対から更新する式
+    * <span style="color:red">$Q(s^{(-n)},a^{(-n)}) \longleftarrow (1 - \alpha)Q(s^{(-n)},a^{(-n)}) + \alpha \left[ \sum_{i=0}^{n-1} r^{(-i)} + Q(s,a) \right]$</span>
+
+---
+
+### <span style="text-transform:none">$n$-step Sarsa</span>の実装
+
+* [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_reinforcement_learning/nstep_sarsa2.ipynb)
+    * Sarsaからの変更点
+        * エピソードを記録する変数を準備
+        * 更新式
+    * その他のサンプルコードの変更
+        * 事前知識の不使用（Q値を一様に）
+        * 最初のうち、ゴールに入れなくなるので制限時間を設定
+
+---
+
+### 学習結果: 方策から得られる行動
+
+<img width="80%" src="../figs/nstep_sarsa_result_traj.png" />
+
+---
+
+### 学習結果: 状態価値関数
+
+<img width="80%" src="../figs/nstep_sarsa_result_value_function.png" />
+
+---
+
+### 11.4 <span style="text-transform:none">Sarsa($\lambda$)</span>
+
+* 評価を遅らせるのではなく、もっと積極的に過去の状態行動対の価値を変更
+* 考え方
+    * Q値が改善（改悪）された場合、その前の状態行動対の価値もすべて同じだけ更新すべきではないのか？
+        * 例えば下図の$Q=-100 \rightarrow Q = -20$の更新
+
+<img width="80%" src="../figs/multi_improvement.png" />
+
+---
+
+### <span style="text-transform:none">Sarsa($\lambda$)</span>の更新式の導出
+
+* Sarsaの式を並び替え
+    * $Q(s,a) \longleftarrow Q(s,a) + \alpha \left[ r + Q(s',a') - Q(s,a) \right]$
+* Q値の変化を$\Delta Q$とおく
+    * $\Delta Q = r + Q(s',a') - Q(s,a)$
+        * エピソードをさかのぼってQ値に$\Delta Q$を足していく
+        * ただし減衰させていく（過去にいくほど因果関係が薄くなるので）
+* 更新式
+    * $Q(s^{(-n)}, a^{(-n)}) \longleftarrow Q(s^{(-n)}, a^{(-n)}) + \alpha \lambda^n \Delta Q \quad (n=0,1,2,\dots)$
+        * $\lambda$: エリジビリティ減衰率
+
