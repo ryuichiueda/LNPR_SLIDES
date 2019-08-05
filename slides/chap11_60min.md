@@ -242,6 +242,18 @@ $=$ 現在の状態行動対の価値+得た報酬を$n$ステップ前の状態
         * エピソードをさかのぼってQ値に$\Delta Q$を足していく
         * ただし減衰させていく（過去にいくほど因果関係が薄くなるので）
 * 更新式
-    * $Q(s^{(-n)}, a^{(-n)}) \longleftarrow Q(s^{(-n)}, a^{(-n)}) + \alpha \lambda^n \Delta Q \quad (n=0,1,2,\dots)$
+    * <span style="color:red">$Q(s^{(-n)}, a^{(-n)}) \longleftarrow Q(s^{(-n)}, a^{(-n)}) + \alpha \lambda^n \Delta Q \quad (n=0,1,2,\dots)$</span>
         * $\lambda$: エリジビリティ減衰率
+
+---
+
+### 学習結果: 方策から得られる行動
+
+<img width="80%" src="../figs/sarsa_lambda_result_traj.png" />
+
+---
+
+### 学習結果: 状態価値関数
+
+<img width="80%" src="../figs/sarsa_lambda_result_value_function.png" />
 
