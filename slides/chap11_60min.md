@@ -77,7 +77,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * `greedy`メソッド: Q値が最大の行動を返す
     * `QAgent`クラスの`set_action_value_function`メソッドで初期化
         * PuddleIgnoreAgentの方策評価`policy_evaluation.ipynb`の結果を流用
-            * この方策をQ学習で改善していく
+            * この方策をQ学習で改善していく（まっさらな状態からの学習は無理）
         * Q値の初期値の与え方
             * `PuddleIgnoreAgent`と一致する行動に対するQ値: 方策評価で得られた状態価値
             * 一致しない行動に対するQ値: 方策評価で得られた状態価値を少し下げる
@@ -105,3 +105,30 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 他にボルツマン方策など
 * $\varepsilon$-グリーディ方策の実装
     * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_reinforcement_learning/q3.ipynb)
+
+---
+
+### 価値の更新則などの実装
+
+* あとはQ学習の更新式を実装して、ロボットに初期状態からゴールへの行動を繰り返させるだけ
+    * [更新式の実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_reinforcement_learning/q4.ipynb)
+        * `decision`メソッドから呼び出されている`q_update`でQ値を更新
+    * [試行の繰り返しの実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_reinforcement_learning/q5.ipynb)
+        * `WarpRobot`クラス
+
+<img width="35%" src="../figs/agent_on_q_learning.gif" />
+
+---
+
+### 学習結果: 方策から得られる行動
+
+<img width="80%" src="../figs/q_result_traj.png" />
+
+---
+
+### 学習結果: 状態価値関数
+
+* 各状態で最大のQ値を選んで描画したもの
+    * $\theta$は$180\sim 190$[deg]の区間に固定
+
+<img width="80%" src="../figs/q_result_value_function.png" />
