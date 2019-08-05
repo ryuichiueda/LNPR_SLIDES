@@ -247,6 +247,15 @@ $=$ 現在の状態行動対の価値+得た報酬を$n$ステップ前の状態
 
 ---
 
+### <span style="text-transform:none">Sarsa($\lambda$)</span>の実装
+
+* $n$-step Sarsaからの変更点
+    * 過去の報酬を使わないので記録をしない
+    * エピソードをさかのぼって更新式を適用
+        * 現在の計算機ではたいした計算量にはならない
+
+---
+
 ### 学習結果: 方策から得られる行動
 
 <img width="80%" src="../figs/sarsa_lambda_result_traj.png" />
