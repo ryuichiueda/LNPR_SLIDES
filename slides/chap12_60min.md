@@ -28,6 +28,16 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 自己位置推定が不確かな場合に<br />起こる問題
 
-* 分布が広い時に分布の端にロボットがいると
+* 分布の広さを考慮せずに一つの推定姿勢で行動決定
+    * 分布が広い時に分布の端にロボットがいると事故を起こす
 
 <img src="../figs/uncertain_navigation_1.png" />
+
+---
+
+### 別の例
+
+* 外側から見ていると非常に不可解
+
+to do もう一つの図を挿入
+
