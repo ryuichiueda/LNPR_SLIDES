@@ -121,3 +121,12 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ---
 
 ### 12.3 ランドマークの足りない状況でのナビゲーション
+
+
+---
+
+<img width="50%" src="../figs/pfc_environment.png" />
+
+---
+
+<img width="50%" src="../figs/one_landmark_qmdp.png" />
