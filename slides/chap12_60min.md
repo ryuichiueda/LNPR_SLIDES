@@ -41,3 +41,17 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 to do もう一つの図を挿入
 
+---
+
+### belief MDP
+
+* 分布自体を「状態」と考える
+    * <span style="color:red">信念状態</span>
+* 信念状態を使った方策
+    * $a\_{t+1} = \Pi\_\text{b}(b_t)$
+    * 全種類の分布に対して行動を返す
+    * 分布の状態遷移が分かれば理論の上では価値反復で計算可能
+    * 分布の種類は膨大
+    
+
+
