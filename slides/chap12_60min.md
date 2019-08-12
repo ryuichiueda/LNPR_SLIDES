@@ -98,5 +98,5 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 状態価値関数
     * MCL
 * 状態価値関数とパーティクルから$Q\_\text{MDP}$を計算して、値の最も良い行動を選び続ける
-    * コード
-    
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_pomdp/qmdp3.ipynb)
+        * `evaluation`メソッドがQ-MDPの式
