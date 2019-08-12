@@ -74,6 +74,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * MDPでの最適行動価値関数$Q^*$と信念分布$b$から、次の期待値を基準に行動決定
     * $Q_\text{MDP}(a,b) = \Big\langle Q(a, \boldsymbol{x}) \Big\rangle_{b(\boldsymbol{x})}$
     * $\Pi\_{Q_\text{MDP}}(b) = \text{argmax}_a Q_\text{MDP}(a,b)$
+* 性質
+    * 自己位置推定（状態推定）が完璧な場合、もとの方策と一致
+    * 明示的な行動はとれない
 
 ---
 
@@ -89,3 +92,11 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
+### 実装
+
+* これまで作ったものを組み合わせ
+    * 状態価値関数
+    * MCL
+* 状態価値関数とパーティクルから$Q\_\text{MDP}$を計算して、値の最も良い行動を選び続ける
+    * コード
+    
