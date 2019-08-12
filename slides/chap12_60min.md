@@ -23,3 +23,11 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * POMDPにおける方策: $a\_{t+1} = \Pi\_\text{POMDP}(a\_{1:t}, \textbf{z}\_{1:t}, r\_{1:t})$
     * 状態がわからないのでこれまでに知ったことから行動を判断
     * この形式のままだと実装方法は見えない
+
+---
+
+### 自己位置推定が不確かな場合に<br />起こる問題
+
+* 分布が広い時に分布の端にロボットがいると
+
+<img src="../figs/uncertain_navigation_1.png" />
