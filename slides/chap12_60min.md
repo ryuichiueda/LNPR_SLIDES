@@ -100,3 +100,24 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 状態価値関数とパーティクルから$Q\_\text{MDP}$を計算して、値の最も良い行動を選び続ける
     * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_pomdp/qmdp3.ipynb)
         * `evaluation`メソッドがQ-MDPの式
+* 最適な方策でないのでロボットが止まる可能性あり
+    * なんらかのヒューリスティックが必要に
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_pomdp/qmdp3.ipynb)の`policy`内に記述
+
+---
+
+### ロボットの行動例
+
+* パーティクルを水たまりに多く入れないように行動決定
+    * ロボットが水たまりに入ることもあるが統計を取ると有効性が分かる
+    * ただし、自己位置推定が間違えていたら効果はない
+* 図
+    * 左: 最尤なパーティクルを使って行動決定
+    * 右: Q-MDP
+
+<img width="30%" src="../figs/non_qmdp.gif" />
+<img width="30%" src="../figs/qmdp.gif" />
+
+---
+
+### 12.3 ランドマークの足りない状況でのナビゲーション
