@@ -129,7 +129,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-<img width="50%" src="../figs/one_landmark_qmdp.png" />
+<img width="50%" src="../figs/one_landmark_qmdp.gif" />
 
 ---
 
