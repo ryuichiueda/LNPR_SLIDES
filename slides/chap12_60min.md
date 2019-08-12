@@ -73,4 +73,19 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * MDPでの最適行動価値関数$Q^*$と信念分布$b$から、次の期待値を基準に行動決定
     * $Q_\text{MDP}(a,b) = \Big\langle Q(a, \boldsymbol{x}) \Big\rangle_{b(\boldsymbol{x})}$
-    * $\Pi\_{Q_\text{MDP}}(b) = \arg\max_a Q_\text{MDP}(a,b)$
+    * $\Pi\_{Q_\text{MDP}}(b) = \text{argmax}_a Q_\text{MDP}(a,b)$
+
+---
+
+### 実装で使う$Q_\text{MDP}(a,b)$
+
+* 状態空間が離散化されている場合:
+    * $Q_\text{MDP}(a,b) = \Big\langle Q(a, s) \Big\rangle_{B(s)} = \sum_{s \in \mathcal{S}} B(s)Q(a, s)$
+        * $B(s) = \int_{\boldsymbol{x} \in s} b(\boldsymbol{x}) d\boldsymbol{x}$
+* 行動価値関数ではなく状態価値関数で実装する場合: 
+    * $Q\_\text{MDP}(a,b) = \sum\_{s \in \mathcal{S}} B(s) \Big\langle R(s, a, s') + V(s') \Big\rangle\_{ P(s' | s, a) }$
+* さらにMCLと併用する場合: $Q\_\text{MDP}(a,b) = \sum\_{i=0}^{N-1} w^{(i)} \Big\langle R(s^{(i)}, a, s') + V(s') \Big\rangle\_{ P(s' | s^{(i)}, a)}$
+
+
+---
+
