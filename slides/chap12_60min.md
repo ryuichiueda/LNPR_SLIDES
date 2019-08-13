@@ -122,16 +122,43 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 12.3 ランドマークの足りない状況でのナビゲーション
 
+---
+
+### 点ランドマークが一つの環境
+
+* エージェントが観測可能なもの
+    * 1つの点ランドマーク
+    * ゴールに入ったかどうか
+* パーティクルの初期位置
+    * センサリセットが起こった状態から
+* 姿勢が一意に推定できない
+
+<img width="30%" src="../figs/pfc_environment.png" />
 
 ---
 
-<img width="50%" src="../figs/pfc_environment.png" />
+### Q-MDPでのロボットの挙動
+
+* 途中で$Q_\text{MDP}$値が釣り合って止まる
+
+<img width="40%" src="../figs/one_landmark_qmdp.gif" />
 
 ---
 
-<img width="50%" src="../figs/one_landmark_qmdp.gif" />
+### 価値で重みをつけたQ-MDP
+
+* 良い$Q$値を持っているパーティクルを優遇
+    * $Q\_\text{PFC}(a,b) = \sum\_{i=0}^{N-1} \dfrac{w^{(i)}}{[V\_{\max}- V(s^{(i)})]^m} Q(s^{(i)},a)$
+      $= \sum\_{i=0}^{N-1} \dfrac{w^{(i)}}{[V\_{\max}- V(s^{(i)})]^m} \Big\langle R(s^{(i)}, a, s') + V(s') \Big\rangle\_{ P(s' | s^{(i)}, a) }$
+        * ここで$V_{\max} = \max_{\boldsymbol{x} \in \mathcal{X}} V(\boldsymbol{x}) $
+* PFC（probabilistic flow control）と名前をつけた
 
 ---
 
-<img width="50%" src="../figs/pfc_ok.gif" />
+### PFCによるロボットの挙動
+
+
+<img width="31%" src="../figs/pfc_ok.gif" />
+<img width="31%" src="../figs/pfc_ok2.gif" />
+<img width="31%" src="../figs/pfc_ok3.gif" />
 
