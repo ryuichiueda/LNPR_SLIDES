@@ -184,7 +184,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * $XY\theta\sigma$空間の4次元
     * $XY\theta$空間: 10, 11章と同じ
-    * <span style="color:red">$\sigma$</span>軸: 分布の大きさを表す軸
+    * <span style="color:red">$\sigma$</span>軸: カルマンフィルタの分布の大きさを表す軸
         * $\sigma = | \Sigma_t |^{1/6}$で計算
 * 状態空間の離散化（[コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_pomdp/amdp1.ipynb)）
     * $XY\theta$空間: 10, 11章と同じ（57600状態）
@@ -193,11 +193,39 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
+### 価値反復の実装1（終端状態）
+
+* $XY\theta$空間では10章と同じ終端状態
+* $\sigma$軸では最も$\sigma$の小さい区分のみを終端状態とする
+    * 十分に自己位置推定が正確でないとゴールに止まれないので
+
+---
+
 ### 価値反復の実装1<br />（移動による状態遷移）
 
 * とりあえず観測は無視して移動による$\sigma$の変化を求める
-    * カルマンフィルタの式から
-        * $\hat{\boldsymbol{\mu}}\_t = \boldsymbol{f}(\boldsymbol{\mu}\_{t-1}, a\_t)$
-        * $\hat{\Sigma}\_t = F\_t\Sigma\_{t-1}F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top  = \sigma\_{t-1}^2F\_t F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top$
-    * 移動後の$\sigma$の計算
-        * $\hat{\sigma}\_t = |\sigma\_{t-1}^2F\_t F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top|^{1/6}$
+* カルマンフィルタの式から
+    * $\hat{\boldsymbol{\mu}}\_t = \boldsymbol{f}(\boldsymbol{\mu}\_{t-1}, a\_t)$
+    * $\hat{\Sigma}\_t = F\_t\Sigma\_{t-1}F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top  = \sigma\_{t-1}^2F\_t F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top$
+* 移動後の$\sigma$の計算
+    * $\hat{\sigma}\_t = |\sigma\_{t-1}^2F\_t F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top|^{1/6}$
+
+---
+
+### 価値反復の実装1<br />（観測による状態遷移）
+
+* 観測による$\sigma$の減少量を求める
+    * 全状態で求める
+    * 観測できるかどうかは`IdealCamera`クラスを用いて判断
+* カルマンフィルタの式から
+    * $\Sigma = ( I - KH ) \hat\Sigma$
+    * $K = \hat\Sigma H^\top (Q +  H \hat\Sigma H^\top )^{-1}$
+
+---
+
+<img style="color:red" src="../figs/amdp_back.gif" />
+
+---
+
+<img style="color:red" width="45%" src="../figs/amdp.gif" />
+<img style="color:red" width="45%" src="../figs/amdp2.gif" />
