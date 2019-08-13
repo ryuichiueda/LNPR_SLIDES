@@ -162,3 +162,30 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 <img width="31%" src="../figs/pfc_ok2.gif" />
 <img width="31%" src="../figs/pfc_ok3.gif" />
 
+---
+
+### 12.4 AMDP
+
+---
+
+### 信念分布を使った価値反復
+
+* Q-MDP、PFCは不確かさに対して「受け身」
+    * 「分布を小さくする」ような行動決定はできない
+* AMDP（augmented MDP）
+    * 信念状態に対して価値反復を解く<br />
+    * 本書のシミュレーションで可能になること
+        * ランドマークが視界に入りやすいルートをとる
+        * 分布が水たまりにかかりやすいルートをあらかじめ避ける
+
+---
+
+### 価値反復の実装1（状態空間の構成）
+
+* $XY\theta\sigma$空間の4次元
+    * $XY\theta$空間: 10, 11章と同じ
+    * <span style="color:red">$\sigma$</span>軸: 分布の大きさを表す軸（エントロピーから計算）
+* 状態空間の離散化（[コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_pomdp/amdp1.ipynb)）
+    * $XY\theta$空間: 10, 11章と同じ（57600状態）
+    * $\sigma$軸: 5段階
+    * 離散状態数: 288000状態
