@@ -184,8 +184,20 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * $XY\theta\sigma$空間の4次元
     * $XY\theta$空間: 10, 11章と同じ
-    * <span style="color:red">$\sigma$</span>軸: 分布の大きさを表す軸（エントロピーから計算）
+    * <span style="color:red">$\sigma$</span>軸: 分布の大きさを表す軸
+        * $\sigma = | \Sigma_t |^{1/6}$で計算
 * 状態空間の離散化（[コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_pomdp/amdp1.ipynb)）
     * $XY\theta$空間: 10, 11章と同じ（57600状態）
     * $\sigma$軸: 5段階
     * 離散状態数: 288000状態
+
+---
+
+### 価値反復の実装1<br />（移動による状態遷移）
+
+* とりあえず観測は無視して移動による$\sigma$の変化を求める
+    * カルマンフィルタの式から
+        * $\hat{\boldsymbol{\mu}}\_t = \boldsymbol{f}(\boldsymbol{\mu}\_{t-1}, a\_t)$
+        * $\hat{\Sigma}\_t = F\_t\Sigma\_{t-1}F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top  = \sigma\_{t-1}^2F\_t F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top$
+    * 移動後の$\sigma$の計算
+        * $\hat{\sigma}\_t = |\sigma\_{t-1}^2F\_t F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top|^{1/6}$
