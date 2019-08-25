@@ -36,3 +36,13 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 
 <img width="30%" src="../figs/graph_based_slam.png" />
+
+---
+
+### 9.1 問題の定式化
+
+* SLAMの式を再掲 
+    * $p(\boldsymbol{x}\_{1:T}, \textbf{m} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T}) = p(\boldsymbol{x}\_{1:T} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T}) p(\textbf{m} | \boldsymbol{x}\_{0:T}, \textbf{z}\_{0:T}) $
+        * 注意: $\textbf{z}_0$の存在の仮定を暫定追加（最終的に不要になる）
+* 完全SLAM問題
+    * $\boldsymbol{x}\_{1:T}^\*, \textbf{m}^\* = \text{argmax}\_{\boldsymbol{x}\_{1:T}, \textbf{m}} \ p(\boldsymbol{x}\_{1:T}, \textbf{m} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T})$
