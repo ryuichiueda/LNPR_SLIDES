@@ -27,3 +27,12 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ---
 
 ### グラフの「歪み」
+
+* エッジの情報 
+    * 姿勢間: デッドレコニング
+    * 姿勢とランドマーク間: 観測
+* 個々のエッジが示すノードの姿勢が互いに矛盾
+    * 観測に雑音があるため
+
+
+<img width="30%" src="../figs/graph_based_slam.png" />
