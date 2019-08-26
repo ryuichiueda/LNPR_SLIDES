@@ -90,4 +90,8 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * <span style="color:red">残差に重み付けして全体を最適化</span><br />$\ $
 * 各残差関数の値$\boldsymbol{e}$の確率分布を考える
     * $p(\boldsymbol{e}) = \mathcal{N}(\boldsymbol{e} | \boldsymbol{0}, \Omega\_\text{e}^{-1}) = \eta \exp \left( -\dfrac{1}{2} \boldsymbol{e}^\top \Omega\_{\text{e}} \boldsymbol{e} \right)$
-        * これで$\mathcal{e}$を評価（確率が低いほどありえない残差ということになる）
+        * これで$\mathcal{e}$を評価（確率が低いほどありえない残差で打ち消さなければならないということになる）
+
+---
+
+### 
