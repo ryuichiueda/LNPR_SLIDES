@@ -66,3 +66,28 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * デッドレコニング情報
 
 <img width="40%" src="../figs/graph.png" />
+
+---
+
+### 残差の計算
+
+* 残差（グラフの歪み）: エッジの抱える矛盾
+    * 仮想移動エッジの残差: $\hat{\boldsymbol{x}}\_{t\_1}, \boldsymbol{z}\_{j, t\_1}$から求められるランドマークの位置と$\hat{\boldsymbol{x}}\_{t\_2}, \boldsymbol{z}\_{j, t\_2}$から求められるランドマークの位置の差
+    * 移動エッジの残差: $\hat{\boldsymbol{x}}\_{t\_2}$と状態遷移関数の値$\boldsymbol{f}(\hat{\boldsymbol{x}}\_{t\_1},\boldsymbol{u}\_{t_2})$の違い<br />$\ $ 
+* 次のような「残差関数」を考えましょう
+    * $\hat{\boldsymbol{x}}\_{t\_1}$と$\hat{\boldsymbol{x}}\_{t\_2}$がそれぞれ$\boldsymbol{x}\_{t\_1}, \boldsymbol{x}\_{t\_2}$に移動したときの上記の量
+    * 仮想移動エッジの残差関数: $\boldsymbol{e}\_{j,t\_1,t\_2}(\boldsymbol{x}\_{t\_1}, \boldsymbol{x}\_{t\_2})$
+    * 移動エッジの残差関数: $\boldsymbol{e}\_{t\_1,t\_2}(\boldsymbol{x}\_{t\_1}, \boldsymbol{x}\_{t\_2})$
+
+---
+
+### グラフの最適化
+
+* ノードを動かして残差をゼロにするのが理想だが・・・
+    * ある仮想移動エッジの残差を消そうとすると別の仮想移動エッジや移動エッジの残差が増えるかもしれない<br />$\ $
+* 大きく残ってよい残差とそうでない残差がある
+    * センサ値$\boldsymbol{z}\_{j, t\_1}, \boldsymbol{z}\_{j, t\_2}$に大きな誤差が予想されるなら、その仮想移動エッジの残差はある程度残っても問題ない
+        * <span style="color:red">残差に重み付けして全体を最適化</span><br />$\ $
+* 各残差関数の値$\boldsymbol{e}$の確率分布を考える
+    * $p(\boldsymbol{e}) = \mathcal{N}(\boldsymbol{e} | \boldsymbol{0}, \Omega\_\text{e}^{-1}) = \eta \exp \left( -\dfrac{1}{2} \boldsymbol{e}^\top \Omega\_{\text{e}} \boldsymbol{e} \right)$
+        * これで$\mathcal{e}$を評価（確率が低いほどありえない残差ということになる）
