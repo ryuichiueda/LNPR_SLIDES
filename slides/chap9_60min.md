@@ -33,6 +33,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 姿勢とランドマーク間: 観測
 * 個々のエッジが示すノードの姿勢が互いに矛盾
     * 観測に雑音があるため
+    * <span style="color:red">最も歪みが少なくなるノードの位置を探す</span>
 
 
 <img width="30%" src="../figs/graph_based_slam.png" />
@@ -44,7 +45,24 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 完全SLAM問題
     * $\boldsymbol{x}\_{1:T}^\*, \textbf{m}^\* = \text{argmax}\_{\boldsymbol{x}\_{1:T}, \textbf{m}} \ p(\boldsymbol{x}\_{1:T}, \textbf{m} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T})$
     * （解き方にもよるが）計算量が大きくなるのでこれは解かない
-* 式(8.2)を再掲 
-    * $p(\boldsymbol{x}\_{1:T}, \textbf{m} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T}) = p(\boldsymbol{x}\_{1:T} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T}) p(\textbf{m} | \boldsymbol{x}\_{0:T}, \textbf{z}\_{0:T}) $
-        * 注意: $\textbf{z}_0$の存在の仮定を暫定追加（最終的に不要になる）
-        * 先に$p(\boldsymbol{x}\_{1:T} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T})$を最大にする軌跡$\boldsymbol{x}^\*_{1:T}$を求める
+* 作戦
+    * 式(8.2)を再掲 
+        * $p(\boldsymbol{x}\_{1:T}, \textbf{m} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T}) = p(\boldsymbol{x}\_{1:T} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T}) p(\textbf{m} | \boldsymbol{x}\_{0:T}, \textbf{z}\_{0:T}) $
+            * 注意: $\textbf{z}_0$の存在の仮定を暫定追加（最終的に不要になる）
+    * 先に$p(\boldsymbol{x}\_{1:T} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T})$を最大にする軌跡$\boldsymbol{x}^\*_{1:T}$を求める
+        * <span style="color:red">軌跡のグラフを作って歪みを最小化</span>
+    * <span style="color:red">観測の情報をどうするの？</span>
+
+---
+
+### 観測を姿勢の情報に
+
+* 次のようなエッジを考える
+    * 仮想移動エッジ: $\text{e}\_{j,t\_1,t\_2} = ( \hat{\boldsymbol{x}}\_{t\_1}, \hat{\boldsymbol{x}}\_{t\_2}, \boldsymbol{z}\_{j, t\_1}, \boldsymbol{z}\_{j, t\_2})$
+        * $j$はランドマークのID
+        * <span style="color:red">同じランドマークを観測したセンサ値から得られる2姿勢間の情報</span>
+    * 移動エッジ: $\text{e}\_{t\_1,t\_2} = (\hat{\boldsymbol{x}}\_{t\_1}, \hat{\boldsymbol{x}}\_{t\_2}, \boldsymbol{u}\_{t\_2})$
+        * $t\_2 = t\_1+1$
+        * デッドレコニング情報
+
+<img width="40%" src="../figs/graph.png" />
