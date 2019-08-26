@@ -120,3 +120,10 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 分布の積: $f(\boldsymbol{m}\_j ) = \prod\_{t \in \textbf{I}\_{\boldsymbol{z}}} p\_{j,t}(\boldsymbol{e}\_{j,t})$
         * 分布の積から作った最適化の問題: $\boldsymbol{m}\_j^\* = \text{argmin}\_{\boldsymbol{m}\_j} J\_{\boldsymbol{m}\_j}(\boldsymbol{m}\_j)$
             * ここで $J\_{\boldsymbol{m}\_j}(\boldsymbol{m}\_j) = \sum\_{t \in \textbf{I}\_{\boldsymbol{z}}} \{\boldsymbol{e}\_{j,t}(\boldsymbol{m}\_j)\}^\top \Omega\_{j,t} \{\boldsymbol{e}\_{j,t}(\boldsymbol{m}\_j)\}$
+
+---
+
+### 9.2 仮想移動エッジを使った軌跡の算出
+
+* とりあえず仮想移動エッジだけで軌跡を算出
+* センサ値が2次元、姿勢が3次元で計算が難しくなるのでセンサ値にもう一次元足す
