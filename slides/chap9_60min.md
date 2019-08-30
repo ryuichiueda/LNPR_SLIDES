@@ -127,3 +127,31 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * とりあえず仮想移動エッジだけで軌跡を算出
 * センサ値が2次元、姿勢が3次元で計算が難しくなるのでセンサ値にもう一次元足す
+    * 下図のような、「ランドマークのどの向きを見ているか」を表す変数$\psi$
+        * 相対的なものなので原点は適当でよい
+
+
+<img width="40%" src="../figs/psi.png" />
+
+---
+
+### ログをとる
+
+* 毎時刻次のデータを記録
+    * センサ値
+    * デッドレコニングによる推定姿勢
+        * 制御指令を記録しておいてもよい
+* [実際のログ](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_graph_slam/log.txt.for.book)
+    * あとの処理の関係でセンサ値のない姿勢は記録されていない
+    * そのまま絵にすると下図のようにセンサ値に矛盾
+
+<img width="30%" src="../figs/draw_graphslam_log.png" />
+
+
+---
+
+### 残差の計算
+
+* $\hat{\boldsymbol{e}}\_{j,t\_1,t\_2} = \begin{pmatrix} \hat{x}\_{t\_2} + \ell\_{j,t\_2}\cos (\hat{\theta}\_{t\_2} + \varphi\_{j,t\_2})  \\\\ \hat{y}\_{t\_2} + \ell\_{j,t\_2}\sin (\hat{\theta}\_{t\_2} + \varphi\_{j,t\_2})  \\\\ \hat{\theta}\_{t\_2} + \varphi\_{j,t\_2} - \psi\_{j,t\_2} \end{pmatrix} - \begin{pmatrix} \hat{x}\_{t\_1} + \ell\_{j,t\_1}\cos (\hat{\theta}\_{t\_1} + \varphi\_{j,t\_1}) \\\\ \hat{y}\_{t\_1} + \ell\_{j,t\_1}\sin (\hat{\theta}\_{t\_1} + \varphi\_{j,t\_1}) \\\\ \hat{\theta}\_{t\_1} + \varphi\_{j,t\_1} - \psi\_{j,t\_1} \end{pmatrix}$
+	&(\text{ただし$\theta$成分は$[-\pi,\pi)$の範囲に正規化} ) \nonumber
+
