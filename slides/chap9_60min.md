@@ -160,21 +160,25 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### マハラノビス距離を決める精度行列の導出（1/3）
+### マハラノビス距離による残差の評価
 
 * 仮想移動エッジの残差には大きくても良いものとそうでないものがある
-    * 下図: $\hat{\boldsymbol{x}}\_{t\_2}$を動かして遠いランドマークの残差を減らそうとすると、近い（距離計測値が正確な）ランドマークの残差が増えてしまう
+    * 下図: $\hat{\boldsymbol{x}}\_{t\_2}$を動かして遠いランドマークの残差を減らそうとすると、近い（距離計測値が正確な）ランドマークの残差が増える
+* 評価方法:
+    * 残差を単純な大きさ（$\boldsymbol{e}^\top \boldsymbol{e}$）でなく、<span style="color:red">マハラノビス距離</span>で計算
+        * マハラノビス距離: 下の評価式（再掲）の$\boldsymbol{e}^\top \Omega \boldsymbol{e}$
+            * $J\_\textbf{z}(\boldsymbol{x}\_{0:T}) =  \sum\_{(j,t\_1,t\_2) \in \textbf{I}\_{\textbf{e}\_\textbf{z}}} \left\\{\boldsymbol{e}\_{j,t\_1,t\_2}(\boldsymbol{x}\_{t\_1},\boldsymbol{x}\_{t\_2})\right\\}^\top \Omega\_{j,t\_1,t\_2} \left\\{ \boldsymbol{e}\_{j,t\_1,t\_2}(\boldsymbol{x}\_{t\_1},\boldsymbol{x}\_{t\_2})\right\\}$
 
 <img style="width:45%" src="../figs/edge_relation.png" />
 
+
 ---
 
-### マハラノビス距離を決める精度行列の導出（2/3）
+### マハラノビス距離を決める精度行列の導出（1/2）
 
 * どの仮想移動エッジの残差を減らすか
-    * センサ値の誤差の共分散行列から考える
+    * センサ値の誤差の共分散行列$Q_{j,t}$を残差の$XY\theta$空間に移して、その逆行列（精度行列）に基づいて評価
         * $Q_{j,t} = \begin{pmatrix} (\ell_{j,t} \sigma_\ell)^2 & 0 & 0\\\\ 0 & \sigma_\varphi^2 & 0 \\\\ 0 & 0 & \sigma_\psi^2 \end{pmatrix}$
-* $Q_{j,t}$を残差の$XY\theta$空間に移す
     * 残差の式について、$\boldsymbol{z}\_{t_1}, \boldsymbol{z}\_{t_2}$を変数扱いして線形化
         * $\hat{\boldsymbol{e}}\_{j,t\_1,t\_2}(\boldsymbol{z}\_a, \boldsymbol{z}\_b) \approx \hat{\boldsymbol{e}}\_{j,t\_1,t\_2}( \boldsymbol{z}\_{t\_1}, \boldsymbol{z}\_{t\_2}) + R\_{j,t\_1} (\boldsymbol{z}\_{j,a} - \boldsymbol{z}\_{j,t\_1} ) + R\_{j,t\_2} (\boldsymbol{z}\_{j,b} - \boldsymbol{z}\_{j,t\_2} )$
         * ここで
@@ -182,10 +186,81 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### マハラノビス距離を決める精度行列の導出（3/3）
+### マハラノビス距離を決める精度行列の導出（2/2）
 
-* 前ページ下の式から$Q_{j,t}$を$XY\theta$空間に写像すると次のように
-    * $\Sigma_{j,t_1,t_2} = R_{j,t_1} Q_{j,t_1} R_{j,t_1}^\top + R_{j,t_1} Q_{j,t_2} R_{j,t_1}^\top$
+* 前ページ下の式から$Q_{j,t}$を写像して$XY\theta$空間中の共分散行列に
+    * 共分散行列: $\Sigma_{j,t_1,t_2} = R_{j,t_1} Q_{j,t_1} R_{j,t_1}^\top + R_{j,t_1} Q_{j,t_2} R_{j,t_1}^\top$
         * ここで
             * $R\_{j,t\_1} = - \begin{pmatrix} \cos(\hat{\theta}\_{t\_1} + \varphi\_{t\_1}) & -\ell\_{j,t\_1}\sin(\hat{\theta}\_{t\_1} + \varphi\_{t\_1}) & 0\\\\ \sin(\hat{\theta}\_{t\_1} + \varphi\_{t\_1}) & \ell\_{j,t\_1}\cos(\hat{\theta}\_{t\_1} + \varphi\_{t\_1}) & 0\\\\ 0 & 1 & -1 \end{pmatrix}$
             * $R\_{j,t\_2} = \begin{pmatrix} \cos(\hat{\theta}\_{t\_2} + \varphi\_{t\_2}) & -\ell\_{j,t\_2}\sin(\hat{\theta}\_{t\_2} + \varphi\_{t\_2}) & 0\\\\ \sin(\hat{\theta}\_{t\_2} + \varphi\_{t\_2}) & \ell\_{j,t\_2}\cos(\hat{\theta}\_{t\_2} + \varphi\_{t\_2}) & 0\\\\ 0 & 1 & -1 \end{pmatrix}$
+* 精度行列: $\Omega\_{j,t_1,t_2} = \Sigma_{j,t_1,t_2}^{-1}$
+
+---
+
+### ノードを移動した時の残差の変化
+
+* 線形化
+    * $\boldsymbol{e}\_{j,t\_1,t\_2}(\boldsymbol{x}\_{t\_1}, \boldsymbol{x}\_{t\_2}) \approx \\\\ \boldsymbol{e}\_{j,t\_1,t\_2}(\hat{\boldsymbol{x}}\_{t\_1}, \hat{\boldsymbol{x}}\_{t\_2}) + \dfrac{\partial \boldsymbol{e}\_{j,t\_1,t\_2} } {\partial \boldsymbol{x}\_{t\_1}} \Big|\_{\boldsymbol{x}\_{t\_1} = \hat{\boldsymbol{x}}\_{t\_1}} (\boldsymbol{x}\_{t\_1} - \hat{\boldsymbol{x}}\_{t\_1}) + \dfrac{\partial \boldsymbol{e}\_{j,t\_1,t\_2} } {\partial \boldsymbol{x}\_{t\_2}} \Big|\_{\boldsymbol{x}\_{t\_2} = \hat{\boldsymbol{x}}\_{t\_2}} (\boldsymbol{x}\_{t\_2} - \hat{\boldsymbol{x}}\_{t\_2}) $
+* 差分の式に
+    * $\boldsymbol{e}\_{j,t\_1,t\_2}(\Delta \boldsymbol{x}\_{t\_1}, \Delta \boldsymbol{x}\_{t\_2}) \approx \hat{\boldsymbol{e}}\_{j,t\_1,t\_2} + B\_{j,t\_1} \Delta \boldsymbol{x}\_{t\_1} + B\_{j,t\_2} \Delta \boldsymbol{x}\_{t\_2}$
+        * ここで
+            * $ B\_{j,t\_1} = - \begin{pmatrix} 1 & 0 & -\ell\_{j,t\_1} \sin(\theta\_{t\_1} + \varphi\_{j,t\_1}) \\\\ 0 & 1 & \ell\_{j,t\_1} \cos(\theta\_{t\_1} + \varphi\_{j,t\_1})\\\\ 0 & 0  & 1\\\\ \end{pmatrix} $, $\quad B\_{j,t\_2} = \begin{pmatrix} 1 & 0 & -\ell\_{j,t\_2} \sin(\theta\_{t\_2} + \varphi\_{j,t\_2}) \\\\ 0 & 1 & \ell\_{j,t\_2} \cos(\theta\_{t\_2} + \varphi\_{j,t\_2})\\\\ 0 & 0  & 1\\\\ \end{pmatrix} $
+
+---
+
+### 最適化問題の解法
+
+* これで次の最適化問題が解ける 
+    * $\text{argmax}\_{\Delta\boldsymbol{x}\_{0:T}} J(\Delta\boldsymbol{x}\_{0:T})$
+        * ここで
+            * $J(\Delta\boldsymbol{x}\_{0:T}) \\\\ = \Delta\boldsymbol{x}\_{0}^\top \Omega\_0 \Delta\boldsymbol{x}\_{0} + \sum\_{(j,t\_1,t\_2) \in \textbf{I}\_{\textbf{e}\_\textbf{z}}} \left\\{\boldsymbol{e}\_{j,t\_1,t\_2}(\Delta\boldsymbol{x}\_{t\_1},\Delta\boldsymbol{x}\_{t\_2})\right\\}^\top \Omega\_{j,t\_1,t\_2} \left\\{ \boldsymbol{e}\_{j,t\_1,t\_2}(\Delta\boldsymbol{x}\_{t\_1},\Delta\boldsymbol{x}\_{t\_2})\right\\} \\\\ = \Delta\boldsymbol{x}\_{0}^\top \Omega\_0 \Delta\boldsymbol{x}\_{0} + \sum\_{(j,t\_1,t\_2) \in \textbf{I}\_{\textbf{e}\_\textbf{z}}} (\hat{\boldsymbol{e}}\_{j,t\_1,t\_2} + B\_{j,t\_1}\Delta\boldsymbol{x}\_{t\_1} + B\_{j,t\_2}\Delta\boldsymbol{x}\_{t\_2} )^\top \Omega\_{j,t\_1,t\_2} (\text{省略})$
+
+---
+
+### 解き方（1/4）
+
+
+* $J$の各項を$\Delta\boldsymbol{x}\_{[0:T]}$で表す
+    * $\Delta\boldsymbol{x}\_{[0:T]} = \begin{pmatrix} \Delta \boldsymbol{x}_0 \\\\ \Delta \boldsymbol{x}_1 \\\\ \vdots \\\\ \Delta \boldsymbol{x}_T \end{pmatrix}$
+* アンカーの項
+    * $\Delta\boldsymbol{x}\_{0}^\top \Omega\_0 \Delta\boldsymbol{x}\_{0} = \Delta\boldsymbol{x}\_{[0:T]}^\top \Omega^\*\_0 \Delta\boldsymbol{x}\_{[0:T]} $
+        * $\Omega^*_0 = \begin{pmatrix} \Omega_0 & O \\\\ O & O \end{pmatrix}$
+
+---
+
+### 解き方（2/4）
+
+* 仮想移動エッジの項
+    * $(\hat{\boldsymbol{e}}\_{j,t\_1,t\_2} + B\_{j,t\_1}\Delta\boldsymbol{x}\_{t\_1} + B\_{j,t\_2}\Delta\boldsymbol{x}\_{t\_2} )^\top \Omega\_{j,t\_1,t\_2} (\text{省略}) \\\\ = \Delta\boldsymbol{x}\_{[0:T]}^\top \Omega^*\_{j,t_1,t_2} \Delta\boldsymbol{x}\_{[0:T]} - 2 \Delta\boldsymbol{x}\_{[0:T]}^\top {\boldsymbol{\xi}}^\\ast\_{j,t_1,t_2} + \text{定数項}$ 
+        * ここで
+            * $\Omega^*\_{j,t_1,t_2} = \begin{pmatrix} \ddots \&  \&  \&  \&  \\\\ \& B\_{j,t\_1}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_1} \& \cdots \& B\_{j,t\_1}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_2} \&  \\\\ \& \vdots \& \ddots \& \vdots \\\\ \& B\_{j,t\_2}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_1} \& \cdots \& B\_{j,t\_2}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_2} \&  \\\\ \& \& \& \& \ddots \end{pmatrix}$
+            * ${\boldsymbol{\xi}}^\\ast\_{j,t_1,t_2} = - \begin{pmatrix} \vdots \\\\ B\_{j,t\_1}^\top \\\\ \vdots \\\\ B\_{j,t\_2}^\top \\\\ \vdots \end{pmatrix} \Omega\_{j,t\_1,t\_2} \hat{\boldsymbol{e}}\_{j,t\_1,t\_2}$
+
+
+---
+
+### 解き方（3/4）
+
+* 最適化の式を$\Delta\boldsymbol{x}\_{[0:T]}$で表す
+    * $J(\Delta\boldsymbol{x}\_{0:T}) = \eta + \Delta\boldsymbol{x}\_{[0:T]}^\top \left( \Omega\_0^* + \sum\_{(j,t\_1,t\_2) \in \textbf{I}\_{\textbf{e}\_\textbf{z}}} \Omega\_{j,t\_1,t\_2}^* \right) \Delta\boldsymbol{x}\_{[0:T]} \\\\ + \Delta\boldsymbol{x}\_{[0:T]}^\top \sum\_{(j,t\_1,t\_2) \in\textbf{I}\_{\textbf{e}\_\textbf{z}}} \boldsymbol{\xi}\_{j,t\_1,t\_2}^*$
+* $\Omega\_0^\ast, \Omega\_{j,t\_1,t\_2}^\ast, \boldsymbol{\xi}\_{j,t\_1,t\_2}^\ast$をまとめる
+    * $\Omega = \Omega\_0^\ast + \sum\_{(j,t\_1,t\_2) \in \textbf{I}\_{\textbf{e}\_\textbf{z}}} \Omega\_{j,t\_1,t\_2}^\ast$
+    * $\boldsymbol{\xi} = \sum\_{(j,t\_1,t\_2) \in\textbf{I}\_{\textbf{e}\_\textbf{z}}} \boldsymbol{\xi}\_{j,t\_1,t\_2}^*$
+* 最適化の式はこうなる
+    * $J(\Delta\boldsymbol{x}\_{0:T}) = \eta + \Delta\boldsymbol{x}\_{[0:T]}^\top \Omega \Delta\boldsymbol{x}\_{[0:T]} -2 \Delta\boldsymbol{x}\_{[0:T]}^\top \boldsymbol{\xi}$
+        * ガウス分布の指数部と同じ形
+        * 分布の中央に$\Delta\boldsymbol{x}\_{[0:T]}$があると$J$が最大に
+
+---
+
+### 解き方（4/4）
+
+* $J$が最大になる$\Delta\boldsymbol{x}\_{[0:T]}$
+    * $\Delta\boldsymbol{x}_{[0:T]}^* = \Omega^{-1}\boldsymbol{\xi}$<br />&nbsp;
+* ポーズ調整後のノード
+    * $\boldsymbol{x}\_{[0:T]}^* = \hat{\boldsymbol{x}}\_{[0:T]} + \Omega^{-1}\boldsymbol{\xi}$<br />&nbsp; 
+* 線形化の影響で$\boldsymbol{x}\_{[0:T]}^\ast$には改善の余地があるので、再度$\boldsymbol{x}\_{[0:T]}^\ast$を$\hat{\boldsymbol{x}\_{0:T}}$に設定してポーズ調整を繰り返す
+
+---
+
+### 地図の算出
