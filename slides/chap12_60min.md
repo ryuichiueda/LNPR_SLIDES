@@ -180,7 +180,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 価値反復の実装1（状態空間の構成）
+### 状態空間の構成
 
 * $XY\theta\sigma$空間の4次元
     * $XY\theta$空間: 10, 11章と同じ
@@ -193,7 +193,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 価値反復の実装1（終端状態）
+### 終端状態
 
 * $XY\theta$空間では10章と同じ終端状態
 * $\sigma$軸では最も$\sigma$の小さい区分のみを終端状態とする
@@ -201,7 +201,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 価値反復の実装1<br />（移動による状態遷移）
+### 移動による状態遷移
 
 * とりあえず観測は無視して移動による$\sigma$の変化を求める
 * カルマンフィルタの式から
@@ -212,7 +212,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 価値反復の実装1<br />（観測による状態遷移）
+### 観測による状態遷移
 
 * 観測による$\sigma$の減少量を求める
     * 全状態で求める
@@ -223,9 +223,36 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-<img style="color:red" src="../figs/amdp_back.gif" />
+### 価値反復の実行
+
+* [価値反復のコード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_pomdp/amdp6.ipynb)
+    * 行動にバックを追加
+    * 注意: まだ報酬をPOMDP化していない
+* ランドマークを観測しながらバックでゴールに向かう
+    * <span style="color:red">観測しやすさが方策に反映</span>
+
+<img width="30%" style="color:red" src="../figs/amdp_back.gif" />
 
 ---
 
-<img style="color:red" width="45%" src="../figs/amdp.gif" />
-<img style="color:red" width="45%" src="../figs/amdp2.gif" />
+### 信念状態に対する報酬
+
+* 信念分布が広い時に「水たまりに入っているかもしれない」という考えが価値反復の計算に反映されるようにする
+* 状態に対する報酬モデルを信念分布に対するモデルに
+   * 報酬モデル:
+        * $r(\boldsymbol{x}_{t-1}, a_t, \boldsymbol{x}_t) = -\Delta t - cw(\boldsymbol{x}_t)\Delta t$
+   * 信念に対する報酬モデル:
+        * $r(b\_{t-1}, a\_t, b\_t) = \Big\langle r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x})\Big\rangle\_{p(\boldsymbol{x}\_{t-1}, \boldsymbol{x})} = -\Delta t - c\Delta t \Big\langle w(\boldsymbol{x}) \Big\rangle\_{b\_t(\boldsymbol{x})}$
+
+---
+
+### 価値反復結果
+
+* これで完成
+    * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_pomdp/amdp7.ipynb)
+* 事前に水たまりを避けるようになる
+    * 水たまりの張り出しの少ない右回りのルートをとる頻度が高くなる
+
+<img style="color:red" width="35%" src="../figs/amdp.gif" />
+<img style="color:red" width="35%" src="../figs/amdp2.gif" />
+
