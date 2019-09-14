@@ -37,7 +37,22 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * 例えば次のように表す
     * $p(z | \mu, \lambda) = \mathcal{N}(z | \mu, \lambda^{-1})$
-        * $\lambda$は精度
+        * $\lambda$は精度<br />$ $
 * $\mu$や$\lambda$にも不確かさがある
     * $\mu$（平均値）は200[mm]とは限らない
-    * $\sqrt{1/\lambda}$（標準偏差）はセンサの性能を考えると$1\sim 10$[mm]くらいだろう
+    * $\sqrt{1/\lambda}$（標準偏差）はセンサの性能を考えると$1\sim 10$[mm]くらいだろう<br />$ $
+* つまり
+    * <span style="color:red">$\mu, \lambda$も確率分布$p(\mu, \lambda)$で表現</span>
+    * <span style="color:red">$\mu, \lambda$は推定対象</span>
+
+---
+
+### 確率分布$p(\mu, \lambda)$の更新
+
+* センサ値が$z_0, z_1, \dots$と入ってきた
+* $p(\mu, \lambda)$はどうなるか？$\rightarrow$ベイズの定理で更新できる
+    * センサ値$z_0$を反映すると、次のようになる
+        * $p(\mu, \lambda | z_0) = \dfrac{p(z_0 | \mu, \lambda)p(\mu, \lambda)}{p(z_0)} = \eta p(z_0 | \mu, \lambda)p(\mu, \lambda)$ 
+* この式でセンサ値を次々に反映していけるが・・・
+   * $p(\mu, \lambda | z_0)$と$p(\mu, \lambda)$が同じ確率モデルで表せないと面倒
+        * とりあえず同じになる分布を仮定
