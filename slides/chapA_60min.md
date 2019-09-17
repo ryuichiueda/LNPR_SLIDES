@@ -159,3 +159,7 @@ $\rightarrow$ガンマ分布の性質から$\alpha_0 = 1, \beta_0 = 2$
 <img width="30%" src="../figs/bayes_inference_n5.png" />
 <img width="30%" src="../figs/bayes_inference_fin.png" />
 
+
+---
+
+### A.2 変分推論
