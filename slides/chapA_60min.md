@@ -149,4 +149,13 @@ $\rightarrow$ガンマ分布の性質から$\alpha_0 = 1, \beta_0 = 2$
 
 ---
 
-### コード
+### ベイズ推論の実装
+
+* 左図: 共役事前分布からセンサ値の分布を一つドロー（[コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_inference/gauss_gamma0.ipynb)）
+* 右図: センサ値を5個入力してセンサ値の分布を一つドロー（[コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_inference/gauss_gamma1.ipynb)）
+* 右図: センサ値をすべて入力してセンサ値の分布を一つドロー（[コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_inference/gauss_gamma2.ipynb)）
+
+<img width="30%" src="../figs/bayes_inference_init.png" />
+<img width="30%" src="../figs/bayes_inference_n5.png" />
+<img width="30%" src="../figs/bayes_inference_fin.png" />
+
