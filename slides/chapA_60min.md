@@ -70,16 +70,83 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
    * $p(\mu, \lambda | z_0)$と$p(\mu, \lambda)$が同じ確率モデルで表せないと面倒
         * カルマンフィルタのように線形化の山になるし、それでいい保証もない
         * とりあえず同じになる分布を仮定
+   * $p(\mu, \lambda)$と$p(\mu, \lambda | z_0)$をそれぞれ<span style="color:red">事前分布</span>、<span style="color:red">事後分布</span>と呼ぶ
 
 ---
 
-### ガウス-ガンマ分布
+### 共役な分布
 
 * 信念を<span style="color:red">ガウス-ガンマ分布</span>で作る
     * $p(\mu, \lambda) = b_0(\mu, \lambda | \mu_0, \zeta_0, \alpha_0, \beta_0) = \mathcal{N}(\mu | \mu_0, (\zeta_0\lambda)^{-1} ) \text{Gam}(\lambda | \alpha_0, \beta_0)$
          * $\mu_0, \zeta_0, \alpha_0, \beta_0$: 信念分布のパラメータ
          * $\text{Gam}(\lambda |\alpha,\beta) = \dfrac{1}{\Gamma(\alpha)}\beta^\alpha \lambda^{\alpha-1} e^{-\beta\lambda}$
          * $\Gamma(\alpha) = \int_0^{\infty} t^{\alpha-1}e^{-t}dt$<br />$ $
-    * $p(z_0 | \mu, \lambda)p(\mu, \lambda)$がガウス分布の場合、ベイズの定理を何度適用してもガウス-ガンマ分布に
+* $p(z_0 | \mu, \lambda)$がガウス分布の場合、ベイズの定理を何度適用してもガウス-ガンマ分布に
+    * $b_0(\mu, \lambda | \mu_0, \zeta_0, \alpha_0, \beta_0)$: ガウス分布に対する<span style="color:red">共役事前分布</span>
 
 
+---
+
+### 事前分布の作成
+
+* $b_0(\mu, \lambda | \mu_0, \zeta_0, \alpha_0, \beta_0) = \mathcal{N}(\mu | \mu_0, (\zeta_0\lambda)^{-1} ) \text{Gam}(\lambda | \alpha_0, \beta_0)$の$\mu_0, \zeta_0, \alpha_0, \beta_0$に適切な値を入れる
+    * $\sqrt{1/\lambda}$（標準偏差）はセンサの性能を考えると$1\sim 10$[mm]くらいだろう<br />
+$\rightarrow 10^{-2} < \lambda \le 1$<br />
+$\rightarrow \lambda$の平均はおよそ$0.5$、分散はおよそ$0.5^2$<br />
+$\rightarrow$ガンマ分布の性質から$\alpha_0 = 1, \beta_0 = 2$
+    * $\mu$（平均値）は200[mm]くらい$\rightarrow \mu_0 = 200$
+    * $\mu$のばらつきは$\sqrt{1/\lambda}$としましょう$\rightarrow\zeta_0 = 1$
+
+---
+
+### 事後分布の導出（1/3）
+
+* ガウス-ガンマ分布でベイズの定理の式を表現
+    * $\mathcal{N}(\mu | \mu_1, (\zeta_1\lambda)^{-1} ) \text{Gam}(\lambda | \alpha_1, \beta_1) \\\\ = \eta \mathcal{N}(z_0 | \mu, \lambda^{-1}) \mathcal{N}(\mu | \mu_0, (\zeta_0\lambda)^{-1} ) \text{Gam}(\lambda | \alpha_0, \beta_0)$
+* さらにセンサ値$z_1, z_2, z_N$を反映していく
+    * $\mathcal{N}(\mu | \mu_N, (\zeta_N\lambda)^{-1} ) \text{Gam}(\lambda | \alpha_N, \beta_N) \\\\ = \eta \prod_{i=0}^{N-1} \mathcal{N}(z_i | \mu, \lambda^{-1}) \mathcal{N}(\mu | \mu_0, (\zeta_0\lambda)^{-1} ) \text{Gam}(\lambda | \alpha_0, \beta_0)$
+
+---
+
+### 事後分布の導出（2/3）
+
+* 右辺のガウス分布を整理（テキスト参照のこと）
+    * $\prod\_{i=0}^{N-1} \mathcal{N}(z\_i | \mu, \lambda^{-1})\mathcal{N}(\mu | \mu\_0, (\zeta\_0\lambda)^{-1} )  = \cdots \\\\ = \\mathcal{N} \\left( \\mu \\Bigg| \\dfrac{1}{N+\\zeta_0}\\sum_{i=0}^{N-1}z_i + \\dfrac{\\zeta_0}{N+\\zeta_0} \\mu_0, [(N + \\zeta_0)\\lambda]^{-1} \\right) \\eta \\lambda^{N/2}\\exp\\left( -\\dfrac{1}{2}\\lambda U \\right)$
+        * ここで、$U = \\sum_{i=0}^{N-1}z_i^2 + \\zeta_0\\mu_0^2 - (N+\\zeta_0) \\left(\\dfrac{1}{N+\\zeta_0}\\sum_{i=0}^{N-1}z_i + \\dfrac{\\zeta_0}{N+\\zeta_0} \\mu_0 \\right)^2$
+* 上の結果と事後分布のガウス分布の部分$\mathcal{N}(\mu | \mu_N, (\zeta_N\lambda)^{-1} )$を比較すると
+    * $\mu_N = \dfrac{1}{N+\zeta_0}\sum_{i=0}^{N-1}z_i + \dfrac{\zeta_0}{N+\zeta_0} \mu_0$
+    * $\zeta_N = N + \zeta_0$
+    * $U = \sum_{i=0}^{N-1}z_i^2 + \zeta_0\mu_0^2 - \zeta_N\mu_N^2$
+
+---
+
+### 事後分布の導出（3/3）
+
+* 今度はガンマ分布同士を比較
+    * $\text{Gam}(\lambda | \alpha_N, \beta_N) = \eta \lambda^{N/2} \exp\left( -\dfrac{1}{2}\lambda U \right) \text{Gam}(\lambda | \alpha_0, \beta_0) \\\\
+\cdots \\\\
+\\lambda^{\\alpha_N-1} \\exp(-\\beta_N\\lambda) = \\eta \\lambda^{N/2+\\alpha_0-1} \\exp\\left\\{-\\left( \\dfrac{1}{2} U + \\beta_0 \\right)\\lambda\\right\\}$
+* 両辺の比較により
+    * $\alpha_N = \dfrac{N}{2} + \alpha_0$
+    * $\beta_N = \dfrac{1}{2}U + \beta_0 = \dfrac{1}{2} \left( \sum_{i=0}^{N-1}z_i^2 + \zeta_0\mu_0^2 \right) - \dfrac{1}{2}\zeta_N\mu_N^2 + \beta_0$
+
+---
+
+### 事後分布のパラメータ（まとめ）
+
+* $\mathcal{N}(\mu | \mu_N, (\zeta_N\lambda)^{-1} ) \text{Gam}(\lambda | \alpha_N, \beta_N)$
+    * $\zeta_N = N + \zeta_0$
+        * $\zeta_N$: $\zeta_0$個分水増しされたセンサ値の数
+    * $\mu_N = \dfrac{1}{N+\zeta_0}\sum_{i=0}^{N-1}z_i + \dfrac{\zeta_0}{N+\zeta_0} \mu_0$
+        * $\mu_N$: $\zeta_0$個のセンサ値$\mu_0$で水増しされたセンサ値の平均値
+    * $\alpha_N = 2/N + \alpha_0$
+        * センサ値一つに対して$0.5$ずつ増える何かの値
+    * $\beta_N = \dfrac{1}{2}U + \beta_0 = \dfrac{1}{2} \left( \sum_{i=0}^{N-1}z_i^2 + \zeta_0\mu_0^2 \right) - \dfrac{1}{2}\zeta_N\mu_N^2 + \beta_0$
+        * $\beta_N$: 水増ししたセンサ値から求めた分散に$\zeta_N/2$をかけて$\beta_0$を足したもの
+        * $\lambda$の平均値$\alpha_N/\beta_N$は、$\beta_0$を無視すると、センサ値から求めた分散の逆数を$\zeta_N/2$で割って$\alpha_N$をかけたもの$\rightarrow$ほぼセンサ値から求めた分散の逆数（つまりセンサ値の精度）
+        * $\lambda$の分散$\alpha_N/\beta_N^2$は小さくなって$\lambda$の値が確定していく
+        * $\zeta_N\lambda$は増え続け、$\mu$の精度が高くなっていく
+
+---
+
+### コード
