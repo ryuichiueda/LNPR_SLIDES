@@ -211,14 +211,35 @@ $\rightarrow$ガンマ分布の性質から$\alpha_0 = 1, \beta_0 = 2$
 
 ---
 
-### パラメータの分布のモデル化
+### パラメータの分布のモデル化（1/2）
 
 * $\\mu_{0:K-1}, \\lambda_{0:K-1}, \\pi_{0:K-1}$を$\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}$と置いて、$\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}$の事前分布を考える
     * まず、$\mu_k, \lambda_k$はガウス-ガンマ分布に従うと仮定
         * $\lambda_k \sim \text{Gam}(\lambda_k | \alpha_k, \beta_k)$
         * $\mu_k \sim \mathcal{N}(\mu_k | \mu'_k, (\zeta_k \lambda_k)^{-1} )$ 
     * これで、全ガウス分布のパラメータの事前分布はガウス-ガンマ分布の積になり、
-        * $p(\boldsymbol{\mu}, \boldsymbol{\lambda} | \boldsymbol{\mu}', \boldsymbol{\zeta}, \boldsymbol{\alpha}, \boldsymbol{\beta}) = p(\boldsymbol{\mu} | \boldsymbol{\lambda}, \boldsymbol{\mu}', \boldsymbol{\zeta}, \boldsymbol{\alpha}, \boldsymbol{\beta})p(\boldsymbol{\lambda} |  \boldsymbol{\mu}', \boldsymbol{\zeta}, \boldsymbol{\alpha}, \boldsymbol{\beta})\\\\ = p(\boldsymbol{\mu} | \boldsymbol{\lambda}, \boldsymbol{\mu}', \boldsymbol{\zeta})p(\boldsymbol{\lambda} |  \boldsymbol{\alpha}, \boldsymbol{\beta}) \\\\ = \big\\{\prod_{k=0}^{K-1} \mathcal{N}(\mu_k | \mu'_k, (\zeta_k \lambda_k)^{-1} ) \big\\}$ 
+        * $p(\boldsymbol{\mu}, \boldsymbol{\lambda} | \boldsymbol{\mu}', \boldsymbol{\zeta}, \boldsymbol{\alpha}, \boldsymbol{\beta}) = p(\boldsymbol{\mu} | \boldsymbol{\lambda}, \boldsymbol{\mu}', \boldsymbol{\zeta}, \boldsymbol{\alpha}, \boldsymbol{\beta})p(\boldsymbol{\lambda} |  \boldsymbol{\mu}', \boldsymbol{\zeta}, \boldsymbol{\alpha}, \boldsymbol{\beta}) = p(\boldsymbol{\mu} | \boldsymbol{\lambda}, \boldsymbol{\mu}', \boldsymbol{\zeta})p(\boldsymbol{\lambda} |  \boldsymbol{\alpha}, \boldsymbol{\beta}) \\\\ = \big\\{\prod_{k=0}^{K-1} \mathcal{N}(\mu_k | \mu'_k, (\zeta_k \lambda_k)^{-1} ) \big\\}$ 
 
-    $\cdot \\{\prod_{k=0}^{K-1} \text{Gam}(\lambda_k | \alpha_k, \beta_k) \\}$
+    $\cdot \\{\prod_{k=0}^{K-1} \text{Gam}(\lambda_k | \alpha_k, \beta_k) \\}$となる
+        * 太字は$k=0,1,\dots,K-1$のパラメータをつなげたベクトル
 
+---
+
+### パラメータの分布のモデル化（2/2）
+
+* 今度は$\boldsymbol{\pi} = \pi_{0:K-1}$の事前分布を考える
+    * $\pi_{0:K-1}$を足すと1$\rightarrow$<span style="color:red">ディリクレ分布</span>
+        * $\boldsymbol{\pi} \sim \text{Dir}(\boldsymbol{\pi} | \boldsymbol{\tau}) = \dfrac{\Gamma(\sum_{k=0}^{K-1}\tau_k)} {\prod_{k=0}^{K-1}\Gamma(\tau_k)} \prod_{k=0}^{K-1} \pi_k^{\tau_k-1} = \eta \prod_{k=0}^{K-1} \pi_k^{\tau_k-1}$<br />$ $
+* これで$\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}$の事前分布は次のように
+    * $p(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) = p(\boldsymbol{\mu}, \boldsymbol{\lambda} | \boldsymbol{\pi}) p(\boldsymbol{\pi}) \\\\ = p(\boldsymbol{\mu}, \boldsymbol{\lambda})p(\boldsymbol{\pi}) \\\\ =
+ p(\boldsymbol{\mu} | \boldsymbol{\lambda})p(\boldsymbol{\lambda})p(\boldsymbol{\pi}) \\\\ = \left\\{ \prod\_{k=0}^{K-1} \mathcal{N}(\mu\_k | \mu'\_k, (\zeta\_k \lambda\_k)^{-1} )  \right\\} \left\\{\prod\_{k=0}^{K-1} \text{Gam}(\lambda\_k | \alpha\_k, \beta\_k)  \right\\} \text{Dir}(\boldsymbol{\pi} | \boldsymbol{\tau})$
+
+---
+
+### ベイズの定理の適用は無理
+
+* センサ値$z_0$が入ったときに事前分布がどう変化するか
+    * $p(\\boldsymbol{\\mu}, \\boldsymbol{\\lambda}, \\boldsymbol{\\pi} | z_0) = \\eta \\left\\{ \\sum_{k=0}^{K-1} \\pi_k \\mathcal{N}(z_0 | \\mu_k, \\lambda_k^{-1}) \\right\\} p(\\boldsymbol{\\mu}, \\boldsymbol{\\lambda}, \\boldsymbol{\\pi} )$
+    * さらに$z_1, z_2, \dots$とセンサ値を反映していくと波括弧が増えていく
+        * A.1と違って長大な多項式に
+        * 計算ができない
