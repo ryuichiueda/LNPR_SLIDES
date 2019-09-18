@@ -243,3 +243,42 @@ $\rightarrow$ガンマ分布の性質から$\alpha_0 = 1, \beta_0 = 2$
     * さらに$z_1, z_2, \dots$とセンサ値を反映していくと波括弧が増えていく
         * A.1と違って長大な多項式に
         * 計算ができない
+
+---
+
+### KL情報量を使ったアプローチ
+
+* 潜在変数も含めた事後分布を考え、次のように近似
+    * $p(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}, \boldsymbol{c}\_{0:N-1} | z\_{0:N-1}) \approx b\_\text{c}(\boldsymbol{c}\_{0:N-1})b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi})$<br />$ $
+* この近似の両辺の不一致度をKL情報量ではかる
+    * $D_\text{KL}(b_\text{c}b_\text{d}||p) \\\\ = \big\langle \log b\_\text{c}(\boldsymbol{c}\_{0:N-1}) \big\rangle\_{b\_\text{c}} + \big\langle \log b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) \big\rangle\_{b\_\text{d}} \\\\ - \big\langle \log p(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}, \boldsymbol{c}\_{0:N-1} | z\_{0:N-1}) \big\rangle\_{b\_\text{c}b\_\text{d}} $
+    * <span style="color:red">$b_c$と$b_d$を交互に変化させてこの値をゼロに近づけて事後分布を求めることを考える</span>
+
+---
+
+### $b_d$を固定してKL情報量を最小にする<br />$b_c$を導出
+
+
+* $b_d$を固定してKL情報量の式を変形
+    * $D_\text{KL}(b_\text{c} b_\text{d}||p) \\\\ = \big\langle \log b\_\text{c}(\boldsymbol{c}\_{0:N-1}) \big\rangle\_{b\_\text{c}} - \big\langle \log p(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}, \boldsymbol{c}\_{0:N-1} | z\_{0:N-1}) \big\rangle\_{b\_\text{c}b\_\text{d}}  + \text{定数} \\\\ \cdots  =D\_{\text{KL}}\big( b\_\text{c} \big|\big| \eta \exp \big\langle  \log p(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}, \boldsymbol{c}\_{0:N-1} | z\_{0:N-1}) \big\rangle\_{b\_\text{d}} \big) + \text{定数}$
+* 最後の式のKL情報量が最小になる時
+    * 二つの分布が一致する時
+        * $\log b\_\text{c}(\boldsymbol{c}\_{0:N-1}) = \big\langle  \log p(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}, \boldsymbol{c}\_{0:N-1} | z\_{0:N-1}) \big\rangle\_{b\_\text{d}} + \eta \\\\ = \left\langle  \log \dfrac{ p(z\_{0:N-1}, \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi})} {p(z\_{0:N-1})} \right\rangle\_{b\_\text{d}} + \eta \\\\ = \big\langle \log p(z\_{0:N-1}, \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) \big\rangle\_{b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi})} + \eta$
+
+
+---
+
+### $b_c$を固定してKL情報量を最小にする<br />$b_d$を導出
+
+* 元のKL情報量の式が対称なので
+    * $\log b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) = \big\langle  \log p(z\_{0:N-1}, \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) \big\rangle\_{b\_\text{c}(\boldsymbol{c}\_{0:N-1})} + \eta$
+
+---
+
+### 事後分布の求め方<br />（前の2つのスライドのまとめ）
+
+* 次の2つの式で潜在変数の分布と、混合ガウス分布のパラメータを交互に更新
+    * $\log b\_\text{c}(\boldsymbol{c}\_{0:N-1}) = \big\langle \log p(z\_{0:N-1}, \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) \big\rangle\_{b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi})} + \eta$
+        * 混合ガウス分布を固定して潜在変数の分布を更新
+    * $\log b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) = \big\langle  \log p(z\_{0:N-1}, \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) \big\rangle\_{b\_\text{c}(\boldsymbol{c}\_{0:N-1})} + \eta$
+        * 潜在変数の分布を固定して混合ガウス分布のパラメータを更新
