@@ -282,3 +282,58 @@ $\rightarrow$ガンマ分布の性質から$\alpha_0 = 1, \beta_0 = 2$
         * 混合ガウス分布を固定して潜在変数の分布を更新
     * $\log b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) = \big\langle  \log p(z\_{0:N-1}, \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) \big\rangle\_{b\_\text{c}(\boldsymbol{c}\_{0:N-1})} + \eta$
         * 潜在変数の分布を固定して混合ガウス分布のパラメータを更新
+
+---
+
+### 潜在変数の分布（1/4）
+
+* この関係を使って$b_c$を求める
+    * $p(z\_{0:N-1}, \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) = p(z\_{0:N-1}, \boldsymbol{c}\_{0:N-1} | \boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) p(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) \\\\ = p(z\_{0:N-1} | \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) p(\boldsymbol{c}\_{0:N-1} | \boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) p(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) \\\\ = p(z\_{0:N-1} | \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}) p(\boldsymbol{c}\_{0:N-1} | \boldsymbol{\pi}) p(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) \\\\ = p(z\_{0:N-1} | \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}) p(\boldsymbol{c}\_{0:N-1} | \boldsymbol{\pi}) p(\boldsymbol{\mu} | \boldsymbol{\lambda})p(\boldsymbol{\lambda})p(\boldsymbol{\pi})$
+* 前のスライドの$\log b\_\text{c}$の式に代入
+    * $\log b\_\text{c}(\boldsymbol{c}\_{0:N-1}) \\\\ = \big\langle \log \{ p(z\_{0:N-1} | \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}) p(\boldsymbol{c}\_{0:N-1} | \boldsymbol{\pi}) p(\boldsymbol{\mu} | \boldsymbol{\lambda})p(\boldsymbol{\lambda})p(\boldsymbol{\pi}) \} \big\rangle\_{b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi})} + \eta \\\\ = \big\langle \log p(z\_{0:N-1} | \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}) + \log p(\boldsymbol{c}\_{0:N-1} | \boldsymbol{\pi}) \big\rangle\_{b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi})} + \eta$
+
+---
+
+### 潜在変数の分布（2/4）
+
+* $\boldsymbol{\pi}$が$\boldsymbol{\mu}, \boldsymbol{\lambda}$と独立だと仮定して$b_\text{d} = b(\boldsymbol{\mu}, \boldsymbol{\lambda})b(\boldsymbol{\pi})$と分解
+    * $\log b\_\text{c}(\boldsymbol{c}\_{0:N-1})  \\\\ =  \big\langle \log p(z\_{0:N-1} | \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}) + \log p(\boldsymbol{c}\_{0:N-1} | \boldsymbol{\pi}) \big\rangle\_{b(\boldsymbol{\mu}, \boldsymbol{\lambda})b(\boldsymbol{\pi})} + \eta  \\\\ =  \big\langle \log p(z\_{0:N-1} | \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}) \big\rangle\_{b(\boldsymbol{\mu}, \boldsymbol{\lambda})} + \big\langle \log p(\boldsymbol{c}\_{0:N-1} | \boldsymbol{\pi}) \big\rangle\_{b(\boldsymbol{\pi})} + \eta$<br />$ $
+* さらにセンサ値ごとの式に分解
+    * $\cdots = \left\langle \log \prod\_{i=0}^{N-1} p(z\_i | \boldsymbol{c}\_i, \boldsymbol{\mu}, \boldsymbol{\lambda}) \right\rangle\_{b(\boldsymbol{\mu}, \boldsymbol{\lambda})} + \left\langle \log \prod\_{i=0}^{N-1} p(\boldsymbol{c}\_i | \boldsymbol{\pi}) \right\rangle\_{b(\boldsymbol{\pi})} + \eta \\\\ = \sum\_{i=0}^{N-1} \big\langle \log p(z\_i | \boldsymbol{c}\_i, \boldsymbol{\mu}, \boldsymbol{\lambda}) \big\rangle\_{b(\boldsymbol{\mu}, \boldsymbol{\lambda})} + \sum\_{i=0}^{N-1} \big\langle \log p(\boldsymbol{c}\_i | \boldsymbol{\pi}) \big\rangle\_{b(\boldsymbol{\pi})} + \eta$
+
+---
+
+### 潜在変数の分布（3/4）
+
+* さらに分布の式を代入（$c\_{i,k}$は$\boldsymbol{c}_i$の$k$番目の元）
+    * $\cdots \\\\ = \sum\_{i=0}^{N-1} \big\langle \log \prod\_{k=0}^{K-1} \mathcal{N}(z\_i | \mu\_k, \lambda\_k^{-1})^{c\_{i,k}} \big\rangle\_{b(\boldsymbol{\mu}, \boldsymbol{\lambda})} \\\\ + \sum\_{i=0}^{N-1} \big\langle \log \prod\_{k=0}^{K-1}\pi\_k^{c\_{i,k}} \big\rangle\_{b(\boldsymbol{\pi})} + \eta \\\\ = \sum\_{i=0}^{N-1} \sum\_{k=0}^{K-1} c\_{i,k} \Big\\{ \dfrac{1}{2} \big\langle \log \lambda_k \big\rangle\_{b(\mu_k, \lambda_k) } - \dfrac{1}{2} \big\langle \lambda_k(z\_i - \mu_k)^2 \big\rangle\_{b(\mu_k, \lambda_k) } \\\\ + \big\langle \log \pi_k \big\rangle\_{b(\boldsymbol{\pi})} \big\\} + \eta$
+* 波括弧の中の式を$\rho\_{i,k}$とおくと
+    * $\log b\_\text{c}(\boldsymbol{c}\_{0:N-1}) = \sum\_{i=0}^{N-1} \sum\_{k=0}^{K-1} c\_{i,k} \log \rho\_{i,k} + \eta  = \cdots \\\\ = \log \prod\_{i=0}^{N-1} \prod\_{k=0}^{K-1} \rho\_{i,k}^{c\_{i,k}} + \eta$
+
+
+---
+
+### 潜在変数の分布（4/4）
+
+* したがって
+    * $b\_\text{c}(\boldsymbol{c}\_{0:N-1}) = e^\eta \prod\_{i=0}^{N-1} \prod\_{k=0}^{K-1} \rho\_{i,k}^{c\_{i,k}}$
+    * $b(\boldsymbol{c}\_i) = \eta' \prod\_{k=0}^{K-1} \rho\_{i,k}^{c\_{i,k}}$<br />$ $
+* さらに$r\_{i,k} = \rho\_{i,k} \big/ \sum_{k=0}^{K-1} \rho\_{i,k}$とおくと
+    * $b(\boldsymbol{c}\_i) = \prod\_{k=0}^{K-1} r\_{i,k}^{c\_{i,k}}$（カテゴリカル分布）
+    * $b\_\text{c}(\boldsymbol{c}\_{0:N-1}) = \prod\_{i=0}^{N-1} \prod\_{k=0}^{K-1} r\_{i,k}^{c\_{i,k}}$<br />$ $
+* $r\_{i,k}$: <span style="color:red">負担率</span>
+    * センサ値$z_i$が$k$番目のガウス分布から生成されている確率
+    * まだ求めることはできない
+        * $\rho\_{i,k}$中の$b(\mu_k,\lambda_k)$や$b(\boldsymbol{\pi})$を求める必要あり
+
+---
+
+### とりあえず負担率を初期化しておく
+
+* [コード（セル2）](http://localhost:8888/notebooks/section_inference/variational_inference1.ipynb)
+    * 次のように初期化している
+        * クラスタ数を$K=2$とする
+        * センサ値を小さいグループと大きいグループに分ける
+        * 小さいグループのセンサ値$z_i$の負担率を$r\_{i,0} = 1, r\_{i,1} = 0$に
+        * 大きいグループのセンサ値$z_i$の負担率を$r\_{i,0} = 0, r\_{i,1} = 1$に
+
