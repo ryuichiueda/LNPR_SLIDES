@@ -203,22 +203,12 @@ $\rightarrow$ガンマ分布の性質から$\alpha_0 = 1, \beta_0 = 2$
 
 * まとめると、$z$と$\boldsymbol{c}$の同時分布は
     * $p(z, \\boldsymbol{c} | \\mu_{0:K-1}, \\lambda_{0:K-1}, \\pi_{0:K-1}) = \\left\\{ \\prod_{k=0}^{K-1}\\mathcal{N}(z | \\mu_k, \\lambda_k^{-1})^{c_k} \\right\\} \\left\\{ \\prod_{k=0}^{K-1}\\pi_k^{c_k} \\right\\} \\\\ = \\prod_{k=0}^{K-1} \\left\\{ \\mathcal{N}(z | \\mu_k, \\lambda_k^{-1})^{c_k} \\pi_k^{c_k} \\right\\}$<br />$ $
-* $z$の分布は
-    * $p(z | \\mu_{0:K-1}, \\lambda_{0:K-1}, \\pi_{0:K-1}) = \\sum_{\\boldsymbol{c} \\in \\mathcal{C}} \\prod_{k=0}^{K-1} \\left\\{ \\mathcal{N}(z | \\mu_k, \\lambda_k^{-1})^{c_k} \\pi_k^{c_k} \\right\\} \\\\ = \\sum_{k=0}^{K-1} \\pi_k \\mathcal{N}(z | \\mu_k, \\lambda_k^{-1})$
 * 補足
-    * $\boldsymbol{c}$は直接観測されていないので<span style="color:red">潜在変数</span>と呼ばれる
-    * $p(z | \\mu_{0:K-1}, \\lambda_{0:K-1}, \\pi_{0:K-1})$はガウス分布の重み付き和なので<span style="color:red">混合ガウス分布</span>と呼ばれる
+    * $\boldsymbol{c}$は直接
+
 
 ---
 
-### パラメータの分布のモデル化
+### 
 
-* $\\mu_{0:K-1}, \\lambda_{0:K-1}, \\pi_{0:K-1}$を$\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}$と置いて、$\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}$の事前分布を考える
-    * まず、$\mu_k, \lambda_k$はガウス-ガンマ分布に従うと仮定
-        * $\lambda_k \sim \text{Gam}(\lambda_k | \alpha_k, \beta_k)$
-        * $\mu_k \sim \mathcal{N}(\mu_k | \mu'_k, (\zeta_k \lambda_k)^{-1} )$ 
-    * これで、全ガウス分布のパラメータの事前分布はガウス-ガンマ分布の積になり、
-        * $p(\boldsymbol{\mu}, \boldsymbol{\lambda} | \boldsymbol{\mu}', \boldsymbol{\zeta}, \boldsymbol{\alpha}, \boldsymbol{\beta}) = p(\boldsymbol{\mu} | \boldsymbol{\lambda}, \boldsymbol{\mu}', \boldsymbol{\zeta}, \boldsymbol{\alpha}, \boldsymbol{\beta})p(\boldsymbol{\lambda} |  \boldsymbol{\mu}', \boldsymbol{\zeta}, \boldsymbol{\alpha}, \boldsymbol{\beta})\\\\ = p(\boldsymbol{\mu} | \boldsymbol{\lambda}, \boldsymbol{\mu}', \boldsymbol{\zeta})p(\boldsymbol{\lambda} |  \boldsymbol{\alpha}, \boldsymbol{\beta}) \\\\ = \big\\{\prod_{k=0}^{K-1} \mathcal{N}(\mu_k | \mu'_k, (\zeta_k \lambda_k)^{-1} ) \big\\}$ 
-
-    $\cdot \\{\prod_{k=0}^{K-1} \text{Gam}(\lambda_k | \alpha_k, \beta_k) \\}$
-
+* <span style="color:red">混合ガウス分布</span>
