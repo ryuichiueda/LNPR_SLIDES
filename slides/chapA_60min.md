@@ -132,18 +132,30 @@ $\rightarrow$ガンマ分布の性質から$\alpha_0 = 1, \beta_0 = 2$
 
 ---
 
-### 事後分布のパラメータ（まとめ）
+### 事後分布のパラメータ（まとめ1/2）
 
 * $\mathcal{N}(\mu | \mu_N, (\zeta_N\lambda)^{-1} ) \text{Gam}(\lambda | \alpha_N, \beta_N)$
     * $\zeta_N = N + \zeta_0$
         * $\zeta_N$: $\zeta_0$個分水増しされたセンサ値の数
-    * $\mu_N = \dfrac{1}{N+\zeta_0}\sum_{i=0}^{N-1}z_i + \dfrac{\zeta_0}{N+\zeta_0} \mu_0$
+    * $\mu_N = \dfrac{1}{N+\zeta_0}\sum_{i=0}^{N-1}z_i + \dfrac{\zeta_0}{N+\zeta_0} \mu_0 = \dfrac{1}{\zeta_N} \left( \sum_{i=0}^{N-1}z_i + \zeta_0 \mu_0 \right)$
         * $\mu_N$: $\zeta_0$個のセンサ値$\mu_0$で水増しされたセンサ値の平均値
-    * $\alpha_N = 2/N + \alpha_0$
+    * $\alpha_N = N/2 + \alpha_0$
         * センサ値一つに対して$0.5$ずつ増える何かの値
-    * $\beta_N = \dfrac{1}{2}U + \beta_0 = \dfrac{1}{2} \left( \sum_{i=0}^{N-1}z_i^2 + \zeta_0\mu_0^2 \right) - \dfrac{1}{2}\zeta_N\mu_N^2 + \beta_0$
+        * $\alpha_0 = \zeta_0/2$とすると$\alpha_N = \zeta_N/2$となる
+    * $\beta_N = \dfrac{1}{2}U + \beta_0 = \dfrac{\zeta_N}{2} \left\\{ \dfrac{1}{\zeta_N} \left( \sum_{i=0}^{N-1}z_i^2 + \zeta_0\mu_0^2 \right) - \mu_N^2 \right\\} + \beta_0$
         * $\beta_N$: 水増ししたセンサ値から求めた分散に$\zeta_N/2$をかけて$\beta_0$を足したもの
-        * $\lambda$の平均値$\alpha_N/\beta_N$は、$\beta_0$を無視すると、センサ値から求めた分散の逆数を$\zeta_N/2$で割って$\alpha_N$をかけたもの$\rightarrow$ほぼセンサ値から求めた分散の逆数（つまりセンサ値の精度）
+
+---
+
+### 事後分布のパラメータ（まとめ2/2）
+
+* 得られた事後分布（再掲）
+    * $\mathcal{N}(\mu | \mu_N, (\zeta_N\lambda)^{-1} ) \text{Gam}(\lambda | \alpha_N, \beta_N)$
+        * $\zeta_N = N + \zeta_0$、$\mu_N = \dfrac{1}{\zeta_N} \left( \sum_{i=0}^{N-1}z_i + \zeta_0 \mu_0 \right)$
+        * $\alpha_N = N/2 + \alpha_0$、$\beta_N = \dfrac{\zeta_N}{2} \left\\{ \dfrac{1}{\zeta_N} \left( \sum_{i=0}^{N-1}z_i^2 + \zeta_0\mu_0^2 \right) - \mu_N^2 \right\\} + \beta_0$
+    * わかること
+        * $N$が大きくなると、$\mu_N$はセンサ値の平均値に近づく
+        * $\alpha_N$と$\zeta_N/2$は$N$が大きいとほぼ同じ数$\rightarrow\lambda$の平均値$\alpha_N/\beta_N$は、$N$が大きいとセンサ値から求めた分散の逆数（つまりセンサ値の精度）に近づく
         * $\lambda$の分散$\alpha_N/\beta_N^2$は小さくなって$\lambda$の値が確定していく
         * $\zeta_N\lambda$は増え続け、$\mu$の精度が高くなっていく
 
@@ -337,3 +349,115 @@ $\rightarrow$ガンマ分布の性質から$\alpha_0 = 1, \beta_0 = 2$
         * 小さいグループのセンサ値$z_i$の負担率を$r\_{i,0} = 1, r\_{i,1} = 0$に
         * 大きいグループのセンサ値$z_i$の負担率を$r\_{i,0} = 0, r\_{i,1} = 1$に
 
+
+---
+
+### パラメータの事後分布
+
+* $\log b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi})$を変形していく
+    * $\log b\_\text{d}(\boldsymbol{\mu}, \boldsymbol{\lambda}, \boldsymbol{\pi}) \\\\ =  \big\langle \log \{ p(z\_{0:N-1} | \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}) p(\boldsymbol{c}\_{0:N-1} | \boldsymbol{\pi}) p(\boldsymbol{\mu} | \boldsymbol{\lambda})p(\boldsymbol{\lambda})p(\boldsymbol{\pi}) \} \big\rangle\_{b\_\text{c}(\boldsymbol{c}\_{0:N-1})} + \eta \\\\ =  \big\langle \log p(z\_{0:N-1} | \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}) \big\rangle\_{b\_\text{c}(\boldsymbol{c}\_{0:N-1})} \\\\ + \big\langle \log p(\boldsymbol{c}\_{0:N-1} | \boldsymbol{\pi}) \big\rangle\_{b\_\text{c}(\boldsymbol{c}\_{0:N-1})} + \log \\{ p(\boldsymbol{\mu} | \boldsymbol{\lambda})p(\boldsymbol{\lambda}) \\} + \log p(\boldsymbol{\pi}) + \eta$
+        * さっき$b_\text{d} = b(\boldsymbol{\mu}, \boldsymbol{\lambda})b(\boldsymbol{\pi})$と分解できると仮定したが、実際に分解されているとわかる。
+
+---
+
+### $b(\boldsymbol{\pi})$の分布の特定
+
+* $\boldsymbol{c}\_{0:N-1}$を固定して、どのガウス分布がどれだけ大きいかを求めるという計算に相当
+* 前のスライドの式から$\boldsymbol{\pi}$に関するものを集めて計算<br />$ $
+    * $\log b(\boldsymbol{\pi}) =  \left\langle \log p(\boldsymbol{c}\_{0:N-1} | \boldsymbol{\pi}) \right\rangle\_{b\_\text{c}(\boldsymbol{c}\_{0:N-1})} + \log p(\boldsymbol{\pi}) + \eta \\\\ = \left\langle \log \prod\_{i=0}^{N-1} \prod\_{k=0}^{K-1}\pi\_k^{c\_{i,k}} \right\rangle\_{b\_\text{c}(\boldsymbol{c}\_{0:N-1})} + \log \left( \eta' \prod\_{k=0}^{K-1} \pi\_k^{\tau\_k-1} \right) + \eta \\\\ = \cdots \\\\ = \log \prod\_{k=0}^{K-1} \pi\_k^{ \sum\_{i=0}^{N-1} \left\langle c\_{i,k} \right\rangle\_{b(\boldsymbol{c}\_i)} + \tau\_k-1 } + \eta$
+        * ディリクレ分布になっている
+        * 期待値 $\left\langle c\_{i,k} \right\rangle\_{b(\boldsymbol{c}\_i)}$: $b(\boldsymbol{c}\_i)$において$c\_{i,k}=1$となる確率$\rightarrow$つまり負担率$r\_{i,k}$
+
+---
+
+### $b(\boldsymbol{\pi})$の分布のパラメータ更新
+
+* 前ページのディリクレ分布を整理
+    * $b(\boldsymbol{\pi}) = e^\eta \prod_{k=0}^{K-1} \pi_k^{ R_k + \tau_k-1 }$
+        * ここで$R\_k = \sum\_{i=0}^{N-1} \left\langle c\_{i,k} \right\rangle\_{b(\boldsymbol{c}\_i)} = \sum\_{i=0}^{N-1}  r\_{i,k}$<br />$ $
+* $b(\boldsymbol{\pi}) = \text{Dir}(\boldsymbol{\pi} | \hat{\boldsymbol{\tau}}) = \text{Dir}(\boldsymbol{\pi} | \hat{\tau}\_{0:K-1})$とすると、$\boldsymbol{\pi}$の分布のパラメータは次のように更新される
+* 
+    * $\hat{\tau}_k = R_k + \tau_k$
+
+---
+
+### $b(\boldsymbol{\mu}, \boldsymbol{\lambda})$の分布の特定（1/4)
+
+
+* $\log b(\boldsymbol{\mu}, \boldsymbol{\lambda})$を変形していく
+    * $\log b(\boldsymbol{\mu}, \boldsymbol{\lambda})  = \left\langle \log p(z\_{0:N-1} | \boldsymbol{c}\_{0:N-1}, \boldsymbol{\mu}, \boldsymbol{\lambda}) \right\rangle\_{b\_\text{c}(\boldsymbol{c}\_{0:N-1})} + \log \{ p(\boldsymbol{\mu} | \boldsymbol{\lambda})p(\boldsymbol{\lambda}) \} + \eta \\\\ = \sum\_{k=0}^{K-1} \log \left\\{ \prod\_{i=0}^{N-1} \Big[ \mathcal{N}(z\_i | \mu\_k, \lambda\_k^{-1})^{r\_{i,k}} \mathcal{N}(\mu\_k | \mu'\_k, (\zeta\_k \lambda\_k)^{-1} ) \text{Gam}(\lambda\_k | \alpha\_k, \beta\_k) \Big] \right\\} + \eta$<br />$ $
+* クラスタごとに分布を分解
+    * $\log b(\mu\_k, \lambda\_k) \\\\ = \log \big\\{ \prod\_{i=0}^{N-1} \big[ \mathcal{N}(z\_i | \mu\_k, \lambda\_k^{-1})^{r\_{i,k}} \mathcal{N}(\mu\_k | \mu'\_k, (\zeta\_k \lambda\_k)^{-1} ) \text{Gam}(\lambda\_k | \alpha\_k, \beta\_k)  \big] \big\\} + \eta$<br />
+$\cdots$<br />
+    $b(\mu\_k, \lambda\_k) = e^\eta \prod\_{i=0}^{N-1} \big\[ \mathcal{N}(z\_i | \mu\_k, \lambda\_k^{-1})^{r\_{i,k}} \mathcal{N}(\mu\_k | \mu'\_k, (\zeta\_k \lambda\_k)^{-1} ) \text{Gam}(\lambda\_k | \alpha\_k, \beta\_k) \big\]$
+    * A.1で出てきた分布と似た式になる
+
+---
+
+### $b(\boldsymbol{\mu}, \boldsymbol{\lambda})$の分布の特定（2/4)
+
+* 前のスライドの最後の式についてガウス分布の積の部分を整理
+    * $\prod\_{i=0}^{N-1} \left\\{ \sqrt{\dfrac{\lambda\_k}{2\pi}} \exp \left[ -\dfrac{\lambda\_k}{2}(z\_i - \mu\_k)^2 \right] \right\\}^{r\_{i,k}} \sqrt{\dfrac{\zeta\_k\lambda\_k}{2\pi}}\exp\left\\{ -\dfrac{\zeta\_k\lambda\_k}{2}(\mu\_k - \mu'\_k)^2 \right\\} \\\\ = \cdots \\\\ = \mathcal{N}\left[ \mu\_k \Bigg| \dfrac{ S\_k + \zeta\_k\mu'\_k }{R\_k + \zeta\_k}, \left[ \lambda\_k (R\_k + \zeta\_k) \right]^{-1} \right] \eta \lambda\_k^{R\_k/2}\exp \left( -\dfrac{\lambda\_k}{2}U\_k \right)$
+    * ここで
+        * $S_k = \sum_{i=0}^{N-1} r_{i,k}z_i$
+        * $T_k = \sum_{i=0}^{N-1} r_{i,k}z_i^2$
+        * $U_k = T_k + \zeta_k {\mu'_k}^2 - (R_k+\zeta_k)\left( \dfrac{ S_k + \zeta_k\mu'_k }{R_k + \zeta_k} \right)^2$
+
+---
+
+### $b(\boldsymbol{\mu}, \boldsymbol{\lambda})$の分布の特定（3/4)
+
+* ガンマ分布について整理
+    * 2つ前のスライドの最後の式と前のスライドの式から
+    * $\eta \lambda\_k^{R\_k/2}\exp \big( -\dfrac{\lambda\_k}{2}U\_k \big) \text{Gam}(\lambda\_k | \alpha\_k, \beta\_k) = \cdots \\\\ = \text{Gam}\big(\lambda\_k \big| R\_k/2 + \alpha\_k, U\_k/2 + \beta\_k \big)$
+
+---
+
+### $b(\boldsymbol{\mu}, \boldsymbol{\lambda})$の分布の特定（4/4)
+
+* まとめると、各ガウス分布のパラメータの分布は次のような式になる
+    * $b(\mu\_k, \lambda\_k) = \mathcal{N}\left[\mu\_k \big| \hat{\mu}'\_k, (\hat{\zeta}\_k\lambda\_k)^{-1} \right] \text{Gam}(\lambda\_k | \hat{\alpha}\_k, \hat{\beta}\_k)$
+    * ここで
+        * $\hat{\zeta}_k = R_k + \zeta_k$
+        * $\hat{\mu}'\_k = \dfrac{ S\_k + \zeta\_k\mu'\_k }{R\_k + \zeta\_k} = \dfrac{ S\_k + \zeta\_k\mu'\_k }{\hat{\zeta}\_k}$
+        * $\hat{\alpha}_k = \dfrac{R_k}{2} + \alpha_k$
+        * $\hat{\beta}_k = \dfrac{U_k}{2} + \beta_k = \dfrac{1}{2} \left(T_k + \zeta_k {\mu'_k}^2 - {\hat{\zeta}_k {\hat{\mu}'}_k}^2 \right) + \beta_k$
+
+---
+
+### パラメータの更新則の実装
+
+* [コード（variational_inference1.ipynb [3]〜[5]）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_inference/variational_inference1.ipynb)
+    * 各ガウス分布の事前分布のパラメータは`update_parameters`関数の引数に記述されている
+    * 下図: 初期の負担率から計算したパラメータを使ってドローしたセンサ値の分布
+        * まだ負担率の更新のコードを書いていないので、まだ繰り返し計算はできない
+
+<img src="../figs/variational_inference_one_iteration.png" />
+
+---
+
+### 負担率の計算（1/3）
+
+* 次の式の各項を計算
+    * $\log \rho\_{i,k} = \dfrac{1}{2} \left\langle \log \lambda\_k \right\rangle\_{b(\mu\_k, \lambda\_k) } - \dfrac{1}{2} \left\langle \lambda\_k(z\_i - \mu\_k)^2 \right\rangle\_{b(\mu\_k, \lambda\_k) } + \left\langle \log \pi\_k \right\rangle\_{b(\boldsymbol{\pi})}$<br />$ $
+* 第一項
+    * $\left\langle \log \lambda\_k \right\rangle\_{b(\mu\_k, \lambda\_k) } = \left\langle \log \lambda\_k \right\rangle\_{ \mathcal{N}(\mu\_k | \hat{\mu}'\_k, (\hat{\zeta}\_k \lambda\_k)^{-1}) \text{Gam}(\lambda\_k | \hat{\alpha}\_k, \hat{\beta}\_k) }  = \cdots \\\\ = \psi(\hat{\alpha}\_k) - \log \hat{\beta}\_k$
+        * $\psi(x ) =  \dfrac{d}{d x} \log \Gamma (x )$（ディガンマ関数）
+
+---
+
+### 負担率の計算（2/3）
+
+* 第二項
+    * $\left\langle \lambda\_k(z\_i - \mu\_k)^2 \right\rangle\_{b(\mu\_k, \lambda\_k) } = \cdots \\\\ = \Big\langle \big\langle (\mu\_k - \hat{\mu}'\_k)^2 + 2(\hat{\mu}'\_k - z\_i )(\mu\_k - \hat{\mu}'\_k) + (\hat{\mu}'\_k - z\_i )^2 \big\rangle_{ \mathcal{N}(\mu\_k | \hat{\mu}'\_k, (\hat{\zeta}\_k \lambda\_k)^{-1}) } \\\\ \cdot \lambda\_k \Big\rangle_{ \text{Gam}(\lambda\_k | \hat{\alpha}\_k, \hat{\beta}\_k)}  = \big\langle \big\\{ \hat{\zeta}\_k^{-1}\lambda\_k^{-1} + (\hat{\mu}'\_k - z\_i)^2 \big\\} \lambda\_k \big\rangle_{ \text{Gam}(\lambda\_k | \hat{\alpha}\_k, \hat{\beta}\_k) } \\\\ = \hat{\zeta}_k^{-1} + (\hat{\mu}'_k - z_i)^2 \dfrac{\hat{\alpha}_k}{\hat{\beta}_k}$<br />$ $
+* 第三項
+    * $\left\langle \log \pi\_k \right\rangle\_{b(\boldsymbol{\pi})} = \left\langle \log \pi\_k \right\rangle\_{ \text{Dir}(\boldsymbol{\pi}, \hat{\boldsymbol{\tau}}) } = \psi(\hat{\tau}\_k) - \psi\left( \sum\_{i=0}^{K-1} \hat{\tau}\_i \right)$
+        * B.2.3参照のこと
+
+---
+
+### 負担率の計算（3/3）
+
+* まとめると
+    * $\log \rho\_{i,k} = \dfrac{1}{2} \left\langle \log \lambda\_k \right\rangle\_{b(\mu\_k, \lambda\_k) } - \dfrac{1}{2} \left\langle \lambda\_k(z\_i - \mu\_k)^2 \right\rangle\_{b(\mu\_k, \lambda\_k) } + \left\langle \log \pi\_k \right\rangle\_{b(\boldsymbol{\pi})} \\\\ = \dfrac{1}{2} \left\\{ \psi(\hat{\alpha}\_k) - \log \hat{\beta}\_k \right\\} - \dfrac{1}{2} \left\\{ \hat{\zeta}\_k^{-1} + (\hat{\mu}'\_k - z\_i)^2 \dfrac{\hat{\alpha}\_k}{\hat{\beta}\_k} \right\\} \\\\ + \psi(\hat{\tau}\_k) - \psi\left( \sum\_{i=0}^{K-1} \hat{\tau}\_i \right)$<br />$ $
+* この計算で得た$\rho\_{i,k}$を正規化すると負担率$r\_{i,k}$に
