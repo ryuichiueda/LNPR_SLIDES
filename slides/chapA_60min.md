@@ -461,3 +461,36 @@ $\cdots$<br />
 * まとめると
     * $\log \rho\_{i,k} = \dfrac{1}{2} \left\langle \log \lambda\_k \right\rangle\_{b(\mu\_k, \lambda\_k) } - \dfrac{1}{2} \left\langle \lambda\_k(z\_i - \mu\_k)^2 \right\rangle\_{b(\mu\_k, \lambda\_k) } + \left\langle \log \pi\_k \right\rangle\_{b(\boldsymbol{\pi})} \\\\ = \dfrac{1}{2} \left\\{ \psi(\hat{\alpha}\_k) - \log \hat{\beta}\_k \right\\} - \dfrac{1}{2} \left\\{ \hat{\zeta}\_k^{-1} + (\hat{\mu}'\_k - z\_i)^2 \dfrac{\hat{\alpha}\_k}{\hat{\beta}\_k} \right\\} \\\\ + \psi(\hat{\tau}\_k) - \psi\left( \sum\_{i=0}^{K-1} \hat{\tau}\_i \right)$<br />$ $
 * この計算で得た$\rho\_{i,k}$を正規化すると負担率$r\_{i,k}$に
+
+---
+
+### 負担率の計算の実装
+
+* [コード（variational_inference1.<br />ipynb [7]〜[8]）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_inference/variational_inference1.ipynb)
+    * 図: 1回目の負担率の計算結果
+        * センサ値が小さい: <br />ほぼ100[\%]でクラスタ0に由来
+        * センサ値が大きい: <br />ほぼ100[\%]でクラスタ1に由来
+        * 中間のセンサ値: <br />クラスタ0と1に分かれる<br /><br /><br /><br /><br />
+
+
+<img width="30%" src="../figs/responsibility.png" />
+
+
+---
+
+### 繰り返し処理の実装
+
+* [コード（variational_inference2.ipynb）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_inference/variational_inference2.ipynb)
+    * クラスタ数3でスタート$\rightarrow$分布が一つ消える
+
+
+![](../figs/variational_bayes_600.png)
+
+---
+
+### `sensor_data_200.txt`の解析
+
+* [コード（variational_inference3.ipynb）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_inference/variational_inference3.ipynb)
+    * これもガウス分布2個の混合ガウス分布に収束
+
+![](../figs/variational_bayes_200.png)
