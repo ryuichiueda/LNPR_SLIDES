@@ -263,4 +263,85 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 地図の算出
+### 仮想移動エッジによる軌跡推定の実装
+
+* [コード（section_graph_slam/graphbasedsl.ipynb）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_graph_slam/graphbasedslam5.ipynb)
+* 図
+    * 中央: 真の軌跡
+    * 左: 1回目の計算後
+    * 中央: 収束後
+* センサ値の先が揃う（地図が推定できている）
+* 軌跡はガタガタ（移動エッジを考慮していないので）
+
+![](../figs/traj_estimation_with_ve.png)
+
+
+---
+
+### 9.3 移動エッジの追加
+
+* 仮想移動エッジと同様、残差と残差関数を定義
+* 残差
+    * $\hat{\boldsymbol{e}}\_{t\_1,t\_2} = \hat{\boldsymbol{x}}\_{t\_2} - \boldsymbol{f}(\hat{\boldsymbol{x}}\_{t\_1}, \boldsymbol{u}\_{t\_2})$
+* 残差関数
+    * $\boldsymbol{e}\_{t\_1,t\_2}(\Delta \boldsymbol{x}\_{t\_1}, \Delta\boldsymbol{x}\_{t\_2}) = \hat{\boldsymbol{x}}\_{t\_2} + \Delta\boldsymbol{x}\_{t\_2} - \boldsymbol{f}(\hat{\boldsymbol{x}}\_{t\_1} + \Delta\boldsymbol{x}\_{t\_1}, \boldsymbol{u}\_{t\_2})$
+* 残差関数が減る方向に推定値$\hat{\boldsymbol{x}}_{0:T}$を動かす
+    * ただし精度行列で重みをつける（下図）
+
+<img width="30%" src="../figs/motion_edge.png" />
+
+---
+
+### 残差の確率モデルの構築（1/2）
+
+* 精度行列$\Omega\_{t_1,t_2}$を求める
+    * $XY\theta$空間における残差のありえなさを測るもの<br />$ $
+* 求め方
+    * $\nu\omega$空間での制御指令値$\boldsymbol{u}\_{t_2}$のばらつきの共分散行列$M\_{t_2}$を求める
+        * パーティクルフィルタを実装したときのもの同じ
+        * 計算は次ページ
+    * $M\_{t_2}$を残差の空間（$XY\theta$空間）に写像するヤコビ行列$A_{t_2}$を算出
+        * 次の線型近似を使う
+            * $\hat{\boldsymbol{e}}\_{t\_1,t\_2}(\boldsymbol{u}) \approx \hat{\boldsymbol{e}}\_{t\_1,t\_2}(\boldsymbol{u}\_{t\_2}) + \dfrac{\partial \hat{\boldsymbol{e}}\_{t\_1,t\_2}} {\partial \boldsymbol{u}} \Big|\_{\boldsymbol{u} = \boldsymbol{u}\_{t\_2}} (\boldsymbol{u} - \boldsymbol{u}\_{t\_2})$
+            * 式中のヤコビ行列を$A\_{t_2}$とおく（計算は次ページ）
+    * $\Omega_{t_1,t_2}^{-1} = R_{t_1,t_2} = A_{t_2} M_{t_2} A_{t_2}^\top + \zeta I \qquad$ （$\zeta$: 小さな値）
+        * 単位行列を足すのは逆行列をつくるため
+
+
+---
+
+### 残差の確率モデルの構築（2/2）
+
+* $M\_{t\_2}, A\_{t_2}$の計算
+    * $M\_{t\_2} = \\begin{pmatrix} \\sigma^2\_{\\nu\\nu}|\\nu\_{t\_2}|/\\Delta t + \\sigma^2\_{\\nu\\omega}|\\omega\_{t\_2}|/\\Delta t & 0 \\\\ 0 & \\sigma^2\_{\\omega\\nu}|\\nu\_{t\_2}|/\\Delta t + \\sigma^2\_{\\omega\\omega}|\\omega\_{t\_2}|/\\Delta t \\end{pmatrix}$<br />$ $
+    * $A\_{t_2} = \dfrac{\partial \hat{\boldsymbol{e}}\_{t\_1,t\_2}} {\partial \boldsymbol{u}} \Big|\_{\boldsymbol{u} = \boldsymbol{u}\_{t\_2}} = \left( \begin{matrix} \omega_{t_2}^{-1}\left\\{\sin( \\theta_{t_1} + \omega_{t_2} \Delta t ) - \sin\\theta_{t_1} \right\\}  \\\\
+\\omega\_{t\_2}^{-1}\\left\\{-\\cos( \\theta\_{t\_1} + \\omega\_{t\_2} \\Delta t ) + \\cos\\theta\_{t\_1} \\right\\} \\\\ 0 \end{matrix} \right. \\\\$
+$\left.\begin{matrix} -\\nu\_{t\_2}\\omega\_{t\_2}^{-2}\\left\\{\\sin( \\theta\_{t\_1} + \\omega\_{t\_2} \\Delta t ) - \\sin\\theta\_{t\_1} \\right\\} + \\nu\_{t\_2}\\omega\_{t\_2}^{-1}\\Delta t \\cos( \\theta\_{t\_1} + \\omega\_{t\_2} \\Delta t )  \\\\ -\\nu\_{t\_2}\\omega\_{t\_2}^{-2}\\left\\{-\\cos( \\theta\_{t\_1} + \\omega\_{t\_2} \\Delta t ) + \\cos\\theta\_{t\_1} \\right\\} + \\nu\_{t\_2}\\omega\_{t\_2}^{-1}\\Delta t\\sin( \\theta\_{t\_1} + \\omega\_{t\_2} \\Delta t ) \\\\ \\Delta t \end{matrix}\right)$
+
+---
+
+### 残差関数の変化量
+
+* 推定姿勢の変化による残差関数の変化を求める
+    * $\boldsymbol{e}\_{t\_1,t\_2}(\Delta \boldsymbol{x}\_{t\_1},\Delta \boldsymbol{x}\_{t\_2}) \approx \hat{\boldsymbol{x}}\_{t\_2} - \boldsymbol{f}(\hat{\boldsymbol{x}}\_{t\_1}, \boldsymbol{u}\_{t\_2}) + \dfrac{\partial \boldsymbol{x}\_{t\_2}}{\partial \boldsymbol{x}\_{t\_2}}\Big|\_{\hat{\boldsymbol{x}}\_{t\_2}} \Delta \boldsymbol{x}\_{t\_2} - \dfrac{\partial \boldsymbol{f}}{\partial \boldsymbol{x}\_{t\_1}}\Big|\_{\boldsymbol{x}\_{t\_1} = \hat{\boldsymbol{x}}\_{t\_1}} \Delta \boldsymbol{x}\_{t\_1}  \\\\ = \hat{\boldsymbol{x}}\_{t\_2} - \boldsymbol{f}(\hat{\boldsymbol{x}}\_{t\_1}, \boldsymbol{u}\_{t\_2}) + \Delta \boldsymbol{x}\_{t\_2} - \dfrac{\partial \boldsymbol{f}}{\partial \boldsymbol{x}\_{t\_1}}\Big|\_{\boldsymbol{x}\_{t\_1} = \hat{\boldsymbol{x}}\_{t\_1}} \Delta \boldsymbol{x}\_{t\_1} $
+* $F\_{t_1,t_2} = \dfrac{\partial \boldsymbol{f}}{\partial \boldsymbol{x}\_{t\_1}}\Big|\_{\boldsymbol{x}\_{t\_1} = \hat{\boldsymbol{x}}\_{t\_1}}$とすると
+    * $F\_{t_1,t_2} = \\begin{pmatrix} 1 & 0 & \\nu\_{t\_2}\\omega\_{t\_2}^{-1}\\{\\cos(\\mu\_{\\theta\_{t\_1}} + \\omega\_{t\_2}\\Delta t) - \\cos \\mu\_{\\theta\_{t\_1}} \\} \\\\ 0 & 1 & \\nu\_{t\_2}\\omega\_{t\_2}^{-1}\\{\\sin(\\mu\_{\\theta\_{t\_1}} + \\omega\_{t\_2}\\Delta t) - \\sin \\mu\_{\\theta\_{t\_1}} \\} \\\\ 0 & 0 & 1 \\end{pmatrix}$
+
+---
+
+### グラフの精度行列
+
+* 求めた精度行列や残差関数の近似式を評価関数に代入
+    * 精度行列: $\Omega\_{t_1,t_2}$
+    * 残差関数の近似式:
+        * $\boldsymbol{e}\_{t\_1,t\_2}(\Delta \boldsymbol{x}\_{t\_1},\Delta \boldsymbol{x}\_{t\_2}) \approx \hat{\boldsymbol{x}}\_{t\_2} - \boldsymbol{f}(\hat{\boldsymbol{x}}\_{t\_1}, \boldsymbol{u}\_{t\_2}) + \Delta \boldsymbol{x}\_{t\_2} - F\_{t_1,t_2} \Delta \boldsymbol{x}\_{t\_1} $
+    * 評価関数（姿勢の差分が引数の関数にしておく）: 
+        * $J\_\textbf{x}(\Delta\boldsymbol{x}\_{0:T}) = \sum\_{(t\_1,t\_2) \in \textbf{I}\_{\textbf{e}\_\textbf{x}}} \left\\{\boldsymbol{e}\_{t\_1,t\_2}(\Delta\boldsymbol{x}\_{t\_1},\Delta\boldsymbol{x}\_{t\_2})\right\\}^\top \Omega\_{t\_1,t\_2} \left\\{ \boldsymbol{e}\_{t\_1,t\_2}(\Delta\boldsymbol{x}\_{t\_1},\Delta\boldsymbol{x}\_{t\_2})\right\\}$
+
+---
+
+### 9.4 地図の推定
+
+* 各ランドマークの姿勢$\boldsymbol{m}\_j = (m\_{j,x} \ m\_{j,y} \ m\_{j,\theta})^\top$を推定する
+    * $\ m_{j,\theta}$は相対値なので、とりあええず最初に観測されたランドマークの向きを原点に
+
