@@ -378,7 +378,6 @@ $\left.\begin{matrix} -\\nu\_{t\_2}\\omega\_{t\_2}^{-2}\\left\\{\\sin( \\theta\_
 
 ### 情報行列の計算
 
-
 * 各エッジの情報行列を求める
     * $\Omega_{j,t} = R_{j,t}Q_{j,t}R_{j,t}^\top$
         * センサ値の雑音の共分散行列$Q_{j,t}$を残差の空間（$XY\theta$空間）へ写像
@@ -390,3 +389,49 @@ $\left.\begin{matrix} -\\nu\_{t\_2}\\omega\_{t\_2}^{-2}\\left\\{\\sin( \\theta\_
         * $\Omega\_j = \sum\_{t \in \textbf{I}\_{\boldsymbol{z}}} \Omega\_{j,t}$
         * $\boldsymbol{\xi}\_j = \sum\_{t \in \textbf{I}\_{\boldsymbol{z}}} \Omega\_{j,t}\boldsymbol{m}\_{j,t}$<br />$ $
 * $J\_{\boldsymbol{m}\_j}(\boldsymbol{m}\_j)$が最小になるとき: $\boldsymbol{m}\_j^* = \Omega\_j^{-1}\boldsymbol{\xi}\_j$
+
+---
+
+### 地図の推定結果
+
+* [コード（section_graph_slam/graphbasedslam8.ipynb）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_graph_slam/graphbasedslam8.ipynb)
+
+<img width="45%" src="../figs/logger2image.png" />
+<img width="45%" src="../figs/graphslam_map3d_complete.png" />
+
+---
+
+### 9.5 センサ値が2変数の場合
+
+* 移動エッジを加えた場合、センサ値は2変数でも計算可能
+    * 移動エッジがないと姿勢が3次元、センサ値が2次元でグラフの精度行列に逆行列が存在しなくなる<br />$ $
+* 計算方法
+   * とにかく式から$\psi$の関わる項や行列の要素、ベクトルの次元を削除していく<br />$ $
+* [コード（graphbasedslam_2d_sensor1.ipynb）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_graph_slam/graphbasedslam_2d_sensor1.ipynb)
+    * 評価関数: $f( \boldsymbol{x}\_{0:T}) = p_0(\boldsymbol{x}\_0)\big\\{ \prod\_{(j,t\_1,t\_2) \in \textbf{I}\_{\textbf{e}\_\textbf{z}} } p(\boldsymbol{e}\_{j,t\_1,t\_2}) \big\\} \big\\{ \prod\_{(t\_1,t\_2) \in \textbf{I}\_{\textbf{e}\_\textbf{x}} } p(\boldsymbol{e}\_{t\_1,t\_2}) \big\\}^\lambda$
+        * とりあえず$\lambda = 1$で計算
+
+---
+
+### 軌道が歪む
+
+* 原因
+    * $\lambda = 1$
+    * 移動エッジに対して仮想移動エッジが多すぎる
+    * センサ値にランドマークの向きの情報がない
+    * センサ値にバイアスがあり
+
+<img width="35%" src="../figs/slam_sensor_2d_image.png" />
+
+---
+
+### 移動エッジの比重を上げる
+
+* 下図
+    * 左: 真の軌跡と地図
+    * 中: センサ値が3変数、$\lambda = 1$
+        * 3変数でもセンサ値にバイアスがあり歪む
+    * 右: センサ値が2変数、$\lambda = 100$
+        * 2変数でも歪みの小さい地図が得られる
+
+<img src="../figs/graphslam_result.png" />
