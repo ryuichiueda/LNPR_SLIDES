@@ -265,7 +265,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 仮想移動エッジによる軌跡推定の実装
 
-* [コード（section_graph_slam/graphbasedsl.ipynb）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_graph_slam/graphbasedslam5.ipynb)
+* [コード（section_graph_slam/graphbasedslam5.ipynb）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_graph_slam/graphbasedslam5.ipynb)
 * 図
     * 中央: 真の軌跡
     * 左: 1回目の計算後
@@ -329,19 +329,64 @@ $\left.\begin{matrix} -\\nu\_{t\_2}\\omega\_{t\_2}^{-2}\\left\\{\\sin( \\theta\_
 
 ---
 
-### グラフの精度行列
+### グラフの精度行列と係数ベクトル（1/2）
 
 * 求めた精度行列や残差関数の近似式を評価関数に代入
-    * 精度行列: $\Omega\_{t_1,t_2}$
-    * 残差関数の近似式:
-        * $\boldsymbol{e}\_{t\_1,t\_2}(\Delta \boldsymbol{x}\_{t\_1},\Delta \boldsymbol{x}\_{t\_2}) \approx \hat{\boldsymbol{x}}\_{t\_2} - \boldsymbol{f}(\hat{\boldsymbol{x}}\_{t\_1}, \boldsymbol{u}\_{t\_2}) + \Delta \boldsymbol{x}\_{t\_2} - F\_{t_1,t_2} \Delta \boldsymbol{x}\_{t\_1} $
     * 評価関数（姿勢の差分が引数の関数にしておく）: 
         * $J\_\textbf{x}(\Delta\boldsymbol{x}\_{0:T}) = \sum\_{(t\_1,t\_2) \in \textbf{I}\_{\textbf{e}\_\textbf{x}}} \left\\{\boldsymbol{e}\_{t\_1,t\_2}(\Delta\boldsymbol{x}\_{t\_1},\Delta\boldsymbol{x}\_{t\_2})\right\\}^\top \Omega\_{t\_1,t\_2} \left\\{ \boldsymbol{e}\_{t\_1,t\_2}(\Delta\boldsymbol{x}\_{t\_1},\Delta\boldsymbol{x}\_{t\_2})\right\\}$
+    * 代入するもの
+        * 精度行列: $\Omega\_{t_1,t_2}$
+        * 残差関数の近似式: $\boldsymbol{e}\_{t\_1,t\_2}(\Delta \boldsymbol{x}\_{t\_1},\Delta \boldsymbol{x}\_{t\_2}) \approx \hat{\boldsymbol{x}}\_{t\_2} - \boldsymbol{f}(\hat{\boldsymbol{x}}\_{t\_1}, \boldsymbol{u}\_{t\_2}) + \Delta \boldsymbol{x}\_{t\_2} - F\_{t_1,t_2} \Delta \boldsymbol{x}\_{t\_1} $
+
+---
+
+### グラフの精度行列と係数ベクトル（2/2）
+
+* グラフの精度行列
+    * $\Omega^\*\_{\boldsymbol{x}\_{t\_1},\boldsymbol{x}\_{t\_2}} = \begin{pmatrix} \ddots &   &  &  \\\\ & F\_{t\_1,t\_2}^\top\Omega\_{t\_1,t\_2}F\_{t\_1,t\_2} & -F\_{t\_1,t\_2}^\top\Omega\_{t\_1,t\_2} &  \\\\ & -\Omega\_{t\_1,t\_2}F\_{t\_1,t\_2} &  \Omega\_{t\_1,t\_2} &  \\\\ & & & \ddots \end{pmatrix}$
+* 係数ベクトル
+    * $\xi^*\_{\boldsymbol{x}\_{t\_1},\boldsymbol{x}\_{t\_2}} = - \begin{pmatrix} \vdots \\\\ -F\_{t\_1,t\_2}^\top \\\\ I \\\\ \vdots \end{pmatrix} \Omega\_{t\_1,t\_2} \left\\{ \hat{\boldsymbol{x}}\_{t\_2} - \boldsymbol{f}(\hat{\boldsymbol{x}}\_{t\_1}, \boldsymbol{u}\_{t\_2}) \right\\}$
+
+
+---
+
+### 移動エッジの追加と推定
+
+* [コード（graph<br />basedslam6.<br />ipynb）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_graph_slam/graphbasedslam6.ipynb)
+* 図
+    * (a): 実際の軌跡
+    * (b): 移動エッジなしの<br />推定結果
+    * (c): 1回目の計算
+    * (d): 収束後<br />$ $<br />$ $<br />$ $<br />$ $<br />$ $
+
+
+<img width="55%" src="../figs/traj_estimation_with_me.png" />
 
 ---
 
 ### 9.4 地図の推定
 
-* 各ランドマークの姿勢$\boldsymbol{m}\_j = (m\_{j,x} \ m\_{j,y} \ m\_{j,\theta})^\top$を推定する
-    * $\ m_{j,\theta}$は相対値なので、とりあええず最初に観測されたランドマークの向きを原点に
+* 各ランドマークの姿勢$\boldsymbol{m}\_j = (m\_{j,x} \ m\_{j,y} \ m\_{j,\theta})^\top$を推定
+    * これまでと同様、残差関数を定義
+        * $\boldsymbol{e}\_t(\boldsymbol{m}\_j) = \boldsymbol{m}\_j - \boldsymbol{m}\_{j,t} = \boldsymbol{m}\_j - \boldsymbol{x}\_t^\* - \begin{pmatrix} \ell\_{j,t}\cos (\theta\_t^\* + \varphi\_{j,t}) \\\\ \ell\_{j,t}\sin (\theta\_t^\* + \varphi\_{j,t}) \\\\ - \theta\_s^\* + \varphi\_{j,t} - \varphi\_{j,s} - \psi\_{j,t} + \psi\_{j,s} \end{pmatrix}$
+    * 評価関数 
+        * $J\_{\boldsymbol{m}\_j}(\boldsymbol{m}\_j) = \sum\_{t \in \textbf{I}\_{\boldsymbol{z}}} (\boldsymbol{m}\_j  - \boldsymbol{m}\_{j,t})^\top \Omega\_{j,t} (\boldsymbol{m}\_j  - \boldsymbol{m}\_{j,t})$<br />$ $
+* 評価関数を最小にするように$\boldsymbol{m}\_j$を動かす
+    * 各ランドマークで別々に処理すればよい
 
+---
+
+### 情報行列の計算
+
+
+* 各エッジの情報行列を求める
+    * $\Omega_{j,t} = R_{j,t}Q_{j,t}R_{j,t}^\top$
+        * センサ値の雑音の共分散行列$Q_{j,t}$を残差の空間（$XY\theta$空間）へ写像
+        * 写像に使う線形化された関数
+            * $\boldsymbol{e}\_t(\boldsymbol{z}) \approx \boldsymbol{m}\_j - \boldsymbol{m}\_{j,t} + R\_{j,t} (\boldsymbol{z} - \boldsymbol{z}\_{j,t})$
+            * $R\_{j,t} = \begin{pmatrix} -\cos (\theta\_t^* + \varphi\_{j,t}) & \ell\_{j,t}\sin (\theta\_t^* + \varphi\_{j,t}) & 0\\\\ -\sin (\theta\_t^* + \varphi\_{j,t}) & -\ell\_{j,t}\cos (\theta\_t^* + \varphi\_{j,t}) & 0 \\\\ 0 & -1 & 1 \end{pmatrix}$<br />$ $
+* グラフの情報行列
+    * 軌跡の推定のときととちがって次元は同じ
+        * $\Omega\_j = \sum\_{t \in \textbf{I}\_{\boldsymbol{z}}} \Omega\_{j,t}$
+        * $\boldsymbol{\xi}\_j = \sum\_{t \in \textbf{I}\_{\boldsymbol{z}}} \Omega\_{j,t}\boldsymbol{m}\_{j,t}$<br />$ $
+* $J\_{\boldsymbol{m}\_j}(\boldsymbol{m}\_j)$が最小になるとき: $\boldsymbol{m}\_j^* = \Omega\_j^{-1}\boldsymbol{\xi}\_j$
