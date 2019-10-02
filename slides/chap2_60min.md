@@ -114,7 +114,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 演習
 
 * 元のデータから作った確率分布からドローを繰り返し、結果をヒストグラムにしてみましょう。
-    * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb [13]
+    * [コード（セル13）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb)
 
 <img width="40%" src="../figs/simulated_sensor_200.png" />
 
@@ -173,7 +173,7 @@ $\Longrightarrow$確率分布のモデル
 * サイコロ（どの出目も同じ確率で出るもの）の目の期待値を求めてみましょう
     * 手計算で
     * ノートブックで乱数を使って
-        * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/expectation.ipynb
+        * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/expectation.ipynb)
 
 ---
 
@@ -181,7 +181,7 @@ $\Longrightarrow$確率分布のモデル
 
 * LiDARからのデータをガウス分布としてモデル化した
     * 多くのデータから予想される確率分布を$\mu$と$\sigma^2$だけで表現
-    * なんでセンサの値がばらつくかは分析していないけど、どのようにばらつくかは分析できた
+    * なんでセンサの値がばらつくかは分析していないけど、どのようにばらつくかは分析できた<br />$ $
 * 確率分布やその他統計的性質が分かると何ができるか？
     * センサ値が得られたときに、それを鵜呑みにしないこと
         * どれだけばらつくか分かる
@@ -236,7 +236,7 @@ $\Longrightarrow$
 
 * `sensor_data_600.txt`に関してここまでのグラフを出してみましょう。
     * コピペでかまいません
-    * ノートブック: https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_600.ipynb
+        * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_600.ipynb)
 
 
 ---
@@ -320,12 +320,12 @@ $\rightarrow$
 ### ベイズの定理
 
 * 乗法定理から導出<br />
-$\begin{align}
-p(z,t) &= p(z|t)p(t) = p(t|z)p(z) \Longrightarrow& \\\\
-p(z|t) &= \dfrac{p(t|z)p(z)}{p(t)} = \eta p(t|z)p(z) \quad (\eta: \text{正規化定数})
-\end{align}$
-    * 意味: 時間帯$t$と、$z$がどの時間帯で得られやすいかが分かると、$z$の分布$p(z)$くらいにしか分からなかったのが$p(z|t)$まで分かるようになる
-    * 正規化定数$\eta$は$\int_{-\infty}^{\infty}p(z|t)dt=1$とするための調整の定数
+    * 乗法定理: $p(z,t) = p(z|t)p(t) = p(t|z)p(z)$
+    * 整理すると<span style="color:red">$p(z|t) = \dfrac{p(t|z)p(z)}{p(t)} = \eta p(t|z)p(z)$</span>となる
+        * $\eta$: 正規化定数
+            * $\int_{-\infty}^{\infty}p(z|t)dt=1$とするための調整の定数
+    * 意味
+        * 時間帯$t$と、$z$がどの時間帯で得られやすいかが分かると、$z$の分布$p(z)$くらいにしか分からなかったのが$p(z|t)$まで分かるようになる<br />$ $
 *  ベイズの定理もアルゴリズムの導出で出てきます
 
 >>>
@@ -338,7 +338,7 @@ p(z|t) &= \dfrac{p(t|z)p(z)}{p(t)} = \eta p(t|z)p(z) \quad (\eta: \text{正規�
 
 ### 2次元のガウス分布
 
-* 光センサとLiDARの分布（700[mm], 12時台〜16時台のデータ）
+* 光センサとLiDARの分布（700[mm], 12〜16時台のデータ）
     * どちらの変数を周辺化してもガウス分布に当てはまる
 
 <img width="40%" src="../figs/lidar_light_200.png" />
