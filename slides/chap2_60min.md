@@ -39,7 +39,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 演習
 
 * Pandasで`sensor_data_200.txt`を読み込んでみましょう
-    * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb [1]
+    * [コード（セル1）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb)
 
 ---
 
@@ -59,7 +59,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 演習
 
 * ヒストグラムを出力してみましょう
-    * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb [3]
+    * [コード（セル3）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb)
 
 
 ---
@@ -77,7 +77,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 演習
 
 * センサ値の平均値、分散、標準偏差を求めてみましょう
-    * https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb [4]-[7]
+    * [コード（セル4-7）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb)
     * 定義から
     * PandasやNumPyで
 
