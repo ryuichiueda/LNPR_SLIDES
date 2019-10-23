@@ -72,9 +72,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 $$
 	p(x | \lambda ) = \lambda e^{-\lambda x} \  (x > 0)
 $$
-    * $t$: ロボットの移動量（道のり）
-    * $\lambda$: $t$あたりに踏む小石の数の期待値
-    * $t \sim p(t | \lambda )$で次に小石を踏むタイミングが決定できる
+    * $x$: ロボットの移動量（道のり）
+    * $\lambda$: $x$あたりに踏む小石の数の期待値
+    * $x \sim p(x | \lambda )$で次に小石を踏むまでの道のりが決定できる
 * [Jupyter Notebookでの例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/distributions/exponential.ipynb)
 
 ---
