@@ -1,5 +1,5 @@
 {
-  "name": "reveal.js",
+  "name": "reveal",
   "version": "3.8.0",
   "description": "The HTML Presentation Framework",
   "homepage": "http://revealjs.com",
@@ -10,11 +10,7 @@
     "start": "grunt serve",
     "build": "grunt"
   },
-  "author": {
-    "name": "Hakim El Hattab",
-    "email": "hakim.elhattab@gmail.com",
-    "web": "http://hakim.se"
-  },
+  "author": "Hakim El Hattab <hakim.elhattab@gmail.com> (http://hakim.se)",
   "repository": {
     "type": "git",
     "url": "git://github.com/hakimel/reveal.js.git"
@@ -43,5 +39,12 @@
   "license": "MIT",
   "dependencies": {
     "shelljs": "^0.8.3"
+  },
+  "bugs": {
+    "url": "https://github.com/hakimel/reveal.js/issues"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
   }
 }

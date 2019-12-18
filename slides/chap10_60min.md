@@ -92,7 +92,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 ### 価値関数の性質（2/2）
 
 * 漸化式にすると状態が初期状態かどうかは関係なく価値$V(\boldsymbol{x})$が決まることが分かる
-    * <span style="color:red">$V^\Pi(\boldsymbol{x}) = \left\langle r(\boldsymbol{x}, a, \boldsymbol{x}') + V^\Pi(\boldsymbol{x}') \right\rangle_{p(\boldsymbol{x}'| \boldsymbol{x}, a)}$</span>
+    * <span style="color:red">$V^\Pi(\boldsymbol{x}) = \left\langle r(\boldsymbol{x}, a, \boldsymbol{x}') + V^\Pi(\boldsymbol{x}') \right\rangle_{p(\boldsymbol{x}| \boldsymbol{x}', a)}$</span>
 * 遷移後の状態の価値が分かるなら次のことが成り立つ
     * 遷移前の状態の価値も分かる
     * $a$を変えて価値が高くなるなら$\Pi$を変更すればよい
