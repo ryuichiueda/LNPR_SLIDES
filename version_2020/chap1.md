@@ -208,7 +208,14 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * MCL
 * SLAM
 
+より複雑な状況で機能するアルゴリズムが追求されている
 
+---
+
+### 現在
+
+* 機械学習の進歩によってベイズ的な考え方が重要に
+* 深層学習
 
 
 ---
