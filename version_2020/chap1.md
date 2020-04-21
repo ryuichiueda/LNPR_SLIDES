@@ -221,8 +221,10 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * セバスチャン・スランらの教科書
     * 1995年頃から10年間に確立したロボット用の推論アルゴリズム（+カルマンフィルタ）を掲載
     * カルマンフィルタ、パーティクルフィルタ、FastSLAM、GraphSLAM、POMDP手法など
+    * 確率ロボティクス分野
+        * この教科書の範囲や周辺のアルゴリズムを研究する分野
 
-<img width="60%" src="./figs/probrobo_books.jpeg" />
+<img width="50%" src="./figs/probrobo_books.jpeg" />
 
 ---
 
@@ -244,22 +246,47 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 およびこの講義資料（スライド）について
 
-<img width="20%" src="./figs/lnpr.jpeg" />
+<img width="30%" src="./figs/lnpr.jpeg" />
 
 ---
 
 ## 1.3.1 意図と体裁
 
-* 
+* 書いた意図
+    * 実際に動作するコードを交えて<br />確率ロボティクスを説明したい
+        * 説明に実感が持てるように
+        * コードを書いて試せるように<br />　
+* Jupyter Notebookで<br />コードを書く
+    * さっと書ける
+    * コードの動作を視覚的に確認可能
+
+<img width="42%" src="./figs/code_animation.png" />
+
+とにかくコードを書いていただきたい
 
 ---
 
 ## 1.3.2 書籍の構成
 
+* 3部構成
+    * 「準備」、「自己位置推定とSLAM」、「行動決定」
+* 2〜12章と付録Aが手法やアルゴリズムを説明した章
+    * 興味に応じて次の図の順番で読める
+
+<img width="70%" src="./figs/book_structure.png" />
 
 ---
 
 ## 1.3.3 書籍で使用するツール
 
-
+* Pythonとnumpyなどのモジュール
+    * よくわからなければ[Anaconda](https://www.anaconda.com/)で一式インストール<br />　
+* [Jupyter Notebook](https://jupyter.org/)
+    * インストール方法は各自ネットで調査お願いします<br />　
+* [GitHub](https://github.com/)
+    * 用途
+        * コードが読む
+        * サンプルコードやこのスライドのリポジトリをfork
+        * 自分の練習コードを置く
+    *  アカウントを作ったほうがよい
 
