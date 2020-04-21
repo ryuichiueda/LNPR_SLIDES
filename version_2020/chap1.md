@@ -282,11 +282,24 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * Pythonとnumpyなどのモジュール
     * よくわからなければ[Anaconda](https://www.anaconda.com/)で一式インストール<br />　
 * [Jupyter Notebook](https://jupyter.org/)
-    * インストール方法は各自ネットで調査お願いします<br />　
+    * インストール方法がOSやOSのバージョンでばらばらなので、<br />各自ネットで調査お願いします<br />　
 * [GitHub](https://github.com/)
     * 用途
         * コードが読む
-        * サンプルコードやこのスライドのリポジトリをfork
+        * サンプルコードやこのスライドのリポジトリをfork（次ページ）
         * 自分の練習コードを置く
     *  アカウントを作ったほうがよい
 
+
+---
+
+### リポジトリ・ウェブサイト
+
+* サンプルコード
+    * 書籍掲載のコード: [ryuichiueda/LNPR_BOOK_CODES](https://github.com/ryuichiueda/LNPR_BOOK_CODES)
+    * 完成したコードだけ残したもの: [ryuichiueda/LNPR](https://github.com/ryuichiueda/LNPR)<br />　
+* 講義用スライド
+    * リポジトリ: [ryuichiueda/LNPR_SLIDES](https://github.com/ryuichiueda/LNPR_SLIDES)
+    * [目次](https://b.ueda.tech/?page=lnpr#%E8%AC%9B%E7%BE%A9%E7%94%A8%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%89)<br />　
+* 訂正等の情報
+    * https://b.ueda.tech/?page=lnpr
