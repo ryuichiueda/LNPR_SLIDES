@@ -1,1 +1,0 @@
-contents/20191122_sice.md
