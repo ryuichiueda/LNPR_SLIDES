@@ -45,8 +45,8 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $\nu$: 速度
     * $\omega$: 角速度
 
-<img width="25%" src="../figs/robot_motion1.png" /> 
-<img width="25%" src="../figs/robot_motion2.png" /> 
+<img width="25%" src="./figs/robot_motion1.png" /> 
+<img width="25%" src="./figs/robot_motion2.png" /> 
 
 ---
 
@@ -60,8 +60,8 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 姿勢$\boldsymbol{x}\_{t-1}$から姿勢$\boldsymbol{x}\_{t}$までの制御指令は$\boldsymbol{u}_t = (\nu \ \omega)^\top$で固定
 
 
-<img width="30%" src="../figs/robot_motion2.png" /> 
-<img width="27%" src="../figs/robot_motion.gif" /> 
+<img width="30%" src="./figs/robot_motion2.png" /> 
+<img width="27%" src="./figs/robot_motion.gif" /> 
 
 ---
 
@@ -93,7 +93,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 「エージェント」がロボットに乗って、そこから制御司令を出すという実装になっている
 * 状態遷移関数の実装
 
-![](../figs/state_transition.png)
+![](./figs/state_transition.png)
 
 ---
 
@@ -106,7 +106,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 極座標で$\boldsymbol{z}_j = (\ell_j \ \varphi_j )^\top$
     * 問題: $\boldsymbol{z}_j$と$\boldsymbol{x}$の関係は？
 
-<img width="60%" src="../figs/landmark_observation.png" />
+<img width="60%" src="./figs/landmark_observation.png" />
 
 ---
 
@@ -119,7 +119,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * SLAMではランドマークの位置も変数になる
     * $\\boldsymbol\{h\}(\boldsymbol{x},\boldsymbol{m}_j )$
 
-<img width="50%" src="../figs/landmark_observation.png" />
+<img width="50%" src="./figs/landmark_observation.png" />
 
 ---
 
@@ -130,11 +130,11 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * シミュレーションのため、カメラオブジェクトに観測対象の地図を与えておく
     * 観測方程式の実装
 
-![](../figs/observation_function.png)
+![](./figs/observation_function.png)
 
 ---
 
 ### 最終的なロボットの挙動
 
-![](../figs/simulator_no_noise.gif)
+![](./figs/simulator_no_noise.gif)
 

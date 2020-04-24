@@ -22,7 +22,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 壁だと思ったら人までの距離を計測（過失誤差）
 
 <div style="float:left">
-<img width="40%" src="../figs/sensor_200_histgram.png" />
+<img width="40%" src="./figs/sensor_200_histgram.png" />
 </div>
 <div style="float:left">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RpPcmyXOcr4?start=2444" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -60,7 +60,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * [実装例](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_uncertainty/noise_simulation2.ipynb)
         * 前者を<span style="color:red">指数分布</span>、<br />後者を<span style="color:red">ガウス分布</span>でモデル化
 
-<img src="../figs/motion_noise.gif" />
+<img src="./figs/motion_noise.gif" />
 
 ---
 
@@ -116,7 +116,7 @@ $
     * 根絶は無理
 * 事前に予想ができないので厄介
 
-<img src="../figs/motion_bias.gif" />
+<img src="./figs/motion_bias.gif" />
 
 ---
 
@@ -129,8 +129,8 @@ $
     * これも指数分布でタイミングを決定
     * 置き直し姿勢は一様分布からドロー
 
-<img width="30%" src="../figs/jamming.gif" />
-<img width="30%" src="../figs/kidnap.gif" />
+<img width="30%" src="./figs/jamming.gif" />
+<img width="30%" src="./figs/kidnap.gif" />
 
 ---
 
@@ -152,7 +152,7 @@ $
     * $\Delta\varphi = \mathcal{N}[0, \sigma_\varphi^2] $
         * 一定の標準偏差
 
-<img width="30%" src="../figs/sensor_noise.gif" />
+<img width="30%" src="./figs/sensor_noise.gif" />
 
 
 ---
@@ -168,7 +168,7 @@ $
         * 距離: 距離に比例した量を足す
         * 方向: 方向に無関係に決まった量を足す
 
-<img width="30%" src="../figs/sensor_bias.png" />
+<img width="30%" src="./figs/sensor_bias.png" />
 
 ---
 
@@ -177,7 +177,7 @@ $
 * 見えないはずのものが見えてしまう
     * 偽陽性
 
-![](../figs/phantom.gif)
+![](./figs/phantom.gif)
 
 ---
 
@@ -186,7 +186,7 @@ $
 * 見えるはずのものが見えない
     * 偽陰性
 
-![](../figs/lost.gif)
+![](./figs/lost.gif)
 
 ---
 
@@ -196,5 +196,5 @@ $
     * カメラで大きさを測るとき: 小さく見えてしまう
     * LiDARで壁までの距離を測るとき: 壁が手前に見えてしまう
 
-![](../figs/sensor_occlusion.gif)
+![](./figs/sensor_occlusion.gif)
 
