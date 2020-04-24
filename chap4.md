@@ -110,3 +110,19 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $(\nu_t^\* \  \omega_t^\*)^\top = (\delta_\nu \nu_t \ \delta_\omega\omega_t)^\top$
     * $\delta_\nu, \delta_\omega$はシミュレーションの開始時に決めて、以後一定<br />
 	$\rightarrow$<span style="color:red">系統誤差</span>となる
+
+---
+
+## 実装結果
+
+* シミュレータでの$\delta_\nu, \delta_\omega$の決め方
+    * いずれも平均値$0$、標準偏差$0.1$の<br />ガウス分布からドロー
+    * 右図: 灰色がバイアスなし、<br />赤がバイアスあり
+* バイアスについて
+    * 事前に予想がつきにくく厄介
+    * キャリブレーションで<br />小さくすることは可能
+    * 根絶は無理
+
+<img width="35%" src="./figs/motion_bias.gif" />
+
+
