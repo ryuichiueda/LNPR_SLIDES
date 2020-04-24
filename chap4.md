@@ -73,7 +73,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 指数分布
+### 指数分布の利用
 
 * $p(x | \lambda ) = \lambda e^{-\lambda x} \quad (x \ge 0)$
     * $x$: 小石を踏みつけるまでの道のり
@@ -89,11 +89,24 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-### 雑音の実装
+### 実装
 
-* $\lambda = 5$（200[mm]に1回小石を踏む）
-* $\sigma_\theta = \pi/60$（小石を踏むと標準偏差3[deg]で$\theta$がずれる）
+* 道のりの計算: $x \sim p(x | \lambda ) = \lambda e^{-\lambda x}$
+    * $\lambda = 5$（200[mm]に1回小石を踏む）
+* $\theta$への雑音混入: $\theta \sim \mathcal{N}(\theta | \theta_\text{before}, \sigma_\theta)$
+    * $\theta_\text{before}$: 小石を踏む前のロボットの向き
+    * $\sigma_\theta = \pi/60$（小石を踏むと標準偏差3[deg]で$\theta$がずれる）
 
-![](./figs/motion_noise.gif)
+<img width="35%" src="./figs/motion_noise.gif" />
 
+---
 
+## 4.2.2 移動速度へのバイアスの実装
+
+* 次の二つの値を違うものとして扱う
+    * モータへの制御指令値: $\boldsymbol{u}_t = (\nu_t \ \omega_t)^\top$
+    * 実際のロボットの速度: $\boldsymbol{u}_t^\* = (\nu_t^\* \  \omega_t^\*)^\top$<br />　
+* $\boldsymbol{u}_t$と$\boldsymbol{u}_t^\*$の関係
+    * $(\nu_t^\* \  \omega_t^\*)^\top = (\delta_\nu \nu_t \ \delta_\omega\omega_t)^\top$
+    * $\delta_\nu, \delta_\omega$はシミュレーションの開始時に決めて、以後一定<br />
+	$\rightarrow$<span style="color:red">系統誤差</span>となる
