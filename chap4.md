@@ -117,12 +117,21 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * シミュレータでの$\delta_\nu, \delta_\omega$の決め方
     * いずれも平均値$0$、標準偏差$0.1$の<br />ガウス分布からドロー
-    * 右図: 灰色がバイアスなし、<br />赤がバイアスあり
-* バイアスについて
-    * 事前に予想がつきにくく厄介
+    * 右図: 灰色がバイアスなし、<br />赤がバイアスあり<br />　
+* バイアスについて補足
+    * 推定に悪影響
+        * 多くアルゴリズムは無視
+        * 対策が難しい
     * キャリブレーションで<br />小さくすることは可能
     * 根絶は無理
 
-<img width="35%" src="./figs/motion_bias.gif" />
+<img width="38%" src="./figs/motion_bias.gif" />
 
+
+
+---
+
+## 4.2.3 スタックの実装
+
+* スタック: ロボットが何かに引っかかり動けなくなる現象
 
