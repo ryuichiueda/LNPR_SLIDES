@@ -66,6 +66,34 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * シミュレータへの実装方法（1, 2の繰り返し）
     1. ロボットが小石を踏んだら、次に踏むまでの道のりを計算
     1. 計算した道のりに達したら$\theta$をずらして再度道のりを計算
+        * これはガウス分布で
 
 
-どんな数式を使うべきか
+1について、どんな数式を使えばよいか
+
+---
+
+### 指数分布
+
+* $p(x | \lambda ) = \lambda e^{-\lambda x} \quad (x \ge 0)$
+    * $x$: 小石を踏みつけるまでの道のり
+    * $\lambda$: 道のりあたりに踏みつける小石の数の期待値
+        * $1/\lambda$: 踏みつけるまでの道のりの期待値
+* 下図のような確率密度関数
+    * 左: $\lambda = 1$
+    * 右: $\lambda = 2$
+    * 右のほうが小石が多いので踏むまでの時間は短くなる
+
+<img width="35%" src="./figs/expon_lambda1.png" />
+<img width="35%" src="./figs/expon_lambda2.png" />
+
+---
+
+### 雑音の実装
+
+* $\lambda = 5$（200[mm]に1回小石を踏む）
+* $\sigma_\theta = \pi/60$（小石を踏むと標準偏差3[deg]で$\theta$がずれる）
+
+![](./figs/motion_noise.gif)
+
+
