@@ -383,9 +383,9 @@ $$\textbf{z}\_t \sim p (\textbf{z} | \boldsymbol{x}\_t) = \prod\_{j=0}^{N\_\text
 ## 4.4 まとめ
 
 * シミュレータを実装<br />　
-* 実装したシステムや他の多くのシステムは次のふたつで表せる
+* 実装したシステムや他の多くのシステムは次のふたつのモデルで表せる
     * 状態遷移モデル: $\boldsymbol{x}\_t \sim p(\boldsymbol{x}|\boldsymbol{x}\_{t-1}, \boldsymbol{u}\_t)$
     * 観測モデル　　: $\textbf{z}_t \sim p (\textbf{z} | \boldsymbol{x}_t)$<br />　
 * ただし
     * 従来の状態方程式、観測方程式も使う
-    * アルゴリズム中で使うモデルと真の系は違うことに注意
+    * アルゴリズム中で使うモデルと真のシステムには乖離があることに注意
