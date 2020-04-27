@@ -388,4 +388,4 @@ $$\textbf{z}\_t \sim p (\textbf{z} | \boldsymbol{x}\_t) = \prod\_{j=0}^{N\_\text
     * 観測モデル　　: $\textbf{z}_t \sim p (\textbf{z} | \boldsymbol{x}_t)$<br />　
 * ただし
     * 従来の状態方程式、観測方程式も使う
-    * アルゴリズム中で使うモデルと、真のものは違うことに注意
+    * アルゴリズム中で使うモデルと真の系は違うことに注意
