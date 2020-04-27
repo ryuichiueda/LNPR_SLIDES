@@ -265,16 +265,16 @@ $$\boldsymbol{x}\_t \sim p(\boldsymbol{x}|\boldsymbol{x}\_{t-1}, \boldsymbol{u}\
 
 ## 4.3.2 センサ値に対する<br />バイアスの実装
 
-* 原因
-    * カメラの取り付けの誤差、環境光、湿度など（2章）
-    * （人間の場合）妙に山が近く見える<br />　
+* 原因: カメラの取り付けの誤差、<br />環境光、湿度など（2章）
+    * 人間の場合: 妙に山が近く見える場合など<br />　
 * 実装方法
     * 計測距離$\ell$と向き$\varphi$を一定量ずらす
         * $\ell$については真の距離に比例した大きさで
     * シミュレーション開始時に<br />ずらす量を決定
         * これもガウス分布からドロー
-<img width="30%" src="./figs/phantom.gif" />
         * 数式は省略<br />　
+
+<img width="30%" src="./figs/phantom.gif" />
 
 ---
 
@@ -329,7 +329,7 @@ graph-based SLAMなどで厄介に<br />（<span style="color:red">外れ値・�
         * カメラ: 物が欠けて小さく見える
             * <span style="color:red">物体の大きさで距離を計測していると遠く見える$\leftarrow$これを実装</span><br />　
 * 実装方法: ある一定の確率でセンサ値を書き換え
-    * $\ \ell_t' \sim \mathcal{U}(\ell_t, \ell_\max)$
+    * $\ \ell_t' \sim \mathcal{U}(\ell | \ell_t \le \ell < \ell_\max)$
         * $\ell_t$: もとの計測距離
         * $\ell_t'$: 書き換えられた計測距離
 
