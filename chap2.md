@@ -121,10 +121,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 <img width="20%" src="../figs/sensor_200_histgram.png" />
 * なんらかの<span style="color:red">バイアス</span>が存在するから
     * <span style="color:red">バイアス（偏り）</span>: 値がずれる原因
-        * 例: 筆者の勘違い、センサの取り付けた向きのずれ、<span style="color:red">正体不明</span>・・・
-        * キャリブレーションで除去できるがゼロにはできない
-        * ロボットの場合、動かしているうちにバイアス再発ということがある
-
+        * 例: 筆者の勘違い、センサの取り付けた向きのずれ、正体不明・・・
+        * 事前にキャリブレーションできるがゼロにはできず、ロボットの場合は動かしているうちに再発ということがある
+        * 雑音と違いデータから量を推測できない
 
 厄介
 
