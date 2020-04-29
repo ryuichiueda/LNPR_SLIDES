@@ -226,53 +226,41 @@ $$\sigma^2 = \frac{1}{N-1}\sum_{i=0}^{N-1} (z_i - \mu)^2 \quad (N>1)$$
 
 ---
 
-### 素朴な確率分布
+## 2.3 確率モデル
 
-* 作り方
-    1. 度数分布の頻度を全て足す
-    2. 各区間の頻度を1の合計値で割る
-        * 合計が1になる$\rightarrow$これを 確率分布$p(z)$とする（左図）
-* センサ値$z$を$p(z)$から選ぶ操作: $z \sim p(z)$
-    * 「ドローする」と表現
-    * 右図: 左図の$p(z)$からドローを繰り返して作った度数分布
 
-<img width="40%" src="./figs/prob_200.png" />
-<img width="40%" src="./figs/simulated_sensor_200.png" />
-
->>>
-
-### 演習
-
-* 元のデータから作った確率分布からドローを繰り返し、結果をヒストグラムにしてみましょう。
-    * [コード（セル13）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb)
-
-<img width="40%" src="./figs/simulated_sensor_200.png" />
-
----
-
-### 確率分布のモデル
-
-* 度数分布から確率分布を作るのが唯一の方法？
+* 度数分布から確率分布を作ることへの疑問
    * 度数分布のデコボコは重要なのか？
        * データの回数が少ないともっとデコボコ
    * 実際に得られた値より小さな/大きな値になる確率はゼロ？
-   * 何か演算をするときに度数分布ベースだと面倒なことも
-   * 様々な裏付けから、<span style="color:red">確率分布が従う数式</span>というものが存在
+   * なにか法則性（つまり数式）を当てはめられないだろうか？
 
-$\Longrightarrow$確率分布のモデル
+<img width="40%" src="./figs/sensor_200_histgram.png" />
+
+「確率分布のモデル」を当てはめようという発想
 
 ---
 
-### ガウス分布（正規分布）
+## 2.3.1 ガウス分布の当てはめ
 
-* 確率密度関数$\ p(x | \mu, \sigma^2 ) = \dfrac{1}{\sqrt{2\pi}\sigma} \exp\left[ - \dfrac{(x - \mu)^2}{2\sigma^2} \right]$
+* たぶん、確率・統計を勉強した<br />人は「<span style="color:red">ガウス分布</span>」を<br />当てはめようとするでしょう
+    * 根拠はない<br />（本当は違うけど是とする）<br />　
+* ガウス分布の形状
+    * $\ p(x | \mu, \sigma^2 ) = \frac{1}{\sqrt{2\pi}\sigma} e^{ - \frac{(x - \mu)^2}{2\sigma^2}}$
+         * $\mu$: 平均値、$\sigma$: 標準偏差
+         * 図: センサ値から描いたガウス分布
+             * ヒストグラムとよく似ている
+
+<img width="40%" src="./figs/gauss_200.png" />
+
+---
+
     * 値は確率でなく<span style="color:red">密度</span>。積分すると確率
     * $\mathcal{N}(x | \mu, \sigma^2)$と表す
 * $N$個のデータ$z_i$ <span style="font-size:70%">$(i=0,1,2,\dots,N-1)$</span>からの計算方法
     * $\mu = \frac{1}{N}\sum_{i=0}^{N-1} z_i$: 分布の中心
     * $\sigma^2 = \frac{1}{N-1}\sum_{i=0}^{N-1} (z_i - \mu)^2$: 分布の分散
 
-<img width="40%" src="./figs/gauss_200.png" />
 
 >>>
 
