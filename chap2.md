@@ -27,7 +27,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 光センサ
         * レーザスキャナ（LiDAR）の<br />正面の1本のレーザー
 
-<img width="30%" src="../figs/sensor_experiment.jpg" />
+<img width="30%" src="./figs/sensor_experiment.jpg" />
 
 ---
 
@@ -39,7 +39,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * ir: 光センサの値（壁から反射した光の強さ）
     * lidar: LiDARの1本のレーザから得られた壁の距離[mm]
 
-<img width="90%" src="../figs/200mm_data.png" />
+<img width="90%" src="./figs/200mm_data.png" />
 
 値が揺らいでいる
 
@@ -65,7 +65,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ## 2.2.1 ヒストグラムの描画
 
-センサ値のばらつきを視認してみましょう
+LiDARからの値（以後センサ値と呼ぶ）のばらつきを視認してみましょう
 
 * 度数分布の作成
     * センサ値の範囲を区切り、<br />各区間の値の個数を集計<br />　
@@ -74,7 +74,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 図: 区間の幅1で描いた<br />ヒストグラム
         * （整数のデータで幅1なので<br />例としてはあまりよくない）
 
-<img width="48%" src="../figs/sensor_200_histgram.png" />
+<img width="48%" src="./figs/sensor_200_histgram.png" />
 
 ---
 
@@ -83,7 +83,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * このヒストグラムや元のデータから何を調べられるでしょうか
     * 用語を確認しながら考えてみましょう
 
-<img width="48%" src="../figs/sensor_200_histgram.png" />
+<img width="48%" src="./figs/sensor_200_histgram.png" />
 
 ---
 
@@ -98,14 +98,14 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * センサ値が210[mm]以上だった、等
 
 
-<img width="40%" src="../figs/sensor_200_histgram.png" />
+<img width="40%" src="./figs/sensor_200_histgram.png" />
 
 ---
 
 ### 雑音
 
 * センサ値が毎回違う、ヒストグラムが広がりをもつのはなぜ？<br />
-<img width="20%" src="../figs/sensor_200_histgram.png" />
+<img width="20%" src="./figs/sensor_200_histgram.png" />
 * 理由: なんらかの<span style="color:red">雑音</span>が存在するから
     * <span style="color:red">雑音（ノイズ）</span>: 値がゆらぐ（乱す）原因
         * 例: センサ内の電気的なゆらぎ、外光、湿度、<span style="color:red">正体不明</span>・・・
@@ -118,14 +118,15 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### バイアス
 
 * 壁の距離が200[mm]と説明されたのにセンサ値は210[mm]くらいになるのはなぜ？<br />
-<img width="20%" src="../figs/sensor_200_histgram.png" />
+<img width="20%" src="./figs/sensor_200_histgram.png" />
 * なんらかの<span style="color:red">バイアス</span>が存在するから
     * <span style="color:red">バイアス（偏り）</span>: 値がずれる原因
         * 例: 筆者の勘違い、センサの取り付けた向きのずれ、正体不明・・・
         * 事前にキャリブレーションできるがゼロにはできず、ロボットの場合は動かしているうちに再発ということがある
-        * 雑音と違いデータから量を推測できない
+        * 雑音と違いデータから量を推測ができない
 
-厄介
+
+非常に厄介でどうしようもないことがある
 
 ---
 
@@ -133,40 +134,95 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * <span style="color:red">誤差</span>: 何か測りたいものの「真の」値とセンサの値の差
 * 誤差の種類
-    * 
+    * 偶然誤差: 主に雑音による
+    * 系統誤差: 主にバイアスによる
+    * 過失誤差: 実験データの記録間違いなど
+
+ロボットを動かす = これら誤差との戦い
+
+---
+
+## 2.2.3 雑音の数値化
+
+いまの話を数字を使って議論しましょう
+
+---
+
+### 平均値
+
+* <span style="color:red">平均値</span>: 全センサ値を足してセンサ値の個数で割ったもの
+* 次の式で表される
+$$\mu = \frac{1}{N}\sum_{i=0}^{N-1} z_i$$
+    * $z_0, z_1, \dots, z_{N-1}$: センサ値
+    * $N$: センサ値の個数<br />　
+* 今扱っているセンサ値の平均値: 209.7[mm]
+    * 分かること: 200[mm]だと言っていたが1[cm]くらい違う<br />
+    （平均値がないとこういう議論は不可能）
 
 
 ---
 
-### 平均値、分散、標準偏差
+### 分散、標準偏差
 
-* 平均値（mean）: 全センサ値を足してセンサ値の個数$N$で割ったもの
-* 分散(variance): 各センサ値と平均値の差を求めてその2乗和を足し、
-    * $N$で割ったもの: 標本分散（$N$が小さいときに値が小さくなる）
-    * $N-1$で割ったもの: 不偏分散
-* 標準偏差: 分散の正の平方根
-
->>>
-
-### 演習
-
-* センサ値の平均値、分散、標準偏差を求めてみましょう
-    * [コード（セル4-7）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb)
-    * 定義から
-    * PandasやNumPyで
+* 平均値はわかったけど、各センサ値はそこからどれだけ離れているのか
+    $\rightarrow$<span style="color:red">分散、標準偏差</span>で数値化<br />　
+* 分散: 各センサ値と平均値の差の2乗和を足して平均<br /><span style="font-size:70%">（実際は2乗和を$N-1$で割る。理由は書籍で。）</span>
+$$\sigma^2 = \frac{1}{N-1}\sum_{i=0}^{N-1} (z_i - \mu)^2 \quad (N>1)$$
+* 標準偏差: 分散の正の平方根（上の式の$\sigma$）
+    * センサ値と単位が揃うので分散よりイメージがつきやすく便利
+        * 「誤差はどれだけ？」と聞かれて答える値
+    * 今扱っているセンサ値の標準偏差: 4.8[mm]<span style="font-size:70%">（つまり5[mm]ぐらいの誤差）</span>
 
 ---
 
-### センサ値を予想する
+## 2.2.4 （素朴な）確率分布
 
-* 度数分布からセンサが次に出す値を予想できるか？
-    * だいたいどのような値になるかは予想可能
-        * センサ値を何度も予想したら頻度が度数分布の示す割合に
-            * センサ値が$z$になる割合: 「$z$になる頻度/データ数」<span style="color:red">$\Longrightarrow$確率</span>
-    * 「$z$になる頻度/データ数」を返す関数$p(z)$<br /><span style="color:red">$\Longrightarrow$確率質量関数（確率分布）</span>
-* 確率分布が分かる: センサの特性を統計的に理解
+* ここでやりたいこと: 度数分布から、<br />未来にどんなセンサ値が得られそうかを予想<br />　
+* なぜやるか
+    * ロボットが実際に得られたセンサ値と予想を比較<br />（自己位置推定で出てくる演算）
+    * センサのシミュレーション
 
-<img width="40%" src="../figs/sensor_200_histgram.png" />
+---
+
+### 予想のアイデア
+
+* 未来のセンサ値を集めたら今までと同じ度数分布が得られるのではないか？<br />
+<img width="30%" src="./figs/sensor_200_histgram.png" />
+* ただし、集める個数によって値が変わってはいけないので度数分布を頻度でなく割合に
+    * $P_{\textbf{z}\text{LiDAR}}(z) = N_z / N$　（$N_z$: センサの値が$z$だった頻度）
+        * 全センサ値の種類に関して$P_{\textbf{z}\text{LiDAR}}(z)$を足し合わせると1に
+
+<span style="color:red">$P_{\textbf{z}\text{LiDAR}}(z)$を確率と呼びましょう</span>
+
+
+---
+
+### 確率分布
+
+* ヒストグラムを確率のグラフに描き直してみる
+    * 左: ヒストグラム
+    * 右: 確率$P_{\textbf{z}\text{LiDAR}}$のグラフ
+        * 縦軸の値が変わっただけ
+* 用語
+    * 関数$P_{\textbf{z}\text{LiDAR}}$: 確率質量関数と呼ぶ
+    * $P_{\textbf{z}\text{LiDAR}}$の形状や$P_{\textbf{z}\text{LiDAR}}$そのものを<span style="color:red">確率分布</span>と呼ぶ
+
+<img width="40%" src="./figs/sensor_200_histgram.png" />
+<img width="38%" src="./figs/hist_to_prob.png" />
+
+---
+
+## 2.2.5 確率分布を用いた<br />シミュレーション<span style="font-size:70%">（4章の練習）</span>
+
+* 確率分布$P_{\textbf{z}\text{LiDAR}}$にしたがって<br />センサ値をひとつずつ生成
+    * 「したがって」とは
+        * 例えば$P(200\text{})/P(150\text{}) = 2$<br />なら$z=200$を$z=150$より<br />2倍出現しやすく
+    * 数式での表現: <span style="color:red">$z \sim P_{\textbf{z}\text{LiDAR}}$</span>
+        * 「ドロー」と表現<br />　
+* 右のヒストグラム: <br />シミュレーションで得たもの
+    * センサの特性を再現
+
+<img width="40%" src="./figs/lidar_simulation.png" />
 
 ---
 
@@ -180,8 +236,8 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 「ドローする」と表現
     * 右図: 左図の$p(z)$からドローを繰り返して作った度数分布
 
-<img width="40%" src="../figs/prob_200.png" />
-<img width="40%" src="../figs/simulated_sensor_200.png" />
+<img width="40%" src="./figs/prob_200.png" />
+<img width="40%" src="./figs/simulated_sensor_200.png" />
 
 >>>
 
@@ -190,7 +246,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 元のデータから作った確率分布からドローを繰り返し、結果をヒストグラムにしてみましょう。
     * [コード（セル13）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_200.ipynb)
 
-<img width="40%" src="../figs/simulated_sensor_200.png" />
+<img width="40%" src="./figs/simulated_sensor_200.png" />
 
 ---
 
@@ -216,7 +272,7 @@ $\Longrightarrow$確率分布のモデル
     * $\mu = \frac{1}{N}\sum_{i=0}^{N-1} z_i$: 分布の中心
     * $\sigma^2 = \frac{1}{N-1}\sum_{i=0}^{N-1} (z_i - \mu)^2$: 分布の分散
 
-<img width="40%" src="../figs/gauss_200.png" />
+<img width="40%" src="./figs/gauss_200.png" />
 
 >>>
 
@@ -279,7 +335,7 @@ $\Longrightarrow$
 
 ### センサ値のヒストグラム<br />（距離: 600[<span style="text-transform:none">mm</span>])
 
-<img width="60%" src="../figs/sensor_histgram_600.png" />
+<img width="60%" src="./figs/sensor_histgram_600.png" />
 
 なんだこれは？
 
@@ -291,7 +347,7 @@ $\Longrightarrow$
     * どうやら時間で値が変動しているらしい
         * もっと言うと、おそらく外からの光だと思われる
 
-<img width="40%" src="../figs/sensor_600_time.png" />
+<img width="40%" src="./figs/sensor_600_time.png" />
 
 ---
 
@@ -300,7 +356,7 @@ $\Longrightarrow$
 * オレンジ: 昼の14時台
 * 青: 朝の6時台
 <br />
-<img width="100%" src="../figs/sensor600_6h_14h.png" />
+<img width="100%" src="./figs/sensor600_6h_14h.png" />
 
 分けるとどちらもガウス分布状に
 
@@ -322,7 +378,7 @@ $\Longrightarrow$
 * 2次元の確率分布$p(z,t)$（$z$: センサ値、$t$: 時刻）
     * <span style="color:red">同時分布、結合分布</span>と呼ばれる
 
-![](../figs/sensor_600_2d.png)
+![](./figs/sensor_600_2d.png)
 
 >>>
 
@@ -331,7 +387,7 @@ $\Longrightarrow$
 * この図を描画してみましょう
     * [lidar_600.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_600.ipynb) [8]
 
-![](../figs/sensor_600_2d.png)
+![](./figs/sensor_600_2d.png)
 
 ---
 
@@ -344,9 +400,9 @@ $\Longrightarrow$
     * 例: $\ p(z) = \int_{-\infty}^{\infty} p(z,t) dt$
         * 時間の情報を消してセンサ値の1次元分布を作る
 
-<img width="30%" src="../figs/sensor_600_2d.png" />
+<img width="30%" src="./figs/sensor_600_2d.png" />
 $\rightarrow$
-<img width="40%" src="../figs/sensor_histgram_600.png" />
+<img width="40%" src="./figs/sensor_histgram_600.png" />
 
 >>>
 
@@ -364,9 +420,9 @@ $\rightarrow$
     * 例: $p(z | t)$: ある時間帯$t$におけるセンサ値$z$の分布
 
 
-<img width="30%" src="../figs/sensor_600_2d.png" />
+<img width="30%" src="./figs/sensor_600_2d.png" />
 $\rightarrow$
-<img width="40%" src="../figs/sensor600_6h_14h.png" />
+<img width="40%" src="./figs/sensor600_6h_14h.png" />
 
 ---
 
@@ -415,7 +471,7 @@ $\rightarrow$
 * 光センサとLiDARの分布（700[mm], 12〜16時台のデータ）
     * どちらの変数を周辺化してもガウス分布に当てはまる
 
-<img width="40%" src="../figs/lidar_light_200.png" />
+<img width="40%" src="./figs/lidar_light_200.png" />
 
 ---
 
@@ -438,9 +494,9 @@ $\rightarrow$
     * $\boldsymbol{\mu} = \frac{1}{N}\sum_{i=0}^{N-1} \boldsymbol{z}_i = (19.9 \ 729.3)^T$
     * $\Sigma = \begin{pmatrix}\sigma_x^2 & \sigma_{xy} \\\\ \sigma_{xy} & \sigma_y^2\end{pmatrix} = \begin{pmatrix}42.1 & -0.3 \\\\ -0.3 & 17.7\end{pmatrix}$
 
-<img width="30%" src="../figs/lidar_light_200.png" />
+<img width="30%" src="./figs/lidar_light_200.png" />
 $\rightarrow$
-<img width="40%" src="../figs/2d_gauss.png" />
+<img width="40%" src="./figs/2d_gauss.png" />
 
 >>>
 
@@ -450,7 +506,7 @@ $\rightarrow$
     * [multi_gauss1.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/multi_gauss1.ipynb) [1]-[5]
 
 
-![](../figs/2d_gauss.png)
+![](./figs/2d_gauss.png)
 
 ---
 
@@ -462,7 +518,7 @@ $\rightarrow$
     * 共分散が負: 正のときと逆
         * 右のガウス分布: $\Sigma = \begin{pmatrix} 100 & -25\sqrt{3} \\\\ -25\sqrt{3} & 50 \end{pmatrix}$ 
 
-<img width="40%" src="../figs/2d_gausses.png" />
+<img width="40%" src="./figs/2d_gausses.png" />
 
 >>>
 
@@ -481,7 +537,7 @@ $\rightarrow$
         * $\Sigma = \begin{pmatrix} 100 & 25\sqrt{3} \\\\ 25\sqrt{3} & 50 \end{pmatrix} =         R_{\pi/6} \begin{pmatrix} 125 & 0 \\\\ 0 & 25 \end{pmatrix} R_{\pi/6}^{-1}$
     * 右のガウス分布:
         * $\Sigma = \begin{pmatrix} 100 & -25\sqrt{3} \\\\ -25\sqrt{3} & 50 \end{pmatrix} =         R_{-\pi/6} \begin{pmatrix} 125 & 0 \\\\ 0 & 25 \end{pmatrix} R_{-\pi/6}^{-1}$
-<img width="40%" src="../figs/2d_gausses.png" />
+<img width="40%" src="./figs/2d_gausses.png" />
     * 対角行列は長軸、短軸の長さの2乗を表す（固有値）
     * 回転行列は固有ベクトルの組み合わせ
 
