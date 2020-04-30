@@ -1,4 +1,7 @@
 $\newcommand{\V}[1]{\boldsymbol{#1}}$
+$\newcommand{\jump}[1]{[\\![#1]\\!]}$
+$\newcommand{\bigjump}[1]{\big[\\!\\!\big[#1\big]\\!\\!\big]}$
+$\newcommand{\Bigjump}[1]{\bigg[\\!\\!\bigg[#1\bigg]\\!\\!\bigg]}$
 
 # 2. 確率・統計の基礎（後半）
 
@@ -77,73 +80,56 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ## 2.4.2 同時確率と<br />加法定理、乗法定理
 
+* 今度は「時刻（時間帯）$t$で<br />センサ値が$z$となる確率」を<br />考えてみましょう
+    * 二つの事象が同時に<br />起こる確率$\Rightarrow$<span style="color:red">同時確率</span>と呼ぶ<br />　
+* 同時確率の表記: $P(z, t)$
+    * $\sum_z \sum_t P(z, t) =  1$
+    * 右図のように確率分布は2次元に
+    * $P(z)$より情報が多い
+
+<img width="40%" src="./figs/sensor_600_2d.png" />
 
 ---
 
-### 2次元の確率分布（度数分布）
+### 周辺化
 
-* 横軸: 時刻
-* 縦軸: センサ値
-* 2次元の確率分布$p(z,t)$（$z$: センサ値、$t$: 時刻）
-    * <span style="color:red">同時分布、結合分布</span>と呼ばれる<br />　
+* $P(z)$を$P(z,t)$として見ると情報が増えた
+* 逆に$t$の情報を消し去ることもできる$\Rightarrow$<span style="color:red">周辺化</span>
+    * 式: <span style="color:red">確率の加法定理</span>
+        * $P(z) = \sum_{-\infty}^{\infty} P(z,t)$
+        * $p(z) = \int_{-\infty}^{\infty} p(z,t) dt$
+            * $\sum, \int$の区別をつけたくないので$p(z) = \jump{p(z,t)}_t$と略記
+    * 下図: 水平方向の確率を足すと$P(z)$に
+        * この操作における$P(z)$のことを<span style="color:red">周辺分布</span>、その数値を<span style="color:red">周辺確率</span>と言う
 
-![](./figs/sensor_600_2d.png)
-
----
-
-<!--ここら辺から実例がないので話しづらい-->
-
-### 2次元$\rightarrow$1次元
-#### 周辺化
-
-* ある変数に関する情報を消し去る
-    * 例: $\ p(z) = \int_{-\infty}^{\infty} p(z,t) dt$
-        * 時間の情報を消してセンサ値の1次元分布を作る
-
-<img width="30%" src="../figs/sensor_600_2d.png" />
+<img width="25%" src="../figs/sensor_600_2d.png" />
 $\rightarrow$
 <img width="40%" src="../figs/sensor_histgram_600.png" />
 
->>>
+---
 
-### 演習
+### 同時確率と条件付き確率の関係
 
-* 同時分布のデータ$p(z,t)$からスタートして$p(z)$のグラフを描画してみましょう
-    * [lidar_600.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/lidar_600.ipynb) [6]-[11]
+* $P(z,t)$をある時間帯で切り出すと$P(z|t)$と同じ形に
+    * 大きさは$P(z|t)$の方が$\jump{P(z,t)}_z = P(t)$だけ小さく
+    * つまり次のような関係（<span style="color:red">確率の乗法定理</span>）
+        * $P(z,t) = P(z|t)P(t)$
+        * $p(z,t) = p(z|t)p(t)$
+
+
+<img width="30%" src="./figs/sensor_600_2d.png" />
+<img width="40%" src="./figs/sensor600_6h_14h.png" />
 
 ---
 
-### 2次元$\rightarrow$1次元
-#### 条件付き確率
-
-* ある変数を一つに限定
-    * 例: $p(z | t)$: ある時間帯$t$におけるセンサ値$z$の分布
-
-
-<img width="30%" src="../figs/sensor_600_2d.png" />
-$\rightarrow$
-<img width="40%" src="../figs/sensor600_6h_14h.png" />
-
----
-
-### 確率の乗法定理・加法定理
+### 確率の乗法定理・加法定理のまとめ
 
 * 乗法定理
-    * $p(z,t) = p(z|t)p(t) = p(t|z)p(z)$
-        * 同時分布を条件つき確率と条件の積に
-* 加法定理
-    * $p(z) = \int_{-\infty}^{\infty} p(z,t) dt$
-    * $p(t) = \int_{-\infty}^{\infty} p(z,t) dz$
-        * 周辺化の根拠
-* アルゴリズムの導出の際に頻出
-    * 今はあまりピンと来ないかもしれない
+$$p(x,y) = p(x|y)p(y) = p(y|x)p(x)$$
+* 加法定理（と、乗法定理を利用した期待値への変形）
+$$p(x) = \jump{p(x,y)}\_y = \jump{p(x|y)p(y)}\_y = \big\langle p(x|y) \big\rangle\_{p(y)}$$
 
->>>
-
-### 演習
-
-* 同時分布$p(a,b,c|d)$から$c$と$b$の分布を乗法定理で順に分離してみましょう
-* $p(a|b)$に加法定理で変数$c$を追加して、さらに、積分内で$p(c)$の分布を乗法定理で分離してみましょう
+確率の計算のルールはこれしかない
 
 ---
 
