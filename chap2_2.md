@@ -2,6 +2,7 @@ $\newcommand{\V}[1]{\boldsymbol{#1}}$
 $\newcommand{\jump}[1]{[\\![#1]\\!]}$
 $\newcommand{\bigjump}[1]{\big[\\!\\!\big[#1\big]\\!\\!\big]}$
 $\newcommand{\Bigjump}[1]{\bigg[\\!\\!\bigg[#1\bigg]\\!\\!\bigg]}$
+$\\newcommand{\\indep}{\\mathop{\\perp\\!\\!\\!\\perp}}$
 
 # 2. 確率・統計の基礎（後半）
 
@@ -130,6 +131,24 @@ $$p(x,y) = p(x|y)p(y) = p(y|x)p(x)$$
 $$p(x) = \jump{p(x,y)}\_y = \jump{p(x|y)p(y)}\_y = \big\langle p(x|y) \big\rangle\_{p(y)}$$
 
 確率の計算のルールはこれしかない
+
+---
+
+## 2.4.3 独立、従属、<br />条件付き独立
+
+変数どうしの関係性を考える
+
+---
+
+### 独立
+
+* 条件付き確率において、条件$y$が$x$の確率分布に<br />何も影響を与えないと次が成立
+    * $p(x|y) = p(x)$<br />　
+* 乗法定理に上の式を代入
+    * $p(x,y) = p(x|y)p(y)\Longrightarrow$<br /><span style="color:red">$p(x,y) = p(x)p(y)$</span>
+    * この関係を事象$x,y$が互いに<span  style="color:red">独立</span>と表現
+        * <span style="color:red">$x \indep y$</span>と表記<br />　
+* 主に式を簡単にするときに利用
 
 ---
 
