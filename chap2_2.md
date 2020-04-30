@@ -4,7 +4,7 @@ $\newcommand{\bigjump}[1]{\big[\\!\\!\big[#1\big]\\!\\!\big]}$
 $\newcommand{\Bigjump}[1]{\bigg[\\!\\!\bigg[#1\bigg]\\!\\!\bigg]}$
 $\\newcommand{\\indep}{\\mathop{\\perp\\!\\!\\!\\perp}}$
 
-# 2. 確率・統計の基礎（後半）
+# 2. 確率・統計の基礎（後半上）
 
 千葉工業大学 上田 隆一
 
@@ -71,11 +71,13 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * 例えば6時台のセンサ値の確率分布を次のように表記
     * $P(z | t \in \text{6時台})$
-        * $t \in \text{6時台}$: $t$が6時台の時刻の集合に含まれる<br />　
+        * $t \in \text{6時台}$: $t$が6時台の時刻の集合に含まれる
+        * 「$t$が6時台と分かったので$P(z)$をより確かにできた」とも解釈可能<br />　
 * 一般的な条件付き確率の表記
     * <span style="color:red">$P(y|x)$</span>: 変数$x$で条件付けられる変数$y$の分布
         * $x$が$y$に「直接」影響を与えている必要はない
-            * 例: 時刻はセンサ値を変動させる直接の原因ではない
+            * 例: 時刻はセンサ値を変動させる直接の原因ではない<br />　
+* 「$P(y|x)$は、$P(y)$に$x$という情報を加えた場合の分布」という解釈も頭に入れておきましょう
 
 ---
 
@@ -112,9 +114,9 @@ $\rightarrow$
 ### 同時確率と条件付き確率の関係
 
 * $P(z,t)$をある時間帯で切り出すと$P(z|t)$と同じ形に
-    * 大きさは$P(z|t)$の方が$\jump{P(z,t)}_z = P(t)$だけ小さく
+    * 大きさは$P(z|t)$の方が$\jump{P(z,t)}_z = $だけ小さく
     * つまり次のような関係（<span style="color:red">確率の乗法定理</span>）
-        * $P(z,t) = P(z|t)P(t)$
+        * $P(z,t) = P(z|t)$
         * $p(z,t) = p(z|t)p(t)$
 
 
@@ -134,6 +136,19 @@ $$p(x) = \jump{p(x,y)}\_y = \jump{p(x|y)p(y)}\_y = \big\langle p(x|y) \big\rangl
 
 ---
 
+### 補足: 3変数以上の乗法定理
+
+* 3変数の場合
+    * ひとつの変数を条件に: $p(x,y,z) = p(x,z|y)p(y)$
+    * ふたつの変数を条件に: $p(x,y,z) = p(x|y,z)p(y,z)$
+    * 条件付き確率で一つの変数を条件に: $p(x,y|z) = p(x|y,z)p(y|z)$
+        * $p(x,y) = p(x|y)p(y)$: 隠れている条件を明記していないだけ<br />　
+* それ以上に変数がある場合
+    * 上の記号をベクトルにすると同様に成立
+
+
+---
+
 ## 2.4.3 独立、従属、<br />条件付き独立
 
 変数どうしの関係性を考える
@@ -143,95 +158,160 @@ $$p(x) = \jump{p(x,y)}\_y = \jump{p(x|y)p(y)}\_y = \big\langle p(x|y) \big\rangl
 ### 独立
 
 * 条件付き確率において、条件$y$が$x$の確率分布に<br />何も影響を与えないと次が成立
-    * $p(x|y) = p(x)$<br />　
+    * $p(x|y) = p(x)$
+    * $y$の情報が$x$に対してなにもヒントを与えない<br />　
 * 乗法定理に上の式を代入
-    * $p(x,y) = p(x|y)p(y)\Longrightarrow$<br /><span style="color:red">$p(x,y) = p(x)p(y)$</span>
+    * $p(x,y) = p(x|y)p(y)\Longrightarrow$<span style="color:red">$p(x,y) = p(x)p(y)$</span>
     * この関係を事象$x,y$が互いに<span  style="color:red">独立</span>と表現
         * <span style="color:red">$x \indep y$</span>と表記<br />　
-* 主に式を簡単にするときに利用
 
 ---
 
-### ベイズの定理
+### 条件付き独立
 
-* 乗法定理から導出<br />
-    * 乗法定理: $p(z,t) = p(z|t)p(t) = p(t|z)p(z)$
-    * 整理すると<span style="color:red">$p(z|t) = \dfrac{p(t|z)p(z)}{p(t)} = \eta p(t|z)p(z)$</span>となる
-        * $\eta$: 正規化定数
-            * $\int_{-\infty}^{\infty}p(z|t)dt=1$とするための調整の定数
-    * 意味
-        * 時間帯$t$と、$z$がどの時間帯で得られやすいかが分かると、$z$の分布$p(z)$くらいにしか分からなかったのが$p(z|t)$まで分かるようになる<br />$ $
-*  ベイズの定理もアルゴリズムの導出で出てきます
+* $z$が分かっているときに$x$に対して$y$が何も情報を与えない
+    * $P(x|z) = P(x|y,z)$<br />　
+* $p(x,y|z) = p(x|y,z)p(y|z)\Longrightarrow$<span style="color:red">$p(x,y|z) = p(x|z)p(y|z)$</span><br />　
+* 表記: $x \indep y \ | \ z$<br />　
 
->>>
-
-### 演習
-
-* $p(z,t)$から$p(z|t)$の式を導出してみましょう
+独立、条件付き独立ともに確率の計算で多用<br />（次のページ）
 
 ---
 
-### 2次元のガウス分布
+## 2.4.4 確率分布の性質を<br />利用した計算
 
-* 光センサとLiDARの分布（700[mm], 12〜16時台のデータ）
-    * どちらの変数を周辺化してもガウス分布に当てはまる
+* 例題1: $\int_\{\V\{z\} \in \{\mathbb{R}\}^2\} p(\V\{z\})\\{f(x) + \alpha g(y)\\} d\V\{z\}$
+    * $\V{z} = (x \ y)^\top, x \indep y, x \in \mathbb{R},  y \in \mathbb{R}$とする<br />　
+* 確率の性質だけで式展開可能
+    * 上式 $= \big\langle f(x) + \alpha g(y) \big\rangle_{p(\V{z})}$<br />
+	$ = \big\langle f(x) \big\rangle_{p(\V{z})} +\alpha \big\langle g(y) \big\rangle_{p(\V{z})}  \qquad\qquad$（期待値の線形性から）<br />
+	$ =\big\langle f(x) \big\rangle_{p(x)p(y)} +\alpha \big\langle g(y) \big\rangle_{p(x)p(y)} \quad\ $（$x$と$y$が独立）<br />
+	$ =\big\langle f(x) \big\rangle_{p(x)} +\alpha \big\langle g(y) \big\rangle_{p(y)}  \qquad\qquad$（$f$と$y$、$g$と$x$が無関係）<br />
 
-<img width="40%" src="../figs/lidar_light_200.png" />
+---
+
+### もう一つ計算
+
+* 例題2: $\int_\mathcal{\V{z} \in \mathbb{R}^2} p(\V{z})f(x)g(y) d\V{z}$
+    * $\V{z} = (x \ y)^\top, x \indep y, x \in \mathbb{R},  y \in \mathbb{R}$とする<br />　
+* $x,y$に関する期待値の積にできる
+    * <span style="font-size:90%">上式$ = \int_\mathcal{\mathbb{R}} \int_\mathcal{\mathbb{R}} p(x)p(y)f(x)g(y) dy dx$
+$ = \int_\mathcal{\mathbb{R}} p(x) \int_\mathcal{\mathbb{R}} p(y)f(x)g(y) dy dx$
+$ = \int_\mathcal{\mathbb{R}} p(x) \big\langle f(x)g(y) \big\rangle_{p(y)} dx$
+$ = \big\langle \langle f(x) g(y) \rangle_{p(y)} \big\rangle_{p(x)}$
+$ = \big\langle f(x) \langle g(y) \rangle_{p(y)} \big\rangle_{p(x)}$
+$ = \big\langle g(y) \rangle_{p(y)} \langle f(x) \big\rangle_{p(x)}$</span><br />　
+* 結果から得られる関係
+    * <span style="font-size:70%">$\big\langle g(y) \big\rangle_{p(y)} \big\langle f(x) \big\rangle_{p(x)} = \big\langle \langle f(x)g(y) \rangle_{p(x)} \big\rangle_{p(y)}$ $= \big\langle \langle f(x)g(y) \rangle_{p(y)} \big\rangle_{p(x)} = \big\langle f(x)g(y) \big\rangle_{p(x)p(y)} $</span>
+
+---
+
+## 2.4.5 ベイズの定理
+
+* 乗法定理: $p(z,t) = p(z|t)p(t) = p(t|z)p(z)$から導出
+* 中辺、右辺から<span style="color:red">$$p(z|t) = \dfrac{p(t|z)p(z)}{p(t)} = \eta p(t|z)p(z)$$</span>となる
+    * $\eta$: 正規化定数
+        * $\jump{p(z|t)}_t=1$とするための調整の定数
+    * 意味: $t$と$p(t|z)$が分かると、$p(z)$が$p(z|t)$まで確かになる
+        * $p(t|z)$: $z$がどの時間帯で得られやすいか
+
+---
+
+### ベイズの定理からの簡単な推定
+
+* 例題: $z_1 = 630, z_2 = 632, z_3 = 636$と<br />センサ値が入った時間帯を推定したい
+* 解き方
+    1. 各時間帯の$P(z|t)$をセンサ値から計算
+        * ヒストグラムから計算可能
+    2. ベイズの定理から
+        * $P(t | z_1, z_2, z_3) = \eta P(z_1, z_2, z_3 | t) P(t)$
+    3. センサの値がその時間帯内で<br />互いに独立していると仮定
+        * 上式$= \eta P(z_1|t)P(z_2|t)P(z_3|t)P(t)$
+            * 条件付き独立の事象の性質から
+            * <span style="color:red">$P(z|t)$を使うと$P(t | z_1, z_2, z_3)$が計算可能</span>
+
+<img width="30%" src="./figs/sensor_600_2d.png" />
+
+---
+
+### 推定結果
+
+<img width="50%" src="./figs/time_estimation.png" /><br />
+
+* 明け方〜午前に得られたセンサ値である可能性が高い
+    * 正解: 5時台
+* 注意: 必ず当たるわけではない
+    * 確率0でない時間帯には可能性がある
+
+---
+
+## 2.5 多次元のガウス分布
+
+---
+
+## 2.5.1 2次元のガウス分布の<br />当てはめ
+
+
+* 右: 700[mm], 12〜16時台の<br />光センサとLiDARの値の分布
+    * それぞれ$x,y$と表して<br />$\V{z} = (x \ y)^T$を考える
+    * $P(\V{z})= P(x,y)$は<br />どちらの変数を周辺化しても<br />ガウス分布に当てはまりがよい
+
+<img width="30%" src="./figs/lidar_light_700.png" />
+
+同時確率分布$P(\V{z})$はどんな数式で表現できるか？
 
 ---
 
 ### 多次元のガウス分布
 
-* 定義:
+* 次のような確率密度関数（$n$次元ガウス分布）を作ると、どの変数を残して周辺化してもガウス分布に
     * $$\mathcal{N}(\boldsymbol{z} | \boldsymbol{\mu}, \Sigma) = \frac{1}{(2\pi)^{\frac{n}{2}}\sqrt{|\Sigma|}} \exp \left\\{-\frac{1}{2}(\boldsymbol{z}-\boldsymbol{\mu})^T\Sigma^{-1}(\boldsymbol{z}-\boldsymbol{\mu})\right\\}$$
-        * $n$: 次元、$\boldsymbol{\mu}$: 中心（$n$次元ベクトル）、$\Sigma$: 共分散行列（$n \times n$行列）
-* $n=2, \boldsymbol{z} = (x \ y)^T$のときの共分散行列
+    $$ = \eta \exp \left\\{-\frac{1}{2}(\boldsymbol{z}-\boldsymbol{\mu})^T\Sigma^{-1}(\boldsymbol{z}-\boldsymbol{\mu})\right\\}$$
+        * $\boldsymbol{\mu}$: 中心（$n$次元）
+        * $\Sigma$: <span style="color:red">共分散行列</span>（$n \times n$対称行列）
+    * 形状: 前のスライドの分布のように、等高線を引くと楕円に
+
+共分散行列って何？
+
+---
+
+### 共分散行列
+
+* 2次元の場合、次のような行列
     * $\Sigma = \begin{pmatrix}\sigma_x^2 & \sigma_{xy} \\\\ \sigma_{xy} & \sigma_y^2\end{pmatrix}$
-        * $\sigma_x^2, \sigma_y^2$: それぞれ$x, y$の分散
-        * $\sigma_{xy} = \frac{1}{N}\sum_{i=0}^{N-1}(x_i-\mu_x)(y_i-\mu_y)$: <span style="color:red">共分散</span>
-* よく分からない。センサデータを当てはめてみましょう
+        * $\sigma_x^2, \sigma_y^2$: $x, y$の分散、$\sigma_{xy}$: <span style="color:red">共分散</span><br />　
+* $\sigma_{xy} = \frac{1}{N}\sum_{i=0}^{N-1}(x_i-\mu_x)(y_i-\mu_y)$
+    * なんなのかはあとで
+
+イメージが難しいので<br />センサ値から作って理解しましょう
 
 ---
 
-### ガウス分布の当てはめ
+### 2次元ガウス分布の当てはめ
 
-* 2次元のデータ$\boldsymbol{z}_i = (x_i \ y_i)^T \ $<span style="font-size:70%">$(i=0,1,2,\dots,N-1)$</span>に対して
-    * $\boldsymbol{\mu} = \frac{1}{N}\sum_{i=0}^{N-1} \boldsymbol{z}_i = (19.9 \ 729.3)^T$
-    * $\Sigma = \begin{pmatrix}\sigma_x^2 & \sigma_{xy} \\\\ \sigma_{xy} & \sigma_y^2\end{pmatrix} = \begin{pmatrix}42.1 & -0.3 \\\\ -0.3 & 17.7\end{pmatrix}$
+* 光センサ、LiDARのセンサ値を2次元ガウス分布に
+    * $\boldsymbol{\mu} =$<span style="font-size:80%">$ \frac{1}{N}\sum_{i=0}^{N-1} \boldsymbol{z}_i = (19.9 \ 729.3)^T$</span>
+    * $\Sigma =$<span style="font-size:80%">$ \begin{pmatrix}\sigma_x^2 & \sigma_{xy} \\\\ \sigma_{xy} & \sigma_y^2\end{pmatrix} = \begin{pmatrix}42.1 & -0.3 \\\\ -0.3 & 17.7\end{pmatrix}$</span>
 
-<img width="30%" src="../figs/lidar_light_200.png" />
+<img width="30%" src="./figs/lidar_light_700.png" />
 $\rightarrow$
-<img width="40%" src="../figs/2d_gauss.png" />
-
->>>
-
-### 演習
-
-* この図を描画してみましょう
-    * [multi_gauss1.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/multi_gauss1.ipynb) [1]-[5]
-
-
-![](../figs/2d_gauss.png)
+<img width="40%" src="./figs/2d_gauss.png" />
 
 ---
 
-### 共分散の意味
+## 2.5.2 共分散の意味
 
-* 正、負になると楕円が傾く
-    * 共分散が正: 一方の値が大きい/小さいときに他方も大きい/小さい
-        * 左のガウス分布: $\Sigma = \begin{pmatrix} 100 & 25\sqrt{3} \\\\ 25\sqrt{3} & 50 \end{pmatrix}$
-    * 共分散が負: 正のときと逆
-        * 右のガウス分布: $\Sigma = \begin{pmatrix} 100 & -25\sqrt{3} \\\\ -25\sqrt{3} & 50 \end{pmatrix}$ 
+* 式（再掲）
+    * $\sigma_{xy} = \frac{1}{N}\sum_{i=0}^{N-1}(x_i-\mu_x)(y_i-\mu_y)$
+        * $x_i -\mu_x$と$y_i -\mu_y$の符号の多くが<br />一致していると正、不一致だと負に<br />　
+* 共分散が正、負になると<br />楕円が傾く（図）
+    * 左: $\sigma_{xy}=25\sqrt{3}$
+    * 右: $\sigma_{xy}=-25\sqrt{3}$<br />
+     （どちらも$\sigma_x^2 = 100, \sigma_y^2 = 50$）
 
-<img width="40%" src="../figs/2d_gausses.png" />
+<img width="35%" src="./figs/2d_gausses.png" />
 
->>>
-
-### 演習
-
-* 2次元のガウス分布を描画してみましょう
-    * [multi_gauss3.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/multi_gauss3.ipynb)[1]
-
+$x$が大きいと$y$が大きく/小さくなりやすいという<br />傾向を示す
 
 ---
 
@@ -246,9 +326,8 @@ $\rightarrow$
     * 対角行列は長軸、短軸の長さの2乗を表す（固有値）
     * 回転行列は固有ベクトルの組み合わせ
 
->>>
+---
 
-### 演習
+### 補足
 
-* 共分散行列$\Sigma = \begin{pmatrix} 100 & -25\sqrt{3} \\\\ -25\sqrt{3} & 50 \end{pmatrix}$を固有値分解して、ガウス分布の長軸・短軸を描画してみましょう。
-    * [multi_gauss3.ipynb](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_sensor/multi_gauss3.ipynb)[2]-[3]
+* 情報行列
