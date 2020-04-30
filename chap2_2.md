@@ -105,9 +105,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 下図: 水平方向の確率を足すと$P(z)$に
         * この操作における$P(z)$のことを<span style="color:red">周辺分布</span>、その数値を<span style="color:red">周辺確率</span>と言う
 
-<img width="25%" src="../figs/sensor_600_2d.png" />
+<img width="25%" src="./figs/sensor_600_2d.png" />
 $\rightarrow$
-<img width="40%" src="../figs/sensor_histgram_600.png" />
+<img width="40%" src="./figs/sensor_histgram_600.png" />
 
 ---
 
