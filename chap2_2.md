@@ -99,7 +99,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * $P(z)$を$P(z,t)$として見ると情報が増えた
 * 逆に$t$の情報を消し去ることもできる$\Rightarrow$<span style="color:red">周辺化</span>
     * 式: <span style="color:red">確率の加法定理</span>
-        * $P(z) = \sum_{-\infty}^{\infty} P(z,t)$
+        * $P(z) = \sum_{t=-\infty}^{\infty} P(z,t)$
         * $p(z) = \int_{-\infty}^{\infty} p(z,t) dt$
             * $\sum, \int$の区別をつけたくないので$p(z) = \jump{p(z,t)}_t$と略記
     * 下図: 水平方向の確率を足すと$P(z)$に
@@ -114,7 +114,7 @@ $\rightarrow$
 ### 同時確率と条件付き確率の関係
 
 * $P(z,t)$をある時間帯で切り出すと$P(z|t)$と同じ形に
-    * 大きさは$P(z|t)$の方が$\jump{P(z,t)}_z$だけ小さく
+    * 大きさは$P(z|t)$の方が$\jump{P(z,t)}_z = P(t)$だけ大きく
     * つまり次のような関係（<span style="color:red">確率の乗法定理</span>）
         * $P(z,t) = P(z|t)P(t)$
         * $p(z,t) = p(z|t)p(t)$
