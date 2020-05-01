@@ -163,10 +163,63 @@ $\V{p}(\V{x}_3)$の式に$\mathcal{N}_1, \mathcal{N}_2$を代入（次ページ�
 $= \eta \bigjump{ e^{-\frac{1}{2} (\V{x}\_3-\V{x}\_1-\V{\mu}\_2)^\top\Sigma\_2^{-1}( \V{x}\_3-\V{x}\_1-\V{\mu}\_2  )-\frac{1}{2} (\V{x}\_1-\V{\mu}\_1)^\top\Sigma\_1^{-1}(\V{x}\_1-\V{\mu}\_1)} }\_{\V{x}\_1}$<br />
 $= \cdots$（付録B.1.9の方法で$\V{x}_1$の積分が除去できる）<br />
 $= \eta e^{-\frac{1}{2} (\V{x}\_3-\V{\mu}\_1-\V{\mu}\_2)^\top(\Sigma\_1 +\Sigma\_2)^{-1}( \V{x}\_3-\V{\mu}\_1-\V{\mu}\_2  )}$
-<span style="color:red">$= \mathcal{N}(\V{x}\_3 | \V{\mu}\_1+\V{\mu}\_2, \Sigma_1 + \Sigma_2)$</span>
+<span style="color:red">$= \mathcal{N}(\V{x}\_3 | \V{\mu}\_1+\V{\mu}\_2, \Sigma_1 + \Sigma_2)$</span><br />　
+* $\V{x}_3$の分布はガウス分布に
+    * 分布の中心は$\V{\mu}_1$と$\V{\mu}_2$の和
+    * 共分散行列も$\Sigma_1$と$\Sigma_2$の和
+
+<span style="color:red">共分散行列の足し算で不確かさが計算できる</span>
 
 ---
 
-### 補足
+## 2.5.5 ガウス分布同士の積
 
-* 情報行列
+* 次のような問題を考える
+    * ある変数$\V{x}$について、
+        * Aさんはその分布が$p_1(\V{x}) = \mathcal{N}(\V{x} | \V{\mu}_1, \Sigma_1)$だと主張
+        * Bさんはその分布が$p_2(\V{x}) = \mathcal{N}(\V{x} | \V{\mu}_2, \Sigma_2)$だと主張
+    * 2つの分布をかけて新たな$\V{x}$の分布$p_3(\V{x})$を作ってみましょう
+        * ただし正規化します
+
+---
+
+### 計算
+
+* ガウス分布の積をつくる
+    * $p\_3(\V{x}) = \eta e^{ -\frac{1}{2} (\V{x} - \V{\mu}\_1)^\top \Sigma\_1^{-1} (\V{x} - \V{\mu}\_1)} e^{ -\frac{1}{2} (\V{x} - \V{\mu}\_2)^\top \Sigma\_2^{-1} (\V{x} - \V{\mu}\_2)}$<br />
+$= \eta e^{ -\frac{1}{2} (\V{x} - \V{\mu}\_1)^\top \Sigma\_1^{-1} (\V{x} - \V{\mu}\_1) -\frac{1}{2} (\V{x} - \V{\mu}\_2)^\top \Sigma\_2^{-1} (\V{x} - \V{\mu}\_2)}$<br />　
+* 指数部を整理すると次のようになる
+    * $ p\_3(\V{x})= \eta e^{ -\frac{1}{2} (\V{x} - \V{\mu}\_3)^\top \Sigma\_3^{-1}(\V{x} - \V{\mu}\_3)}$
+       * $\Sigma_3 = (\Sigma_1^{-1} + \Sigma_2^{-1})^{-1}$
+       * $\V{\mu}_3 = \Sigma_3(\Sigma_1^{-1} \V{\mu}_1 + \Sigma_2^{-1} \V{\mu}_2)$
+
+ややこしいのでもう少し整理
+
+---
+
+### 精度行列による表現
+
+* <span style="color:red">精度行列$\Lambda$</span>: 共分散行列$\Sigma$の逆行列
+    * $\Lambda = \Sigma^{-1}$<br />　
+* 前ページの分布を精度行列で表現
+    * $ p\_3(\V{x})= \eta e^{ -\frac{1}{2} (\V{x} - \V{\mu}\_3)^\top \Lambda\_3(\V{x} - \V{\mu}\_3)}$
+       * <span style="color:red">$\Lambda_3 = \Lambda_1 + \Lambda_2$</span>
+       * <span style="color:red">$\V{\mu}_3  = \Lambda_3^{-1}(\Lambda_1 \V{\mu}_1 + \Lambda_2 \V{\mu}_2) = (\Lambda_1 + \Lambda_2)^{-1}(\Lambda_1 \V{\mu}_1 + \Lambda_2 \V{\mu}_2)$</span>
+           * 1次元の場合: $\mu_3 = \dfrac{\lambda_1^2}{\lambda_1^2 + \lambda_2^2}\mu_1 + \dfrac{\lambda_2^2}{\lambda_1^2 + \lambda_2^2}\mu_2$<br />($\lambda^2_i = \sigma^{-2}_i$: 精度)
+
+
+<span style="color:red">精度行列の和で不確かさの減少が計算できる</span><br />
+<span style="color:red;font-size:80%">中心は重みつき平均に（精度のよい分布の側に寄る）</span>
+
+
+---
+
+## 2.6 まとめ
+
+* 2.4節までのまとめ: 前回、前々回のまとめの通り
+* このスライド（2.5節）のまとめ
+    * 多次元ガウス分布を扱った
+    * 共分散行列は分布の大きさや向きを表す
+    * ガウス分布にしたがう変数の和の分布、ガウス分布の積は再びガウス分布となる
+        * <span style="color:red">共分散行列（精度行列）、中心の計算は単純な足し算になる</span><br />
+        <span style="color:red">$\Longrightarrow$計算は複雑だがプログラムを書くと単純に</span>
