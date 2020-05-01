@@ -114,9 +114,9 @@ $\rightarrow$
 ### 同時確率と条件付き確率の関係
 
 * $P(z,t)$をある時間帯で切り出すと$P(z|t)$と同じ形に
-    * 大きさは$P(z|t)$の方が$\jump{P(z,t)}_z = $だけ小さく
+    * 大きさは$P(z|t)$の方が$\jump{P(z,t)}_z$だけ小さく
     * つまり次のような関係（<span style="color:red">確率の乗法定理</span>）
-        * $P(z,t) = P(z|t)$
+        * $P(z,t) = P(z|t)P(t)$
         * $p(z,t) = p(z|t)p(t)$
 
 
