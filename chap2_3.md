@@ -109,7 +109,7 @@ $x$が大きいと$y$が大きく/小さくなりやすいという<br />傾向�
         * $\Sigma = \begin{pmatrix} 100 & 25\sqrt{3} \\\\ 25\sqrt{3} & 50 \end{pmatrix} =         R_{\pi/6} \begin{pmatrix} 125 & 0 \\\\ 0 & 25 \end{pmatrix} R_{\pi/6}^{-1}$
     * 右のガウス分布:
         * $\Sigma = \begin{pmatrix} 100 & -25\sqrt{3} \\\\ -25\sqrt{3} & 50 \end{pmatrix} =         R_{-\pi/6} \begin{pmatrix} 125 & 0 \\\\ 0 & 25 \end{pmatrix} R_{-\pi/6}^{-1}$
-<img width="40%" src="../figs/2d_gausses.png" />
+<img width="40%" src="./figs/2d_gausses.png" />
     * 等高線は楕円を回転させたもの
     * <span style="color:red">長軸、短軸の長さ $\propto$ 固有値（= その方向の標準偏差）</span>
 
