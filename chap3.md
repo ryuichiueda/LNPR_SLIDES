@@ -148,7 +148,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $\begin{pmatrix} x_t \\\\ y_t \end{pmatrix} = \begin{pmatrix} x_{t-1} \\\\ y_{t-1} \end{pmatrix} + \begin{pmatrix} \int_0^{\Delta t} \nu_t \cos ( \theta_{t-1} + \omega_t t ) dt\\\\ \int_0^{\Delta t} \nu_t \sin ( \theta_{t-1} + \omega_t t ) dt \end{pmatrix}$<br />
 $= \cdots$<br />
 $= \begin{pmatrix} x\_{t-1}  \\\\ y\_{t-1} \end{pmatrix} + \nu\_t\omega\_t^{-1} \begin{pmatrix} \sin( \theta\_{t-1} + \omega\_t \Delta t ) - \sin\theta\_{t-1} \\\\ -\cos( \theta\_{t-1} + \omega\_t \Delta t ) + \cos\theta\_{t-1} \end{pmatrix}$
-         * $\omega = 0$の場合は別の式になるが極限をとると一致
+         * $\omega_t = 0$の場合は別の式になるが極限をとると一致
 
 ---
 
@@ -209,7 +209,7 @@ $= \begin{pmatrix} x\_{t-1}  \\\\ y\_{t-1} \end{pmatrix} + \nu\_t\omega\_t^{-1} 
         * 座標は$\V{m}\_j = (m\_{j,x} \ m\_{j,y})^T$
             * 普通の字体とイタリック体を使い分けるので注意
     * ランドマークの集合を<span style="color:red">地図</span>と呼ぶ 
-        * 地図: $\textbf{m} = \\{ m_j | j = 0,1,2,\dots, N_\textbf{m} -1 \\}$
+        * 地図: $\textbf{m} = \\{ \text{m}_j | j = 0,1,2,\dots, N_\textbf{m} -1 \\}$
 
 <img width="30%" src="./figs/landmarks.png" /> 
 
