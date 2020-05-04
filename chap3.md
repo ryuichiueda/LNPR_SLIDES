@@ -118,6 +118,53 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * ロボットに与える速度、角速度を<br />それぞれ$\nu$[m/s]、$\omega$[rad/s]と表現
     * まとめて$\V{u} = (\nu \ \omega)^\top$と表現
     * <span style="color:red">制御指令</span>と呼ぶ
-        * 制御入力などとも呼ぶが、入力か出力か紛らわしいので
+        * 制御入力などとも呼ぶが、<br />入力か出力か紛らわしいので
 
-<img width="80%" src="./figs/control_input.jpg" />
+<img width="30%" src="./figs/control_input.jpg" />
+
+世界座標系におけるロボットの動きは？
+
+---
+
+### 世界座標系におけるロボットの動き
+
+* こうなる
+    * $\dot{x} = \nu \cos \theta$　　　　
+    * $\dot{y} = \nu \sin \theta$
+    * $\dot{\theta} = \omega$<br />　<br />　<br />　
+
+<img width="30%" src="./figs/robot_motion.jpg" />
+
+時刻$t-1$から$t$の間に制御指令$\V{u}\_t$で<br >姿勢は$\V{x}\_{t-1}$からどう変わるか（計算できます？）
+
+
+---
+
+### 姿勢の変化の計算
+
+* 向き$\theta$の変化は単純
+    * $\theta_{t} = \theta_{t-1} + \int_{0}^{\Delta t} \omega_t dt  = \theta_{t-1} + \omega_t \Delta t$<br />　
+* 位置の変化の計算では時間$\Delta t$内での向きの変化を考慮しなければならない
+    * $\begin{pmatrix} x_t \\\\ y_t \end{pmatrix} = \begin{pmatrix} x_{t-1} \\\\ y_{t-1} \end{pmatrix} + \begin{pmatrix} \int_0^{\Delta t} \nu_t \cos ( \theta_{t-1} + \omega_t t ) dt\\\\ \int_0^{\Delta t} \nu_t \sin ( \theta_{t-1} + \omega_t t ) dt \end{pmatrix}$<br />
+$= \cdots$<br />
+$= \begin{pmatrix} x\_{t-1}  \\\\ y\_{t-1} \end{pmatrix} + \nu\_t\omega\_t^{-1} \begin{pmatrix} \sin( \theta\_{t-1} + \omega\_t \Delta t ) - \sin\theta\_{t-1} \\\\ -\cos( \theta\_{t-1} + \omega\_t \Delta t ) + \cos\theta\_{t-1} \end{pmatrix}$
+         * $\omega = 0$の場合は別の式になるが極限をとると一致
+
+---
+
+### 状態方程式
+
+* 前ページの計算結果のまとめ
+    * <span style="font-size:90%">$\begin{pmatrix} x_t \\\\ y_t \\\\ \theta_t \end{pmatrix} = \begin{pmatrix} x\_{t-1}  \\\\ y\_{t-1} \\\\ \theta\_{t-1} \end{pmatrix} + \nu\_t\omega\_t^{-1} \begin{pmatrix} \sin( \theta\_{t-1} + \omega\_t \Delta t ) - \sin\theta\_{t-1} \\\\ -\cos( \theta\_{t-1} + \omega\_t \Delta t ) + \cos\theta\_{t-1} \\\\ \omega_t \Delta t\end{pmatrix}$</span><br />　
+* 面倒なので次のように書く
+    * $\V{x}\_t = \V{f}(\V{x}\_{t-1},\V{u}\_t) \qquad (t=1,2,3,\dots)$
+    * ロボットの動きはこれだけで表される（雑音がなければ）<br />　
+* 用語
+    * 上の方程式: <span style="color:red">状態方程式</span>
+    * 関数$\V{f}$: <span style="color:red">状態遷移関数</span>
+    * 状態が$\V{x}\_{t-1}$から$\V{x}_t$に変わること: <span style="color:red">状態遷移</span>
+
+---
+
+## 3.2.5 エージェントの実装
+
