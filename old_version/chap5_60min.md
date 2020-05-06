@@ -26,7 +26,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 動くと不確かに
     * センサ値を得ると不確かさが減少
 
-<img width="40%" src="../figs/kf_complete2.gif" />
+<img width="40%" src="./figs/kf_complete2.gif" />
 
 ---
 
@@ -36,7 +36,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 動くと拡散し、センサ値を得ると収束
 * KFもPFも同じ計算の近似
 
-<img width="40%" src="../figs/mcl_complete2.gif" />
+<img width="40%" src="./figs/mcl_complete2.gif" />
 
 ---
 
@@ -75,7 +75,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * $b_t$を<span style="color:red">信念</span>と呼ぶ
     * エージェントの頭の中
 
-<img width="70%" src="../figs/belief_pattern.png" />
+<img width="70%" src="./figs/belief_pattern.png" />
 
 ---
 
@@ -101,7 +101,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 実際には移動前の姿勢は$b_\{t-1\}$で確率的にしか分からない<br />
             $\rightarrow$状態遷移モデルの期待値が$\hat{b}_t$となる
 
-<img width="50%" src="../figs/belief_state_trans.png" />
+<img width="50%" src="./figs/belief_state_trans.png" />
 
 ---
 
@@ -114,7 +114,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 計算式の意味
         * $\hat{b}_t(\boldsymbol{x})$の各姿勢の値に、その姿勢から実際に得られたセンサ値（のリスト）$\textbf{z}_t$がどれだけ得られやすいかを表す値$p(\textbf{z}_t | \boldsymbol{x})$をかける
 
-<img width="50%" src="../figs/belief_bayes.png" />
+<img width="50%" src="./figs/belief_bayes.png" />
 
 ---
 
@@ -139,7 +139,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * パーティクル（粒子）: ロボットの分身と考えておく
     * 自己位置推定に使われるPF: MCL（Monte Carlo localization）と呼ばれる
 
-<img width="40%" src="../figs/mcl_complete2.gif" />
+<img width="40%" src="./figs/mcl_complete2.gif" />
 
 ---
 
@@ -152,8 +152,8 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 右図: ロボットを100台動作させたときの分布
     * この関係を満たすようにパーティクルを操作
 
-<img width="35%" src="../figs/particles_vs_robots_particles.png" />&nbsp;
-<img width="35%" src="../figs/particles_vs_robots_robots.png" />
+<img width="35%" src="./figs/particles_vs_robots_particles.png" />&nbsp;
+<img width="35%" src="./figs/particles_vs_robots_robots.png" />
 
 ---
 
@@ -166,7 +166,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 元の姿勢を状態遷移して上書き
     * <span style="color:red">状態遷移モデル$p(\boldsymbol{x} | \boldsymbol{x}', \boldsymbol{u}_t)$がMCL内部に実装されている必要あり</span>
 
-<img width="40%" src="../figs/mcl_motion.gif" />
+<img width="40%" src="./figs/mcl_motion.gif" />
 
 
 ---
@@ -189,7 +189,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 下図: ロボットを4[m]前進させて向きのばらつきを調査
     * このような実験から次ページからのような方法でモデルを作る
 
-<img width="30%" src="../figs/simulation_on.png" />
+<img width="30%" src="./figs/simulation_on.png" />
 
 ---
 
@@ -238,7 +238,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 重みはこのままだと消失or発散
 
 
-<img width="40%" src="../figs/mcl_sensor_update.gif" />
+<img width="40%" src="./figs/mcl_sensor_update.gif" />
 
 
 ---
@@ -297,7 +297,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         1. 重みを$1/N$にする
     * 下図: リサンプリングの一例（左: 前、右: 後）
 
-<img width="60%" src="../figs/resampling.png" />
+<img width="60%" src="./figs/resampling.png" />
 
 ---
 
@@ -321,7 +321,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * PFではこれが使われる
     * 計算量$N(O)$でしかも低バイアス
 
-![](../figs/systematic_sampling.png)
+![](./figs/systematic_sampling.png)
 
 
 ---
@@ -334,8 +334,8 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 右: 系統サンプリングによるリサンプリング
     * 全パーティクルの重みが同じなら全て選ばれる
 
-<img width="38%" src="../figs/mcl_simple_resampling.gif" />&nbsp;&nbsp;
-<img width="38%" src="../figs/mcl_sys_resampling.gif" />
+<img width="38%" src="./figs/mcl_simple_resampling.gif" />&nbsp;&nbsp;
+<img width="38%" src="./figs/mcl_sys_resampling.gif" />
 
 ---
 
