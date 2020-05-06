@@ -306,7 +306,7 @@ $\delta\_{\nu\nu}^2 : (\delta'\_{\nu\nu}\Delta t)^2 = 1 : |\nu|\Delta t$
 * 左: 30[s]後のロボットの姿勢のばらつき
     * バイアスは不揃い
 * 右: 求めた4つの標準偏差で30[s]パーティクルを動作
-    * 少し分布がロボットの左右で広いがシミュレートできている
+    * ロボットの左右で分布が少し広いがシミュレートできている
 
 <img width="35%" src="./figs/particles_vs_robots_robots.png" />&nbsp;
 <img width="35%" src="./figs/particles_vs_robots_particles.png" />
