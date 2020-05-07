@@ -355,7 +355,8 @@ $\delta\_{\nu\nu}^2 : (\delta'\_{\nu\nu}\Delta t)^2 = 1 : |\nu|\Delta t$
 
 * $p_j (\V{z}_j | \V{x})$について$\V{x}$を変数とみなす$\Longrightarrow$<span style="color:red">尤度関数</span><br />
     * $L_j(\V{x} | \V{z}_j ) = \eta p_j (\V{z}_j | \V{x})$
-        * $\eta$は正ならなんでもよい（比でしか利用しないので）<br />　
+        * $\eta$は正ならなんでもよい（比でしか利用しないので）
+        * 条件（パラメータ）と変数が入れ替わっただけで同じ式<br />　
 * ベイズの定理との関係
     * あえて尤度を使って考察したが、<br />今の議論はベイズの定理でも説明可能
     * $b\_t(\V{x}\_t^{(i)}) = \hat{b}\_t(\V{x}\_t^{(i)} | \V{z}\_{j,t}) = \eta p\_j(\V{z}\_{j,t} | \V{x}\_t^{(i)}) \hat{b}\_t(\V{x}\_t^{(i)}) \\\\ = \eta L\_j (\V{x}\_t^{(i)} | \V{z}\_{j,t} ) \hat{b}\_t(\V{x}\_t^{(i)})$
@@ -369,6 +370,10 @@ $\delta\_{\nu\nu}^2 : (\delta'\_{\nu\nu}\Delta t)^2 = 1 : |\nu|\Delta t$
 * 尤度をどうパーティクルの分布に反映するか？
     * とりあえず<span style="color:red">重み</span>という変数を付加
 * パーティクル（再定義）: $\xi_t^{(i)} = (\V{x}_t^{(i)}, w_t^{(i)})$
+    * $\sum_{i=0}^{N-1} w^{(i)} = 1$<br />　
+* 次のように信念分布を近似
+    * $P(\V{x}\_t^* \in X ) = \int\_{\V{x} \in X} b\_t(\V{x}) d\V{x} \approx \sum\_{i=0}^{N-1} w\_t^{(i)} \delta(\V{x}\_t^{(i)} \in X)$
+        * $X$に真の姿勢が含まれる確率をパーティクルの重みつき和で近似
 
 ---
 
