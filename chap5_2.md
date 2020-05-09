@@ -123,7 +123,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * ロボットの挙動（ちょっと邪魔してもタスクがこなせるかどうか）<br />　
 * ロボットが動けばそれでよい
    * <span style="color:red">動くものは結果で評価</span>
-   * <span style="color:red">机上の空論よりまずは動かす。人間も然り（危険な場合は除く）</span>
+   * <span style="color:red">机上の空論よりまずは動かす。人間も然り<span style="font-size:80%">（危険な場合は除く）</span></span>
    * ロボティクスが他の学問と一番違う点のような気がします。
 
 
