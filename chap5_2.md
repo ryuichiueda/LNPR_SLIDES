@@ -1,6 +1,6 @@
 $\newcommand{\V}[1]{\boldsymbol{#1}}$
 
-# 5. パーティクル<br />フィルタによる<br />自己位置推定<br />（後半）
+# <span style="font-size:80%">5. パーティクルフィルタによる自己位置推定<br />（後半）</span>
 
 千葉工業大学 上田 隆一
 
@@ -123,7 +123,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * ロボットの挙動（ちょっと邪魔してもタスクがこなせるかどうか）<br />　
 * ロボットが動けばそれでよい
    * <span style="color:red">動くものは結果で評価</span>
-   * <span style="color:red">机上の空論よりまずは動かす。人間も然り（危険な場合は除く）</span>
+   * <span style="color:red">机上の空論よりまずは動かす。人間も然り<span style="font-size:80%">（危険な場合は除く）</span></span>
    * ロボティクスが他の学問と一番違う点のような気がします。
 
 
@@ -196,7 +196,7 @@ $\Longrightarrow$それぞれが1個ずつきれいに選ばれる確率は低�
 
 * 方法
     * パーティクルの重みを積み上げたリストを作成
-    * $1/N$ずつリストを進んでパーティクルを選んで$N$個コピーを作成
+    * $1/N$ずつリストを進んでパーティクルを$N$個コピー
         * 最初の位置だけ乱数で選ぶ
     * コピーの重みを$1/N$にして新たなパーティクルの集合とする
 
@@ -211,7 +211,6 @@ $\Longrightarrow$それぞれが1個ずつきれいに選ばれる確率は低�
         * 理由: 重みが同じでも選ばれないパーティクルが発生
 * 右: 系統サンプリングによるリサンプリング
     * 全パーティクルの重みが同じなら全て選ばれる
-
 
 <img width="38%" src="./figs/mcl_simple_resampling.gif" />&nbsp;&nbsp;
 <img width="38%" src="./figs/mcl_sys_resampling.gif" />
