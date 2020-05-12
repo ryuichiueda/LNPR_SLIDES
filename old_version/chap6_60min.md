@@ -22,7 +22,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $XY$平面の不確かさを誤差楕円、$\theta$方向の不確かさを青い線分の範囲で図示
 
 
-<img width="30%" src="../figs/belief_ellipse.png" />
+<img width="30%" src="./figs/belief_ellipse.png" />
 
 ---
 
@@ -48,7 +48,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     1. この$\nu\omega$空間中のガウス分布を$XY\theta$空間に写像
         * ここで分布が歪む（下図のように、PとQがCに対して対称にならない）
 
-<img src="../figs/before_linearlize.png" />
+<img src="./figs/before_linearlize.png" />
 
 ---
 
@@ -59,7 +59,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * $\boldsymbol{f}$: 状態遷移関数
         * $A\_t = \dfrac{\partial \boldsymbol{f}}{\partial \boldsymbol{u}}\Big|\_{\boldsymbol{x}=\boldsymbol{x}\_{t-1},\boldsymbol{u}=\boldsymbol{u}\_t}$
 
-![](../figs/linerlize.png)
+![](./figs/linerlize.png)
 
 ---
 
@@ -128,13 +128,13 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 
 * 行列$M_t, A_t, F_t$の実装
 
-![](../figs/kf3_2.png)
+![](./figs/kf3_2.png)
 
 ---
 
 ### [移動後の更新の実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_kalman_filter/kf3.ipynb) 2/2
 
-![](../figs/kf3_3.png)
+![](./figs/kf3_3.png)
 
 * 注意: カルマンフィルタの場合、導出過程がコードに反映されないのでコードを読んでも理解不可能
 
@@ -144,7 +144,7 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 
 * 観測がないので誤差楕円は広がっていく
 
-![](../figs/kalman_no_obs.gif)
+![](./figs/kalman_no_obs.gif)
 
 ---
 
@@ -158,7 +158,7 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
     * $L_j$は$\boldsymbol{x}$のガウス分布ではなく$\boldsymbol{z}\_{j,t}$のガウス分布
     * $\boldsymbol{z}\_{j,t}$から予想される$\boldsymbol{x}$の分布は下図のようにドーナツ状に
 
-<img width="30%" src="../figs/donuts.png" />
+<img width="30%" src="./figs/donuts.png" />
 
 ---
 
@@ -193,7 +193,7 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 
 ### 近似による$b_t$の計算
 
-* $b(\\boldsymbol{x}) = \\eta^{-1} \\exp \\Big\\{ -\\dfrac{1}{2} \\left[ \\boldsymbol{z} - \\boldsymbol{h}(\\hat{\\boldsymbol{\\mu}}) - H(\\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}})  \\right]^\\top Q^{-1} \\left[ ... \\right] \\\\ -\\dfrac{1}{2} ( \\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}} )^\\top \\hat\\Sigma^{-1} ( ... ) \\Big\\}$
+* $b(\\boldsymbol{x}) = \\eta^{-1} \\exp \\Big\\{ -\\dfrac{1}{2} \\left[ \\boldsymbol{z} - \\boldsymbol{h}(\\hat{\\boldsymbol{\\mu}}) - H(\\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}})  \\right]^\\top Q^{-1} \\left[ .. \\right] \\\\ -\\dfrac{1}{2} ( \\boldsymbol{x} - \\hat{\\boldsymbol{\\mu}} )^\\top \\hat\\Sigma^{-1} ( .. ) \\Big\\}$
     * 添字は省略
 * 付録B.1.9の結果を使うと$b$の中心と共分散行列は次のように求まる
     * <span style="color:red">$\\boldsymbol{\\mu} = \Sigma H^\top Q^{-1} (\boldsymbol{z} - \boldsymbol{h}(\hat{\boldsymbol{\mu}})) + \hat{\boldsymbol{\mu}}$</span>
@@ -217,15 +217,15 @@ $= \\begin{pmatrix} 1 & 0 & \\nu\_t\\omega\_t^{-1}\\{\\cos(\\mu\_{\\theta\_{t-1}
 
 ### [観測後の更新の実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_kalman_filter/kf4.ipynb)
 
-![](../figs/kf4funcs.png)
+![](./figs/kf4funcs.png)
 
-![](../figs/kf4_observation_update.png)
+![](./figs/kf4_observation_update.png)
 
 ---
 
 ### 動作例
 
-![](../figs/kalman_filter.gif)
+![](./figs/kalman_filter.gif)
 
 ---
 
