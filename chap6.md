@@ -24,6 +24,23 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 線形化をともなうカルマンフィルタ: 「拡張カルマンフィルタ」
     * 本書でいうカルマンフィルタは拡張カルマンフィルタのこと
 
+なぜガウス分布にこだわるのか？
+
+---
+
+### カルマンフィルタの性質
+
+パーティクルフィルタと比較すると・・・
+
+* <span style="color:red">計算量が小さい</span>
+    * 平均値と共分散行列の演算だけでベイズフィルタを実装可能
+    * 状態の次元が高くても適用可能<br />　
+* ガウス分布なので次のような状況で信念が表現しずらい
+    * ロボットが壁ぎわにいて、壁の向こうにはいる可能性がない
+        * 壁のところで分布を打ち切れない
+    * 分布がマルチモーダル
+    * 自己位置の情報がない（一様分布）<br />　
+* （線形化が必要な場合に）誤差が生じる
 
 ---
 
@@ -33,10 +50,25 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $b_t = \mathcal{N}(\V{\mu}_t, \Sigma_t)$<br />　
 * 誤差楕円を描く
     * 2章で扱いました
+    * $XY\theta$空間の楕円球となる
+        * （ユークリッド空間とみなせば）<br />　
     * シミュレータでは次の2要素で描画
         * $XY$平面の$3\sigma$範囲を表す楕円
         * $\theta$方向の$3\sigma$範囲を示す2本の線分
-    * 本来は$XY\theta$空間の楕円球
-        * （ユークリッド空間とみなせば）
 
 <img width="40%" src="./figs/belief_ellipse.png" />
+
+---
+
+## 6.2 移動後の信念分布の更新
+
+* やること: 移動時のベイズフィルタの式をガウス分布だけの演算に
+    * <span style="color:red">近似が必要</span><br />　
+* ベイズフィルタの式
+    * $\hat{b}\_t(\V{x}) = \big\langle p(\V{x} | \V{x}', \V{u}\_t) \big\rangle\_{b\_{t-1}(\V{x}')} $<span style="color:red">$= \int\_{\V{x}' \in \mathcal{X}} p(\V{x} | \V{x}', \V{u}\_t) b\_{t-1}(\V{x}') d\V{x}'$</span><br />　
+* 次の手順で左辺の$\hat{b}_t$をガウス分布にする
+    1. 移動モデル$p(\V{x} | \V{x}', \V{u}\_t)$をガウス分布に近似
+    2. 積分した式<br />（近似しないとガウス分布にならない理由は後で説明）
+	
+
+
