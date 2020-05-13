@@ -66,9 +66,66 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * <span style="color:red">近似が必要</span><br />　
 * ベイズフィルタの式
     * $\hat{b}\_t(\V{x}) = \big\langle p(\V{x} | \V{x}', \V{u}\_t) \big\rangle\_{b\_{t-1}(\V{x}')} $<span style="color:red">$= \int\_{\V{x}' \in \mathcal{X}} p(\V{x} | \V{x}', \V{u}\_t) b\_{t-1}(\V{x}') d\V{x}'$</span><br />　
-* 次の手順で左辺の$\hat{b}_t$をガウス分布にする
-    1. 移動モデル$p(\V{x} | \V{x}', \V{u}\_t)$をガウス分布に近似
-    2. 積分した式<br />（近似しないとガウス分布にならない理由は後で説明）
-	
+
+$p(\V{x} | \V{x}', \V{u}\_t)$の形が問題になる
+
+---
+
+## 6.2.1 状態遷移モデルの線形化
+
+* 問題: 分布$p(\V{x} | \V{x}', \V{u}\_t)$がガウス分布にはならない
+    * 例: 前章では$\V{u}_t$のばらつきをガウス分布でモデル化したが、<br />ロボットをまっすぐ走らせるとパーティクルは弓状の分布に
+
+<img width="30%" src="./figs/simulated_on.png" />
+<img width="40%" src="./figs/nonliner_motion.jpg" />
+
+むりやりガウス分布に近似しましょう
+
+---
+
+### 近似の方法（状態遷移関数の線形化）
+
+* 移動後の姿勢$\V{x}\_t$の分布がガウス分布になるように、<br />状態方程式を次のような形式に<span style="color:red">線形近似</span>
+    * $\V{x}\_t = \V{f}(\V{x}\_{t-1}, \V{u}\_t')$ <span style="color:red">$\approx \V{f}(\V{x}\_{t-1}, \V{u}\_t) + A\_t (\V{u}\_t' - \V{u}\_t)$</span>
+        * $\V{u}\_t, \V{u}'_t$: 制御指令と実際の制御
+        * $A_t$: 後述
+
+<img width="60%" src="./figs/motion_linerized.jpg" />
+
+速度、角速度の誤差が等倍に広がる
+
+---
+
+### 行列$A_t$の意味
+
+* $A\_t = \dfrac{\partial \V{f}}{\partial \V{u}}\Big|\_{\V{x}=\V{x}\_{t-1},\V{u}=\V{u}\_t}$
+    * 近似した状態方程式（再掲）: $\V{x}\_t \approx \V{f}(\V{x}\_{t-1}, \V{u}\_t) + A\_t (\V{u}\_t' - \V{u}\_t)$<br />　
+* 解釈
+    * <span style="color:red">$\V{x} =\V{x}_{t-1}, \V{u} = \V{u}_t$において、$\V{u}$が少しずれると$\V{f}$がどれだけずれるかを計算したもの</span>
+    * $A_t$に$\V{u}'_t - \V{u}$（速度・角速度の誤差）をかけることで、$\V{f}$のズレ（$=XY\theta$空間での$\V{x}_t$の誤差）が計算できる
+
+---
+
+### 行列$A_t$の計算
+
+* 状態方程式
+    * <span style="font-size:70%">$\\boldsymbol{f}(\\boldsymbol{x}, \\boldsymbol{u}) = \\begin{pmatrix} x \\\\ y \\\\ \\theta \\end{pmatrix} + \\begin{pmatrix} \\nu\\omega^{-1}\\left\\{\\sin( \\theta + \\omega \\Delta t ) - \\sin\\theta \\right\\} \\\\ \\nu\\omega^{-1}\\left\\{-\\cos( \\theta + \\omega \\Delta t ) + \\cos\\theta \\right\\} \\\\ \\omega \\Delta t \\end{pmatrix}$</span>
+* 状態方程式の偏微分
+    * <span style="font-size:70%">$\\dfrac{\\partial \\boldsymbol{f}}{\\partial \\boldsymbol{u}} = \\begin{pmatrix} \\partial f\_x/\\partial \\nu & \\partial f\_x/\\partial \\omega \\\\ \\partial f\_y/\\partial \\nu & \\partial f\_y/\\partial \\omega \\\\ \\partial f\_\\theta/\\partial \\nu & \\partial f\_\\theta/\\partial \\omega \\end{pmatrix} \\nonumber \\\\ \hspace{-5em} = \\begin{pmatrix} \\omega^{-1}\\left\\{\\sin( \\theta + \\omega \\Delta t ) - \\sin\\theta \\right\\} & -\\nu\\omega^{-2}\\left\\{\\sin( \\theta + \\omega \\Delta t ) - \\sin\\theta \\right\\} + \\nu\\omega^{-1}\\Delta t \\cos( \\theta + \\omega \\Delta t )  \\\\ \\omega^{-1}\\left\\{-\\cos( \\theta + \\omega \\Delta t ) + \\cos\\theta \\right\\} & -\\nu\\omega^{-2}\\left\\{-\\cos( \\theta + \\omega \\Delta t ) + \\cos\\theta \\right\\} + \\nu\\omega^{-1}\\Delta t\\sin( \\theta + \\omega \\Delta t ) \\\\ 0 & \\Delta t \\end{pmatrix}$</span>
+
+これに$\boldsymbol{x} = \boldsymbol{x}\_{t-1}, \boldsymbol{u} = \boldsymbol{u}_t$を代入すると$A_t$となる
 
 
+---
+
+### 状態遷移モデルの近似
+
+* 手順
+    1. 速度、角速度を$\boldsymbol{u}' \sim \mathcal{N}(\boldsymbol{u}, M_t)$でモデル化
+        * $M\_t = \begin{pmatrix} \sigma^2\_{\nu\nu}|\nu\_t|/\Delta t + \sigma^2\_{\nu\omega}|\omega\_t|/\Delta t & 0 \\\\ 0 & \sigma^2\_{\omega\nu}|\nu\_t|/\Delta t + \sigma^2\_{\omega\omega}|\omega\_t|/\Delta t \end{pmatrix}$
+        * $\sigma^2_{ab}$: 移動量$b$あたりの$a$の分散
+        * <span style="color:red">これはMCLで使ったモデルと同じ</span>
+        * $\V{u}$の空間ではガウス分布<br />　
+    1. この$\nu\omega$空間中のガウス分布を$XY\theta$空間に写像
+        * このとき、誤差が$\V{f}$と共に移動して歪むのを近似で防ぐ（次のページ）
+            * $ \\V{f}(\\V{x}, \\V{u}) = \\begin{pmatrix} x \\\\ y \\\\ \\theta \\end{pmatrix} + \\begin{pmatrix} \\nu\\omega^{-1}\\left\\{\\sin( \\theta + \\omega \\Delta t ) - \\sin\\theta \\right\\} \\\\ \\nu\\omega^{-1}\\left\\{-\\cos( \\theta + \\omega \\Delta t ) + \\cos\\theta \\right\\} \\\\ \\omega \\Delta t \\end{pmatrix}$ 
