@@ -134,15 +134,13 @@ $p(\V{x} | \V{x}', \V{u}\_t)$の形が問題になる
 
 ### $R_t$の計算
 
-* 手順
-    1. 速度、角速度を$\boldsymbol{u}' \sim \mathcal{N}(\boldsymbol{u}, M_t)$でモデル化
-        * $M\_t = \begin{pmatrix} \sigma^2\_{\nu\nu}|\nu\_t|/\Delta t + \sigma^2\_{\nu\omega}|\omega\_t|/\Delta t & 0 \\\\ 0 & \sigma^2\_{\omega\nu}|\nu\_t|/\Delta t + \sigma^2\_{\omega\omega}|\omega\_t|/\Delta t \end{pmatrix}$
-        * $\sigma^2_{ab}$: 移動量$b$あたりの$a$の分散
-        * <span style="color:red">これはMCLで使ったモデルと同じ</span>
-        * $\V{u}$の空間ではガウス分布<br />　
-    2. 共分散行列の定義から
-        * $R\_t = \left\langle  (\V{x}\_t - \V{\mu}\_t) (\V{x}\_t - \V{\mu}\_t)^\top \right\rangle\_{\mathcal{N}(\V{u}, M\_t)}$<br />
-        $= \left\langle A\_t (\V{u}'\_t - \V{u}\_t) \left\\{ A\_t (\V{u}'\_t - \V{u}\_t) \right\\}^\top \right\rangle\_{\mathcal{N}(\V{u}, M\_t)}$
-        $= A\_t  \left\\{ \left\langle (\V{u}'\_t - \V{u}\_t) (\V{u}'\_t - \V{u}\_t)^\top \right\rangle\_{\mathcal{N}(\V{u}, M\_t)} \right\\} A\_t^\top$
-	<span style="color:red">$ = A\_t M\_t A\_t^\top$</span>
-            * 書籍（付録B.1.10）はもう少し回りくどい方法で計算しています。<br />書き直したい・・・
+1. 速度、角速度を$\boldsymbol{u}' \sim \mathcal{N}(\boldsymbol{u}, M_t)$でモデル化
+    * $M\_t = \begin{pmatrix} \sigma^2\_{\nu\nu}|\nu\_t|/\Delta t + \sigma^2\_{\nu\omega}|\omega\_t|/\Delta t & 0 \\\\ 0 & \sigma^2\_{\omega\nu}|\nu\_t|/\Delta t + \sigma^2\_{\omega\omega}|\omega\_t|/\Delta t \end{pmatrix}$
+    * $\sigma^2_{ab}$: 移動量$b$あたりの$a$の分散
+    * <span style="color:red">これは前章で使ったモデルと同じ</span><br />　
+2. 共分散行列の定義から
+    * $R\_t = \left\langle  (\V{x}\_t - \V{\mu}\_t) (\V{x}\_t - \V{\mu}\_t)^\top \right\rangle\_{\mathcal{N}(\V{u}, M\_t)}$<br />
+    $= \left\langle A\_t (\V{u}'\_t - \V{u}\_t) \left\\{ A\_t (\V{u}'\_t - \V{u}\_t) \right\\}^\top \right\rangle\_{\mathcal{N}(\V{u}, M\_t)}$
+    $= A\_t  \left\\{ \left\langle (\V{u}'\_t - \V{u}\_t) (\V{u}'\_t - \V{u}\_t)^\top \right\rangle\_{\mathcal{N}(\V{u}, M\_t)} \right\\} A\_t^\top$
+	<span style="color:red">$ = A\_t M\_t A\_t^\top$</span><br />
+        <span style="font-size:60%">※ 書籍（付録B.1.10）はもう少し回りくどい方法で計算しています。書き直したい・・・</span>
