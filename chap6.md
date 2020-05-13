@@ -102,7 +102,7 @@ $p(\V{x} | \V{x}', \V{u}\_t)$の形が問題になる
     * 近似した状態方程式（再掲）: $\V{x}\_t \approx \V{f}(\V{x}\_{t-1}, \V{u}\_t) + A\_t (\V{u}\_t' - \V{u}\_t)$<br />　
 * 解釈
     * <span style="color:red">$\V{x} =\V{x}_{t-1}, \V{u} = \V{u}_t$において、$\V{u}$が少しずれると$\V{f}$がどれだけずれるかを計算したもの</span>
-    * $A_t$に$\V{u}'_t - \V{u}$（速度・角速度の誤差）をかけることで、$\V{f}$のズレ（$=XY\theta$空間での$\V{x}_t$の誤差）が計算できる
+    * $A_t$に$\V{u}'_t - \V{u}$（速度・角速度の誤差）をかけることで、$\V{f}$のズレ（$=XY\theta$空間での$\V{x}_t$の誤差）が計算できる<br />　
 
 ---
 
@@ -115,10 +115,24 @@ $p(\V{x} | \V{x}', \V{u}\_t)$の形が問題になる
 
 これに$\boldsymbol{x} = \boldsymbol{x}\_{t-1}, \boldsymbol{u} = \boldsymbol{u}_t$を代入すると$A_t$となる
 
-
 ---
 
 ### 状態遷移モデルの近似
+
+* 次にやること
+    * $\V{x}\_t \approx \V{f}(\V{x}\_{t-1}, \V{u}\_t) + A\_t (\V{u}\_t' - \V{u}\_t)$について、$\V{x}_t$の分布を求める<br />　
+* 分布の式
+    * $\V{x}_t \sim \mathcal{N}(\V{x} | \V{\mu}_t , R_t)$
+        * $\V{\mu}\_t = \V{f}(\V{x}\_{t-1}, \V{u}\_t)$
+        * $R_t$は誤差項$A_t(\V{u}'_t - \V{u}_t)$のばらつきの共分散行列<br />　
+* $R_t$の求め方
+    * $\nu\omega$空間にある誤差$\V{u}'-\V{u}$の分布を$XY\theta$空間に$A_t$で写像
+
+計算しましょう
+
+---
+
+### $R_t$の計算
 
 * 手順
     1. 速度、角速度を$\boldsymbol{u}' \sim \mathcal{N}(\boldsymbol{u}, M_t)$でモデル化
@@ -126,6 +140,9 @@ $p(\V{x} | \V{x}', \V{u}\_t)$の形が問題になる
         * $\sigma^2_{ab}$: 移動量$b$あたりの$a$の分散
         * <span style="color:red">これはMCLで使ったモデルと同じ</span>
         * $\V{u}$の空間ではガウス分布<br />　
-    1. この$\nu\omega$空間中のガウス分布を$XY\theta$空間に写像
-        * このとき、誤差が$\V{f}$と共に移動して歪むのを近似で防ぐ（次のページ）
-            * $ \\V{f}(\\V{x}, \\V{u}) = \\begin{pmatrix} x \\\\ y \\\\ \\theta \\end{pmatrix} + \\begin{pmatrix} \\nu\\omega^{-1}\\left\\{\\sin( \\theta + \\omega \\Delta t ) - \\sin\\theta \\right\\} \\\\ \\nu\\omega^{-1}\\left\\{-\\cos( \\theta + \\omega \\Delta t ) + \\cos\\theta \\right\\} \\\\ \\omega \\Delta t \\end{pmatrix}$ 
+    2. 共分散行列の定義から
+        * $R\_t = \left\langle  (\V{x}\_t - \V{\mu}\_t) (\V{x}\_t - \V{\mu}\_t)^\top \right\rangle\_{\mathcal{N}(\V{u}, M\_t)}$<br />
+        $= \left\langle A\_t (\V{u}'\_t - \V{u}\_t) \left\\{ A\_t (\V{u}'\_t - \V{u}\_t) \right\\}^\top \right\rangle\_{\mathcal{N}(\V{u}, M\_t)}$
+        $= A\_t  \left\\{ \left\langle (\V{u}'\_t - \V{u}\_t) (\V{u}'\_t - \V{u}\_t)^\top \right\rangle\_{\mathcal{N}(\V{u}, M\_t)} \right\\} A\_t^\top$
+	<span style="color:red">$ = A\_t M\_t A\_t^\top$</span>
+            * 書籍（付録B.1.10）はもう少し回りくどい方法で計算しています。<br />書き直したい・・・
