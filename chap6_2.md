@@ -113,4 +113,23 @@ $\quad = \Sigma \\{ H^\top Q^{-1}(\V{z} - \V{h}(\hat{\V{\mu}})) + (H^\top Q^{-1}
 <span style="color:red">$\qquad = \Sigma H^\top Q^{-1} (\V{z} - \V{h}(\hat{\V{\mu}})) + \hat{\V{\mu}}$</span>
 * 解釈
     * 更新後の精度行列: 更新前の情報$\hat{\Sigma}^{-1}$にセンサ値からの情報$H^\top Q^{-1}H$を足したもの
-    * 更新後の分布の中心: 更新前の中心$\hat{\V{\mu}}$に、センサ値のずれ$\V{z} - \V{h}(\hat{\V{\mu}})$を行列で変換した量を足したもの
+    * 更新後の分布の中心: 更新前の中心$\hat{\V{\mu}}$に、センサ値のずれ$\V{z} - \V{h}(\hat{\V{\mu}})$を<span style="color:red">行列$\Sigma H^\top Q^{-1}$</span>で変換した量を足したもの
+
+---
+
+## 6.3.3 カルマンゲインによる表現
+
+* 行列$\Sigma H^\top Q^{-1}$を、センサ値のずれに応じて信念分布の中心を移動するための拡大率と考え<span style="color:red">カルマンゲイン</span>と呼ぶ<br />　
+* カルマンゲインを使って更新式を整理<br />
+（行列の計算は書籍参考のこと）
+    * $K = \hat\Sigma H^\top (H \hat\Sigma H^\top + Q )^{-1}$
+    * $\Sigma =  (I - KH) \hat{\Sigma}$
+    * $\V{\mu} = K (\V{z} - \V{h}(\hat{\V{\mu}})) + \hat{\V{\mu}}$<br />　
+* 新たな解釈
+    * 更新後の共分散行列: 更新前の不確かさ$\hat{\Sigma}$が$KH\hat{\Sigma}$だけ縮小
+    * 更新後の分布の中心: センサ値のズレを$K$で$XY\theta$空間に写像して、その分だけ中心をずらす
+
+---
+
+## 6.3.4 観測後の更新の実装
+
