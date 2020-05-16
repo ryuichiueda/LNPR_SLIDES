@@ -103,10 +103,10 @@ $\Longrightarrow$信念分布の中心$\hat{\V{\mu}}$で$\V{x}$を代用<br />�
 
 ### センサ値を反映するための更新式
 
-* 一次の項から
+* 2次の項から
     * $\Sigma^{-1} =  H^\top Q^{-1}H + \hat\Sigma^{-1}$
      $\Longrightarrow$<span style="color:red">$\Sigma =  (H^\top Q^{-1}H + \hat\Sigma^{-1} )^{-1}$</span>
-* 二次の項から
+* 1次の項から
     * $\Sigma^{-1}\V{\mu} = H^\top Q^{-1} (\V{z} - \V{h}(\hat{\V{\mu}}) + H\hat{\V{\mu}}) + \hat\Sigma^{-1} \hat{\V{\mu}}$<br />　
 <span style="color:red">$\V{\mu} =$</span>$\Sigma \\{ H^\top Q^{-1} (\V{z} - \V{h}(\hat{\V{\mu}}) + H\hat{\V{\mu}}) + \hat\Sigma^{-1} \hat{\V{\mu}} \\}$<br />　
 $\quad = \Sigma \\{ H^\top Q^{-1}(\V{z} - \V{h}(\hat{\V{\mu}})) + (H^\top Q^{-1} H + \hat\Sigma^{-1} )\hat{\V{\mu}} \\}$<br />
