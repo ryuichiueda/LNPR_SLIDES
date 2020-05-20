@@ -56,7 +56,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $XY\theta$空間を格子状に区切って離散化
         * 区画の大きさ: 後の実験では200[mm]$\times$200[mm]$\times$10[deg]
     * 区画一つ一つに$s_0, s_1, s_2, \dots$と番号づけ
-    * 各区画に入っている$\hat{b}$のパーティクルの重みの和: $\hat{P}$<br />　
+    * 各区画に入っている$\hat{b}$のパーティクルの個数の和: $\hat{P}$<br />　
 * 同様に$b^\*$から確率分布$P^\*$を考え、<br />$P^\*$と$\hat{P}$を$D_\text{KL}(\hat{P} || P^\*)$で比較
 
 ---
@@ -77,4 +77,12 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ---
 
 ## 7.1.2 対数尤度比の性質による<br />パーティクル数の決定
+
+* 次にやること: 
+    * $D_\text{KL}(\hat{P} || P^\*)$がどのようにばらつくかを（間接的に）調べる<br />　
+* 手順
+    * $b^*$から$N$個のパーティクルをドローしたとき、<br />
+    離散区間$s_i$（ビンと呼ぶ）に、$n_i$個入る確率の式を立てる
+        * ビン = 瓶
+        * $P^\*\_\text{M}(n\_0, n\_1, \dots, n\_{k-1} | p^\*\_0, p^\*\_1, \dots, p^\*\_{k-1}) \\\\ = \dfrac{N!}{n\_0! n\_1!\dots n\_{k-1}!} (p^\*\_0)^{n\_0} (p^\*\_1)^{n\_1} \dots (p^\*\_{k-1})^{n\_{k-1}} \\ = \dfrac{N!}{\prod\_{j=0}^{k-1} (n\_j !) }\prod\_{j=0}^{k-1} (p^\*\_j)^{n\_j}$
 
