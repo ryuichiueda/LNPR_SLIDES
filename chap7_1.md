@@ -1,6 +1,6 @@
 $\newcommand{\V}[1]{\boldsymbol{#1}}$
 
-# 7. 自己位置推定の<br />諸問題
+# 7. 自己位置推定の<br />諸問題（前半）
 
 千葉工業大学 上田 隆一
 
@@ -57,10 +57,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 格子上の分布$P$
 
-* $XY\theta$空間を格子状に区切って離散化
-    * 区画の大きさ: 後の実験では200[mm]$\times$200[mm]$\times$10[deg]
+* $XY\theta$空間を格子状に分割して離散化
     * 区画を「ビン」（瓶のこと）と呼ぶ
-    * ビン一つ一つに$s_0, s_1, s_2, \dots$と番号づけ<br />　
+    * ビン一つ一つに$s_0, s_1, s_2, \dots, s_{k-1}$と番号づけ<br />　
 * 信念分布$b$から、次のような格子上の分布$P$を考える
     * $P(s_i) = \int_{\V{x} \in s_i} b(\V{x})d\V{x}$
 * パーティクルの分布からも、$P$の分布を考える
@@ -95,9 +94,10 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 格子上の分布$P$の分布を考える
 
-* ある信念分布$b$から$N$個のパーティクルをドローして分布$P$を作ったときに、ある分布になる確率$P_\text{M}$を考える
+* 次の確率$P_\text{M}$を考える
+    * ある信念分布$b$の値の大きいビンを$k$個選び、$b$からパーティクルを$N$個選んで分布$P$を作ったときに、ある分布になる確率
     * $P\_\text{M}$の変数: $\textbf{n} = \\{n\_i | i=0,1,2,\dots,k-1 \\}$
-        * 各ビンに入るパーティクルの数
+        * $n_i$: ビン$s_i$内のパーティクルの数
     * $P\_\text{M}$のパラメータ（条件）: $\Theta = \\{ p_i | i=0,1,\dots,k-1 \\}$
         * 信念分布$b$から計算した各ビンの確率<br />　
 * 次のような<span style="color:red">多項分布</span>となる
@@ -123,24 +123,77 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 「目標2」の変形
 
-* 目標2は次のように変形できる
-    * $P\left[ D_\text{KL}(\hat{P} || P^*) \le\varepsilon \right] \ge 1 - \delta$
-    <span style="color:red">$\Longrightarrow P\left[ 2 \log \lambda_N \le 2N \varepsilon \right] \ge 1 - \delta$</span><br />　
-* $2\log \lambda_N$は<span style="color:red">自由度$k-1$のカイ二乗分布</span>に従う
-    * $a \sim \mathcal{N}(0, 1)$のときに$a$を$k$回ドローした値$a_1,a_2,\dots,a_k$の二乗の和
-$x = a_1^2 + a_2^2 + \dots + a_k^2$が従う分布
+* $P\left[ D_\text{KL}(\hat{P} || P^*) \le\varepsilon \right] \ge 1 - \delta$
+    <span style="color:red"><br />$\Longrightarrow P\left[ 2 \log \lambda_N \le 2N \varepsilon \right] \ge 1 - \delta$</span>
+    <br />$\Longrightarrow P\left[y \le 2N \varepsilon \right] \ge 1 - \delta$
+    * $y=2\log \lambda_N$<br />　
+* $y$は<span style="color:red">自由度$k-1$の<br />カイ二乗分布$\chi^2_{k-1}$</span>に従う
+    * $\chi^2_k$: $\mathcal{N}(0, 1)$に従う$a$を<br />$k$回ドローした値の二乗和<br />$a_1^2 + a_2^2 + \dots + a_k^2$が従う分布 
+    * $\chi^2_k (y) = \eta\ y^{k/2-1} e^{-y/2}$
+    * 右図: $\chi^2_5$の確率密度関数
+
+<img width="35%" src="./figs/chi2_k5.png" />
+
+$k$を決めると$N$が決まる（次ページ）
 
 ---
 
-### カイ二乗分布
+### パーティクル数$N$の決定
 
+* 手順
+    * $k$を決める（決め方はあとで）
+    * $\int_0^y \chi^2_{k-1}(x) dx = 1 - \delta$から$y$を算出
+        * グラフを左から積分していって値が$1-\delta$になったところの$y$（<span style="color:red">分位点</span>）
+<img width="35%" src="./figs/chi2_k5.png" /><br />
+        * Pythonの場合はライブラリで分位点が計算可能
+        * 自分で実装する場合は近似（Wilson-Hilferty変換）を利用（書籍で説明）
+    * $y \le 2N\varepsilon$なので、<span style="color:red">$N \ge y/(2\varepsilon)$を満たす最小の$N$が求める数</span>
+
+---
+
+### ビンの数$k$とパーティクル数$N$の関係
+
+* $\varepsilon = 0.1, \delta = 0.01$のとき
+    * 横軸: $k$
+    * 縦軸: $N$
+
+<img width="70%" src="./figs/kldtest.png" />
+
+ビンの数が増えれば、近似に必要なパーティクルも増える（単純）
+
+---
+
+## 7.1.3 MCLへの組み込み
+
+* 残った問題: $k$をどう決めればよい？<br />　
+* 解決するアルゴリズム（KLDサンプリング）
+    * 初期化: $XY\theta$空間を離散化してビンを作っておく
+        * シミュレータでは200[mm]$\times$200[mm]$\times$10[deg]
+    * リサンプリング時: 新しいパーティクルを1個ずつドローしては次の値を比較
+        * 新しいパーティクルの数$N$
+        * 新しいパーティクルが存在しているビンの数$k$
+        * $k$に対して$N$が必要な数を上回ったところでリサンプリング終了<br />　
+
+リサンプリング前の分布の広さに応じて<br />$k$が増え、あるとき頭打ちになる
+
+---
+
+### 実装、動作結果
+
+* 見どころ: ランドマークが観測できなくなると<br />ビンとパーティクルの数が増えていく
+
+![](../figs/kld.gif)
 
 
 ---
 
-* なんでこんなものを考えるか？
-    * $\log \lambda_\text{N}$がある分布に従うことが分かっている
-        * [Fox 2003]からたどっていただければと
-    * $D\_\\text{KL}(\hat{P}||P^\*)$を$\log \lambda_\text{N}$で表せる
+### KLDサンプリングのまとめ
 
-$b^*$が分からなくても$N$の個数が決まる
+* パーティクルの数を可変に
+* パーティクルによる分布の近似の尤もらしさ（の対数）が、カイ二乗分布に従う性質を利用<br />　
+* ROSのamclパッケージで利用されているので知っておくとよいが、
+自分でMCLを作ったときに実装が必須ということはない<br />　
+* ビンの作り方には、格子状の離散化以外の方法が存在
+    * 木構造など
+    * （私見）ちょっと凝りすぎではないかと思われる
+
