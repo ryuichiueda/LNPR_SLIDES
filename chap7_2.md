@@ -126,9 +126,83 @@ $$\alpha = \langle p(\textbf{z} | \boldsymbol{x}') \rangle_{\hat{b}(\boldsymbol{
          * $b(\boldsymbol{x}) = \hat{b}(\boldsymbol{x} | \textbf{z}) = \dfrac{ p(\textbf{z} | \boldsymbol{x}) \hat{b}(\boldsymbol{x}) } { p(\textbf{z}) } = \dfrac{ p(\textbf{z} | \boldsymbol{x}) \hat{b}(\boldsymbol{x}) } { \langle p(\textbf{z} | \boldsymbol{x}') \rangle_{\hat{b}(\boldsymbol{x}')}}$
     * <span style="color:red">パーティクルフィルタでは$\textbf{z}$反映後の正規化前の重みの合計</span>
         * $\alpha = \sum_{i=0}^{N-1} w^{(i)} = \sum_{i=0}^{N-1} p(\textbf{z} | \V{x}^{(i)}) w^{(i)}$
-        * 簡単に計算できるのでこれを閾値にして$\Upsilon=1$とする
+        * 簡単に計算できるので閾値処理で$\Upsilon=0,1$を判断
 
 ---
 
 ### 周辺尤度の閾値の決定
+
+* 書籍での方法
+    1. パーティクルが真の姿勢から離れないか監視しながらロボットとMCLを動作
+    2. 1の間、$\alpha$の値を記録
+    3. 2の最小値を下回るように閾値$\alpha_\text{th}$を決定<br />　
+* 結果
+    * ランドマークを1個だけ観測した場合: $\alpha > 0.01$
+    * ランドマーク2個を同時に観測した場合: $\alpha > 0.07$
+    * 参考: パーティクルの姿勢とセンサ値が大きく乖離すると$\alpha = 0.1^{-150}$くらいの小さい値になる<br />　
+* $\alpha_\text{th} = 0.001$に設定
+    * オクルージョンなどがないという前提で設定したので少し雑
+
+---
+
+## 7.3.2 単純リセットの実装
+
+* 周辺尤度が閾値を下回ったらどうするのか？ 
+    * 下のふたつの式から$b(\boldsymbol{x}) = b(\boldsymbol{x} | \Upsilon=1)$
+        * $P(\Upsilon=1) = 1$
+        * $b(\boldsymbol{x}) = b(\boldsymbol{x} | \Upsilon=0)P(\Upsilon=0) + b(\boldsymbol{x} | \Upsilon=1)P(\Upsilon=1)$
+    * つまり信念分布を「いままでの自己位置推定が間違っていたときの代用の信念分布」で置き換え
+        * これを<span style="color:red">リセット</span>と呼ぶ<br />　
+* $b(\boldsymbol{x} | \Upsilon=1)$は何か？
+    * とりあえず一様分布と考えてみましょう
+        * 何も情報がないので
+    * パーティクルを一様分布状に再配置
+        * 「単純リセット」と呼ぶ
+
+---
+
+### 単純リセットの挙動
+
+* 大域的自己位置推定を<br />やりなおすことになるので、<br />運次第となる
+    * ただしリセットなしより改善
+    * 成功回数130$\rightarrow$446回
+        * $N=100$、1000回試行<br />　
+* 実用的な環境では$N$が不足<br />　
+
+<img width="35%" src="./figs/simple_reset_mcl.gif" />
+
+もっと効率の良い方法はないか？
+
+---
+
+## 7.3.3 センサリセットの実装
+
+* 一様分布ではなくリセットを引き起こしたセンサ値$\textbf{z}$に基づいてパーティクルを置き直すことを考える<br />
+$\Longrightarrow$<span style="color:red">センサリセット</span>
+    * $b(\V{x}) = \eta L(\V{x} | \textbf{z})$<br />　
+* センサリセットのアルゴリズム
+    * 尤度関数$L(\V{x} | \textbf{z})$から$N$個パーティクルをドロー
+
+
+---
+
+### センサリセットの挙動
+
+* 単純リセットより効率がよい
+    * 446$\rightarrow$585回成功
+    * より狭い領域にパーティクルを配置できるので
+
+<img width="40%" src="./figs/sensor_reset.gif" />
+
+
+---
+
+## 7.3.4 センサリセットの問題と<span style="text-transform:none">adaptive MCL</span>
+
+* 単純リセットもセンサリセットもセンサ値の大きな誤差に弱い
+    * いままで推定が正しかったのにリセットされる
+    * これならリセットがないほうがよい<br />　
+* 対応: 1個の$\textbf{z}$でリセットを判断しない
+    * $\alpha$の値がしばらくの間だけ小さい場合にリセット
+
 
