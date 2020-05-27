@@ -30,7 +30,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 空間にある幅の格子を想定
     * 信念分布の高密度領域を含む格子にパーティクルが存在すべき
     * 足りないならパーティクルを増やすべき<br />
-<img width="50%" src="../figs/kld.png" />
+<img width="50%" src="./figs/kld.png" />
 * この処理が必要なのはロボットの移動時
     * 分布が広がるとき
     * 問題
@@ -117,7 +117,7 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
 * 下図: 信念分布が高い部分にかかるビンの数と<br />必要なパーティクル数
     * $\varepsilon = 0.1, \delta = 0.01$
 
-<img width="60%" src="../figs/kldtest.png" />
+<img width="60%" src="./figs/kldtest.png" />
 
 ---
 
@@ -133,7 +133,7 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
 
 ### [実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_advanced_localization/kld_mcl.ipynb)
 
-![](../figs/kld.gif)
+![](./figs/kld.gif)
 
 ---
 
@@ -147,7 +147,7 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
     * MCLの場合、パーティクルが不足
     * 真の姿勢まわりにパーティクルがないと推定続行不可能
 
-<img width="40%" src="../figs/mcl_global.gif" />
+<img width="40%" src="./figs/mcl_global.gif" />
 
 ---
 
@@ -157,7 +157,7 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
     * 信念分布の高確率な部分と真の姿勢$\boldsymbol{x}^*_t$が乖離
     * 一度信念を否定する必要があるけどMCLにそのような機能はない
 
-<img width="40%" src="../figs/mcl_kidnap.gif" />
+<img width="40%" src="./figs/mcl_kidnap.gif" />
 
 ---
 
@@ -208,7 +208,7 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
 * センサ値が間違っていたら今までの推定が無駄に
     * 起こる条件を厳しくするか、今までのパーティクルを残す
 
-<img width="40%" src="../figs/sensor_reset.gif" />
+<img width="40%" src="./figs/sensor_reset.gif" />
 
 ---
 
@@ -218,7 +218,7 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
 * 分布が大きく変化しないので頻繁に起こせる
 * 収束まで時間がかかる
 
-<img width="40%" src="../figs/expansion_reset.gif" />
+<img width="40%" src="./figs/expansion_reset.gif" />
 
 ---
 
@@ -227,7 +227,7 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
 * 通常は膨張リセット
 * 何回か連続で$\alpha$が閾値を下回ったらセンサリセット
 
-<img width="40%" src="../figs/expansion_sensor_reset.gif" />
+<img width="40%" src="./figs/expansion_sensor_reset.gif" />
 
 ---
 
@@ -246,7 +246,7 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
 * カメラで点ランドマークの大きさを計測するときのオクルージョン
     * 何かが遮って実際よりも小さく見える = 遠く見える
 
-![](../figs/occlusion.gif)
+![](./figs/occlusion.gif)
 
 ---
 
@@ -255,7 +255,7 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
 * オクルージョンの場合は片側を一様分布状にすることが多い
     * 下図: シミュレーションのモデルに対する尤度関数
         * 計測距離$\ell$が実際の距離$\ell^*$より遠くなることがあるので、そちらの尤度を大きく見積もる<br />
-![](../figs/phantom_likelihood.png)
+![](./figs/phantom_likelihood.png)
     * LiDARの場合は逆にセンサ値が実際より近くなるので反対側が一様分布になる
 
 ---
@@ -269,5 +269,5 @@ $P[ 2\\log \\lambda\_N \le 2N \varepsilon ] \ge 1 - \delta$
     * 異常なセンサ値は基本的に無視される
         * どのパーティクルの尤度も一様分布状のところで評価されるので同じ
 
-<img width="35%" src="../figs/occlusion_mcl.gif" />
-<img width="35%" src="../figs/occlusion_free_mcl.gif" />
+<img width="35%" src="./figs/occlusion_mcl.gif" />
+<img width="35%" src="./figs/occlusion_free_mcl.gif" />
