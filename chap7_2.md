@@ -84,9 +84,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 姿勢が不確か$\rightarrow$<span style="color:red">推定自体が不確か</span><br />　
 * 準備
     * 「信念分布が正しいかどうかを表す変数$\Upsilon$」の導入
-        * $\Upsilon=0$: 正しい
-        * $\Upsilon=1$: 正しくない<br />
-        （$\Upsilon$は「ウプシロン」と読む）
+        * $\Upsilon$: 緊急事態を表すフラグ<br />（$\Upsilon$は「ウプシロン」と読む）
+            * $\Upsilon=0$: 正しい
+            * $\Upsilon=1$: 正しくない（= 緊急事態発生）<br />
 
 ---
 
@@ -97,6 +97,38 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 第一項: 今までの信念分布
         * 第二項: 自己位置推定が間違っているときの信念分布<br />　
 * 新たな信念分布の計算に必要なこと
-    * 間違っている確率$P(\Upsilon)$をどうやって求めるか
+    * 確率分布$P(\Upsilon)$をどうやって求めるか
+        * 注意: 本書や以後のスライドではこれより簡単な問題を扱うだけにとどめており、いつ$\Upsilon=1$とするかどうかだけを求めている
     * 分布$b(\boldsymbol{x} | \Upsilon=1)$をどう作るか
+
+
+---
+
+## 7.3.1 信念分布が信頼できるか<br />どうかの判断
+
+* このタイトルの「信念分布」: 拡張前の信念分布
+    * $b(\boldsymbol{x} | \Upsilon=0)$のこと<br />　
+* やること: いつ$\Upsilon=1$とするのかを考える<br />　
+* やりかた:
+    * $\hat{b}(\boldsymbol{x} | \Upsilon=0)$と得られたセンサ値$\textbf{z}$を比較
+        * $\hat{b}$: ロボットの移動$\V{u}$が反映された信念分布
+            * 時刻の添字$t$を省略しています
+    * $\hat{b}(\boldsymbol{x} | \Upsilon=0)$を信じたときに$\textbf{z}$が得られそうにないなら<br />$\Upsilon=1$
+
+---
+
+### 周辺尤度
+
+* 「$\hat{b}(\boldsymbol{x} | \Upsilon=0)$を信じたときに$\textbf{z}$が得られそうにない」<br />を数値化したもの
+$$\alpha = \langle p(\textbf{z} | \boldsymbol{x}') \rangle_{\hat{b}(\boldsymbol{x}')}$$
+* 周辺尤度の計算
+    * 周辺尤度はベイズの定理の分母
+         * $b(\boldsymbol{x}) = \hat{b}(\boldsymbol{x} | \textbf{z}) = \dfrac{ p(\textbf{z} | \boldsymbol{x}) \hat{b}(\boldsymbol{x}) } { p(\textbf{z}) } = \dfrac{ p(\textbf{z} | \boldsymbol{x}) \hat{b}(\boldsymbol{x}) } { \langle p(\textbf{z} | \boldsymbol{x}') \rangle_{\hat{b}(\boldsymbol{x}')}}$
+    * <span style="color:red">パーティクルフィルタでは$\textbf{z}$反映後の正規化前の重みの合計</span>
+        * $\alpha = \sum_{i=0}^{N-1} w^{(i)} = \sum_{i=0}^{N-1} p(\textbf{z} | \V{x}^{(i)}) w^{(i)}$
+        * 簡単に計算できるのでこれを閾値にして$\Upsilon=1$とする
+
+---
+
+### 周辺尤度の閾値の決定
 
