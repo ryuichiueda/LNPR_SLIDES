@@ -119,7 +119,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 周辺尤度
 
-* 「$\hat{b}(\boldsymbol{x} | \Upsilon=0)$を信じたときに$\textbf{z}$が得られそうにない」<br />を数値化したもの
+* 「$\hat{b}(\boldsymbol{x} | \Upsilon=0)$を信じたときに$\textbf{z}$が得られそう」<br />を数値化したもの
 $$\alpha = \langle p(\textbf{z} | \boldsymbol{x}') \rangle_{\hat{b}(\boldsymbol{x}')}$$
 * 周辺尤度の計算
     * 周辺尤度はベイズの定理の分母
@@ -165,8 +165,8 @@ $$\alpha = \langle p(\textbf{z} | \boldsymbol{x}') \rangle_{\hat{b}(\boldsymbol{
 
 * 大域的自己位置推定を<br />やりなおすことになるので、<br />運次第となる
     * ただしリセットなしより改善
-    * 成功回数130$\rightarrow$446回
-        * $N=100$、1000回試行<br />　
+    * 誘拐ロボット問題の実験: <br />成功回数$446$回
+        * $N=100$、$1000$回試行<br />　
 * 実用的な環境では$N$が不足<br />　
 
 <img width="35%" src="./figs/simple_reset_mcl.gif" />
@@ -189,7 +189,7 @@ $\Longrightarrow$<span style="color:red">センサリセット</span>
 ### センサリセットの挙動
 
 * 単純リセットより効率がよい
-    * 446$\rightarrow$585回成功
+    * 誘拐ロボット問題の実験: 585回/1000回成功
     * より狭い領域にパーティクルを配置できるので
 
 <img width="40%" src="./figs/sensor_reset.gif" />
@@ -200,9 +200,161 @@ $\Longrightarrow$<span style="color:red">センサリセット</span>
 ## 7.3.4 センサリセットの問題と<span style="text-transform:none">adaptive MCL</span>
 
 * 単純リセットもセンサリセットもセンサ値の大きな誤差に弱い
-    * いままで推定が正しかったのにリセットされる
+    * 誤発動でいままで推定が正しかったのにリセットされる
     * これならリセットがないほうがよい<br />　
 * 対応: 1個の$\textbf{z}$でリセットを判断しない
     * $\alpha$の値がしばらくの間だけ小さい場合にリセット
 
+---
 
+### <span style="text-transform:none">adaptive MCL</span>
+
+* 次のような方法で急なリセットを防ぐ
+    * 変数$\alpha_\text{slow}, \alpha_\text{fast}$を次のように更新
+        * $\alpha_\text{slow} \longleftarrow \alpha_\text{slow} + \alpha_\text{th-slow} (\alpha - \alpha_\text{slow})$
+        * $\alpha_\text{fast} \longleftarrow \alpha_\text{fast} + \alpha_\text{th-fast} (\alpha - \alpha_\text{fast})$
+    * $\alpha_\text{th-slow}, \alpha_\text{th-fast}$は閾値
+        * $0 < \alpha_\text{th-slow} \ll \alpha_\text{th-fast} < 1$ （例: $\alpha_\text{th-slow} = 0.001, \alpha_\text{th-fast} = 0.1$）
+        * $\alpha$が小さい状態が続く$\rightarrow$先に$\alpha_\text{fast}$が0に接近$\rightarrow$あとから$\alpha_\text{slow}$が0に接近<br />　
+* $\alpha_\text{slow}, \alpha_\text{fast}$にもとづき、$\tilde{N}$個のパーティクルを置き直し
+    * $\tilde{N} = N \max \left(0, 1 - \alpha_\text{fast}/\alpha_\text{slow} \right)$
+        * $\alpha_\text{fast} < \alpha_\text{slow}$のときに一部のパーティクルが置き直される
+    * やっている計算
+        * $b(\V{x}) = b(\V{x} | \Upsilon=0)\dfrac{1-\tilde{N}}{N} + b(\V{x} | \Upsilon=1)\dfrac{\tilde{N}}{N}$
+
+---
+
+### <span style="text-transform:none">adaptive MCL</span>の挙動
+
+* $N=1000$、観測でファントムを起こす
+    * $\alpha_\text{th-slow} = 0.001, \alpha_\text{th-fast} = 0.1$
+* 左図: 誘拐なし
+    * 突発的な周辺尤度の低下ではリセットが起きない
+* 右図: 誘拐あり
+    * リセットが起こる（$\tilde{N}$が少ないので不安定）
+
+<img width="35%" src="./figs/adaptive_mcl_phantom.gif" />
+<img width="35%" src="./figs/adaptive_mcl_phantom_kidnap.gif" />
+
+
+---
+
+## 7.3.5 膨張リセット
+
+* adaptive MCLは「無駄なリセットを起こさない」という方針だが、リセットが起きても急激に分布の形状を変えないという方針も考えられる<br />　
+* 膨張リセット
+    * 元の信念分布を広げる（ぼかす）ようにリセット
+        * パーティクルの分布を膨張させる
+    * 本書での実装
+        * リセット前の分布のパーティクルにブラウン運動させて分布を拡散
+            * ガウス分布に従う量だけ変異させる
+	        * 標準偏差: $X, Y$軸方向それぞれ0.2[mm]、$\theta$方向0.2[rad]
+
+
+---
+
+### 膨張リセットの挙動
+
+* $N=100$、ファントム有り
+* 左図: 膨張を繰り返して誘拐を解消
+* 右図: スタックしてもパーティクルが戻ってくる
+<img width="35%" src="./figs/expansion_reset.gif" />
+&nbsp;
+<img width="35%" src="./figs/expansion_reset_stuck.gif" />
+* 誘拐ロボット問題の実験: $N=100$で$334$回/$1000$回成功
+    * 収束が30[s]では足りない
+
+
+---
+
+## 7.3.6 膨張リセットとセンサリセットの組み合わせ
+
+* 膨張リセットの短所
+    * センサリセットより誘拐の解決に時間がかかる
+    * パーティクルが広がりすぎると大域的自己位置推定と変わらない<br />　
+* $\Longrightarrow$複合リセット
+    * 膨張を何回か繰り返したらセンサリセットに切り替え
+        * とってつけたようだが、パーティクルが過度に広がって推定不能になることを防いでいる
+
+---
+
+### 複合リセットの挙動
+
+* 図の例: 4回膨張リセットが連続したら5回目でセンサリセットに切り替え
+* 誘拐ロボット問題の実験: $N=100$で$609$回/$1000$回成功
+    * とってつけたようだが機能する
+    * ただしファントムが連続で見えた場合には誤作動する
+
+<img width="40%" src="./figs/expansion_sensor_reset.gif" />
+
+---
+
+## 7.4 MCLにおける変則的な分布の利用
+
+* いままでMCLでの確率モデルはガウス分布を使っていたが、MCLではその必要はない
+    * 尤度関数は自由に定義できる<br />　
+* やること
+    * オクルージョンを考慮した尤度関数の設計
+
+
+---
+
+### オクルージョンの影響
+
+* 本書でいうオクルージョンの設定
+    * ランドマークが移動障害物に隠れて<br />欠けて見え、実際より遠く見える<br />　
+* 図: 何も対応せずにMCLを実行
+    * ランドマークから遠い<br />パーティクルが残って<br />自己位置推定できない<br />　
+
+<img width="38%" src="./figs/occlusion_mcl.gif" />
+
+
+---
+
+### いつ発生するか分からない<br />観測への妨害の対応
+
+* リセットにたよらず尤度関数で対応する場合
+    * 可能ならば、妨害が起こっている可能性を<span style="color:red">常に</span>考える
+<br />$\Longrightarrow$起こっている/いない場合で尤度を計算して大きい方をとる<br />　
+* 本書のオクルージョンの場合
+    * センサ値が示すよりランドマークが手前にある可能性を常に考慮
+
+<img width="80%" src="./figs/occlusion.jpg" />
+
+
+---
+
+### オクルージョンに対応した尤度関数
+
+* センサ値の示す距離$\ell_j$から計算した尤度と、姿勢$\V{x}$から計算される距離$\ell_j^\*$から計算した尤度の大きい方をとる
+    * <span style="font-size:80%">$ L\_j(\V{x} | \V{z}\_j) = \begin{cases} \mathcal{N}\left[ \V{z} = \V{z}\_j | \V{h}\_j(\V{x}), Q\_j(\V{x}) \right] & (\ell\_j < \ell\_j^\*)  \\\\ \mathcal{N}\left[ \ell = \ell\_j^\* ,\varphi = \varphi\_j | \V{h}\_j(\V{x}), Q\_j(\V{x}) \right] & (\text{otherwise}) \end{cases} $</span>
+    * $\ell_j$が不自然に大きくても尤度は小さくならない
+    * 直観的には、ガウス分布と一様分布を継ぎ足した形状の尤度関数となる
+
+<img width="55%" src="./figs/occlusion_likelihood.jpg" />
+
+---
+
+### 効果
+
+* 左: 尤度関数でオクルージョン未考慮
+    * パーティクルがランドマークから遠ざかって推定不可能
+* 右: 尤度関数でオクルージョン考慮
+    * 少しランドマーク側にパーティクルが寄るが推定は可能
+
+<img width="35%" src="./figs/occlusion_mcl.gif" />
+&nbsp;&nbsp;
+<img width="35%" src="./figs/occlusion_free_mcl.gif" />
+
+---
+
+## 7.5 まとめ
+
+* 以下を扱った
+    * パーティクルの数を可変にする方法
+        * KLDサンプリング 
+    * 大きな偶発的誤差への対応
+        * リセット、変則的な尤度関数<br />　
+* いずれも2000年代前半、実際にロボットを動かしたいという強い動機から生まれた研究
+    * 実践的、実戦的
+    * きれいな理論だけではロボットが動かないので、おそらくもっときれいな理論を作らなければならない
