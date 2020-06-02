@@ -228,3 +228,110 @@ $= [\\![ p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) 
     * $\xi_t^{(i)} = ( \V{x}_t^{(i)}, w_t^{(i)}, \hat{\textbf{m}}_t^{(i)} )\quad$<span style="font-size:70%">$(i=0,1,2,\dots,N-1)$</span>
         * ただし、姿勢については$\V{x}\_t$でなく$\V{x}\_{0:t}$を推定していることに注意
 
+---
+
+## 8.3 パーティクルの実装
+
+* 本書のシミュレータではMCLのクラスを継承して作成
+    * 各パーティクルに全ランドマークの推定位置と共分散行列を追加<br />　
+* 下図
+    * 姿勢推定に関しては今のところMCLなのでそのまま動作
+        * 移動時の処理は変更の必要すらない
+        * 観測時の処理は以後のスライドで書き換え
+    * 地図はまだ推定できないので描画は適当
+
+<img width="25%" src="figs/8.2.jpg" />
+
+---
+
+## 8.4 ランドマークの<br />位置推定の実装
+
+* やること
+    * 実装レベルまで次の更新式を変形
+        * 地図: $p(\V{m}\_j | \hat{\V{m}}\_{j,t}^{(i)}, \Sigma\_{j,t}^{(i)})\approx \eta\_j p(\V{z}\_{j,t}| \V{m}\_j, \V{x}\_t^{(i)}) p(\V{m}\_j | \hat{\V{m}}\_{j,t-1}^{(i)}, \Sigma\_{j,t-1}^{(i)})$
+        * 重み: $w\_t^{(i)} = w\_{t-1}^{(i)} \big\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_t^{(i)}) \big\rangle\_{	p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)}) }$
+
+---
+
+## 8.4.1 更新則の導出
+
+* 地図の推定の式を実装できるように変形していく
+    * パーティクルとランドマークのIDを表す添字は省略
+    * $p(\V{m} | \hat{\V{m}}\_{t}, \Sigma\_{t}) = \eta p(\V{z}\_{t}| \V{m}, \V{x}\_t) p(\V{m} | \hat{\V{m}}\_{t-1}, \Sigma\_{t-1}) \\\\ = \eta \exp\big\\{ -\frac{1}{2} \big[ \V{z}\_t - \V{h}(\V{m}) \big]^\top Q\_{\V{m}}^{-1} \big[ \V{z}\_t - \V{h}(\V{m}) \big]  \\\\ \qquad -\frac{1}{2} ( \V{m} - \hat{\V{m}}\_{t-1})^\top \Sigma\_{t-1}^{-1} ( \V{m} - \hat{\V{m}}\_{t-1}) \big\\}$
+        * 6章のカルマンフィルタでセンサ値の反映に使った式と同じような式だが、<span style="color:red">姿勢が定数でランドマークの位置が変数に逆転</span>
+
+---
+
+### 線形化
+
+* <span style="font-size:80%">$p(\V{m} | \hat{\V{m}}\_{t}, \Sigma\_{t}) = \eta \exp\big\\{ -\frac{1}{2} \big[ \V{z}\_t - \V{h}(\V{m}) \big]^\top Q\_{\V{m}}^{-1} \big[ \V{z}\_t - \V{h}(\V{m}) \big]$<br />$ -\frac{1}{2} ( \V{m} - \hat{\V{m}}\_{t-1})^\top \Sigma\_{t-1}^{-1} ( \V{m} - \hat{\V{m}}\_{t-1}) \big\\}$</span>を$\V{m}$のガウス分布に<br />　
+* 手順
+    1. $\V{h}$を線形化して$\V{m}$の多項式に
+        * $\V{h}(\V{m}) \approx \V{h}(\hat{\V{m}}\_{t-1}) + H (\V{m} - \hat{\V{m}}\_{t-1})$
+            * $H = \dfrac{\partial \V{h}}{\partial \V{m}}\Big|\_{\V{m} = \hat{\V{m}}\_{t-1}}$
+    2. $Q\_{\V{m}}$を定数に
+        * $Q(\V{m})$を$Q(\hat{\V{m}}_{t-1})$で代用（以後、$Q$と表記）<br />　
+* これで指数部が$\V{m}$の多項式に（次のスライド）
+
+---
+
+### ランドマーク位置推定の更新式
+
+* $p(\V{m} | \hat{\V{m}}\_{t}, \Sigma\_{t})$の指数部
+    * $-\frac{1}{2} \big[ \V{z}\_t - \V{h}(\hat{\V{m}}\_{t-1}) - H(\V{m} - \hat{\V{m}}\_{t-1} )  \big]^\top Q\_{\hat{\V{m}}\_{t-1}}^{-1} \big[（略）\big] \\\\ -\frac{1}{2} ( \V{m} - \hat{\V{m}}\_{t-1})^\top \Sigma\_{t-1}^{-1} ( \V{m} - \hat{\V{m}}\_{t-1})$<br />　
+* 1次、2次の項を整理して分布の更新式を算出
+    * <span style="color:red">$\hat{\V{m}}\_t = K \left[\V{z}\_t - \V{h}(\hat{\V{m}}\_{t-1}) \right] + \hat{\V{m}}\_{t-1}$</span>
+        * <span style="color:red">$K = \Sigma\_{t-1} H^\top ( Q + H \Sigma\_{t-1} H^\top )^{-1}$</span>
+        * センサ値で求まるズレ$[\V{z}\_t - \V{h}(\hat{\V{m}}\_{t-1})]$の$K$倍だけ位置を修正
+    * <span style="color:red">$\Sigma\_t = (I - KH ) \Sigma\_{t-1}$</span>
+        * 割合にして$KH$だけ共分散行列が縮小<br />　
+
+<span style="font-size:90%">各パーティクルの各ランドマーク位置推定に適用</span>
+
+---
+
+## 8.4.2 初期値の設定方法の導出
+
+* ガウス分布$\mathcal{N}(\V{m} | \hat{\V{m}}\_{t}, \Sigma\_{t})$をいつ準備するか
+    * 本書では最初に得られたセンサ値で初期化
+    * センサ値が得られる前に初期化してもよさそうだが線形化による悪影響が心配<br />　
+* センサ値$\V{z}_t$が得られたときに、尤度で初期化
+    * <span style="font-size:80%">$p(\V{m} | \V{z}\_t) = \eta p(\V{z}_t|\V{m},\V{x}_t) = \eta \exp\left\\{ -\frac{1}{2} \left[ \V{z}\_t - \V{h}(\V{m}) \right]^\top Q(\V{m})^{-1} \left[ \V{z}\_t - \V{h}(\V{m}) \right] \right\\}$</span>
+         * $\V{x}_t$はパーティクルの姿勢
+         * パーティクルごとにランドマーク位置推定を初期化することに
+         * 線形化しないとガウス分布にならないので線形化
+
+
+---
+
+### 線形化と初期の分布の導出
+
+* 分布の指数部
+    * $-\frac{1}{2} \left[ \V{z}\_t - \V{h}(\V{m}) \right]^\top Q(\V{m})^{-1} \left[ \V{z}\_t - \V{h}(\V{m}) \right]$<br />　
+* $\V{h}$を近似して$\V{m}$の多項式に
+    * $\V{h}(\V{m}) \approx \hat{\V{m}} + H (\V{m} - \hat{\V{m}})$
+        * $\hat{\V{m}}$はパーティクルの姿勢とセンサ値から計算されるランドマークの位置
+* $Q(\V{m})$を定数に
+    * $\V{m}$の代わりに$\hat{\V{m}}$を使用（$Q(\V{m})$を以後$Q$と表記）<br />　
+* 得られる共分散行列
+    * $\Sigma_t = ( H^\top Q^{-1} H )^{-1}$
+    * $\hat{\V{m}}$と$\Sigma_t$で初期化すればよい
+
+
+---
+
+## 8.4.3 実装
+
+* ここまでを実装すると一応動くように
+    * 重みの計算がまだ
+* 図
+    * 地図はPythonのリストの先頭にいるパーティクルのもの
+        * 本当はパーティクルの数だけ地図が存在することに注意
+    * ランドマーク位置推定について、初期化と更新の様子が見られる
+
+<img width="35%" src="../figs/fastslam_update_landmarks.gif" />
+
+---
+
+## 8.5 重みの更新の実装
+
