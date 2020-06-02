@@ -148,3 +148,62 @@ p(\boldsymbol{x}\_\{1:t-1\} | \boldsymbol{x}\_0, \boldsymbol{u}\_\{1:t-1\}, \tex
         * $\\{\\}$の中身: 前の2ページの計算で増えた因子
 
 移動後の更新と違い、逐次式にならないし、<br />計算方法も分からない
+
+---
+
+## 8.2 PFによる演算
+
+* 次のようなパーティクルを仮に導入
+    * $\xi_t^{(i)} = ( \boldsymbol{x}_{0:t}^{(i)}, w_t^{(i)}, \hat{\textbf{m}}_t^{(i)} )\quad$<span style="font-size:70%">$(i=0,1,2,\dots,N-1)$</span>
+        * $\hat{\textbf{m}}_t^{(i)}$: 地図の分布の変数
+            * 各ランドマークの位置や, その不確かさを表す変数
+    * <span style="color:red">各パーティクルが軌跡の推定値と推定地図を持つ</span>（下図）
+        * 軌跡は決定論的、地図は確率的（RBPFのパーティクルになっている）
+
+<img width="40%" src="figs/8.1.jpg" />
+
+---
+
+## 8.2.1 移動後の軌跡の更新
+
+* 手続き（MCLとほぼ同じ）
+    * すべてのパーティクル$\xi\_{t-1}^{(i)}$に対し
+        1. $\V{x}\_t \sim p(\V{x}\_t | \V{x}\_{t-1}, \V{u}\_t)$
+        2. $\V{x}\_t$を$\V{x}\_{0:t-1}^{(i)}$にくっつけて$\V{x}\_{0:t}^{(i)}$に<br />　
+* この手続きでは時刻$t-2$以前の履歴を使わない
+    * あとの手続きでも同様なら履歴を使わないで済むかもしれない
+
+---
+
+## 8.2.2 観測後の地図の更新
+
+* 各パーティクルの持つ地図の情報を次のように表現
+    * $\hat{\textbf{m}}_t^{(i)} = \\{ \hat{\boldsymbol{m}}\_\{j,t\}^{(i)}, \Sigma\_\{j,t\}^{(i)} | j=0,1,2,\dots,N\_\textbf{m}-1 \\}$
+        * 各ランドマークの位置推定をガウス分布$\mathcal{N}(\hat{\boldsymbol{m}}\_\{j,t\}^{(i)}, \Sigma\_\{j,t\}^{(i)})$で表し、<br />カルマンフィルタを使って行う<br />　
+* ランドマークの位置推定の式をパーティクル仕様に
+    * <span style="font-size:80%">$p(\V{m}\_j | \V{x}\_{0:t}, \V{z}\_{j,1:t}) = \eta\_j  p(\V{z}\_{j,t} | \V{m}\_j, \V{x}\_t) p(\V{m}\_j | \V{x}\_{0:t-1}, \V{z}\_{j,1:t-1})$<br />$\Longrightarrow$
+$p(\V{m}\_j | \hat{\V{m}}\_{j,t}^{(i)}, \hat{\Sigma}\_{j,t}^{(i)}) = \eta\_j  p(\V{z}\_{j,t} | \V{m}\_j, \V{x}\_t^{(i)}) p(\V{m}\_j | \hat{\V{m}}\_{j,t-1}^{(i)}, \Sigma\_{j,t-1}^{(i)})$</span>
+        * パーティクルごとに$\V{m}\_j$を推定するためには
+             * $\V{x}\_{0:t}$をパーティクルの軌跡で置き換え
+             * $p(\V{m}\_j | \V{x}\_{0:t-1}, \V{z}\_{j,1:t-1})$を、パーティクルを使って計算した結果である$p(\V{m}\_j | \hat{\V{m}}\_{j,t-1}^{(i)}, \Sigma\_{j,t-1}^{(i)})$で置き換え（どう計算するかはまだ不明）
+    * 逐次式になっている
+
+---
+
+## 8.2.3 観測後の重みの更新
+
+* スライド9ページの次の式をパーティクルを使って表現
+    * <span style="font-size:90%">$p(\V{x}\_{1:t} | \V{x}\_0, \V{u}\_{1:t}, \textbf{z}\_{1:t}) = \eta p(\textbf{z}\_t | \V{x}\_{0:t}, \V{u}\_{1:t}, \textbf{z}\_{1:t-1}) p(\V{x}\_{1:t} | \V{x}\_0, \V{u}\_{1:t}, \textbf{z}\_{1:t-1})$<br />
+$\Longrightarrow w\_t^{(i)} = p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \boldsymbol{u}\_{1:t}, \textbf{z}\_{1:t-1}) w\_{t-1}^{(i)}$</span><br />
+$\Longrightarrow w\_t^{(i)} = p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) w\_{t-1}^{(i)}$</span>
+
+
+$p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1})$をどう計算する？
+
+---
+
+### $p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1})$の計算
+
+* 加法定理を使って地図を登場させる
+    * 
+
