@@ -205,5 +205,10 @@ $p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1})$をどう�
 ### $p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1})$の計算
 
 * 加法定理を使って地図を登場させる
-    * 
+    * <span style="font-size:85%">$p(\textbf{z}\_t | \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) = [\\![ p(\textbf{z}\_t, \textbf{m} | \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) ]\\!]\_\textbf{m}$<br />
+$= [\\![ p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) p(\textbf{m} | \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) ]\\!]\_\textbf{m} \\\\ = \left\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) \right\rangle\_{ p(\textbf{m} | \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) } = \left\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_t^{(i)}) \right\rangle\_{ p(\textbf{m} | \V{x}\_{0:t-1}^{(i)}, \textbf{z}\_{1:t-1}) } \\\\ = \left\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_t^{(i)}) \right\rangle\_{ p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)}) } $</span>
+        * ここで$p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)})$は、
+スライド14ページの$p(\V{m}\_j | \hat{\V{m}}\_{j,t-1}^{(i)}, \Sigma\_{j,t-1}^{(i)})$を
+全ランドマークの推定位置の同時分布にしたもの
 
+パーティクル内の地図の分布を使って計算可能
