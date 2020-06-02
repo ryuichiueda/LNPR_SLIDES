@@ -206,9 +206,25 @@ $p(\textbf{z}\_t | \boldsymbol{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1})$をどう�
 
 * 加法定理を使って地図を登場させる
     * <span style="font-size:85%">$p(\textbf{z}\_t | \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) = [\\![ p(\textbf{z}\_t, \textbf{m} | \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) ]\\!]\_\textbf{m}$<br />
-$= [\\![ p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) p(\textbf{m} | \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) ]\\!]\_\textbf{m} \\\\ = \left\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) \right\rangle\_{ p(\textbf{m} | \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) } = \left\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_t^{(i)}) \right\rangle\_{ p(\textbf{m} | \V{x}\_{0:t-1}^{(i)}, \textbf{z}\_{1:t-1}) } \\\\ = \left\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_t^{(i)}) \right\rangle\_{ p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)}) } $</span>
+$= [\\![ p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) p(\textbf{m} | \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) ]\\!]\_\textbf{m} \\\\ = \big\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) \big\rangle\_{ p(\textbf{m} | \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) } = \big\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_t^{(i)}) \big\rangle\_{ p(\textbf{m} | \V{x}\_{0:t-1}^{(i)}, \textbf{z}\_{1:t-1}) } \\\\ = \big\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_t^{(i)}) \big\rangle\_{ p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)}) } $</span>
         * ここで$p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)})$は、
 スライド14ページの$p(\V{m}\_j | \hat{\V{m}}\_{j,t-1}^{(i)}, \Sigma\_{j,t-1}^{(i)})$を
-全ランドマークの推定位置の同時分布にしたもの
+全ランドマークの推定位置の同時分布にしたもの<br />　
 
-パーティクル内の地図の分布を使って計算可能
+<span style="font-size:50%">どう計算するかはともかく、</span>履歴にたよらず計算可能
+
+---
+
+## 8.2.4 最終的なパーティクルの定義と操作方法
+
+* これまでの計算をまとめると履歴が不要に
+    * 移動後の更新
+        * $\V{x}\_t^{(i)} \sim p(\V{x} | \V{x}\_{t-1}^{(i)}, \V{u}\_t)$
+    * 観測後の更新
+        * 重み: $w\_t^{(i)} = w\_{t-1}^{(i)} \big\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_t^{(i)}) \big\rangle\_{	p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)}) }$
+        * 地図: $p(\V{m}\_j | \hat{\V{m}}\_{j,t}^{(i)}, \Sigma\_{j,t}^{(i)})\approx \eta\_j p(\V{z}\_{j,t}| \V{m}\_j, \V{x}\_t^{(i)}) p(\V{m}\_j | \hat{\V{m}}\_{j,t-1}^{(i)}, \Sigma\_{j,t-1}^{(i)})$
+            * カルマンフィルタを使うので近似<br />　
+* パーティクルから履歴を追い出して再定義
+    * $\xi_t^{(i)} = ( \V{x}_t^{(i)}, w_t^{(i)}, \hat{\textbf{m}}_t^{(i)} )\quad$<span style="font-size:70%">$(i=0,1,2,\dots,N-1)$</span>
+        * ただし、姿勢については$\V{x}\_t$でなく$\V{x}\_{0:t}$を推定していることに注意
+
