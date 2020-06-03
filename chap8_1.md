@@ -335,3 +335,45 @@ $= [\\![ p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) 
 
 ## 8.5 重みの更新の実装
 
+* 重みの式を変形して個々のランドマークの尤度の掛け算に
+    * <span style="font-size:80%">$w\_t^{(i)} = w\_{t-1}^{(i)} \big\langle p(\textbf{z}\_t | \textbf{m}, \V{x}\_t^{(i)}) \big\rangle\_{	p(\textbf{m} | \hat{\textbf{m}}\_{t-1}^{(i)}) } \\\\ = w\_{t-1}^{(i)} \prod\_{\boldsymbol{z}\_\{j,t\} \in \textbf{z}\_t} \big\langle p(\boldsymbol{z}\_\{j,t\} | \boldsymbol{m}\_j, \boldsymbol{x}\_t^{(i)}) \big\rangle\_{ p(\boldsymbol{m}\_j | \hat{\boldsymbol{m}}\_\{j,t-1\}^{(i)}, \Sigma\_\{j,t-1\}) }$<br />　
+* 個々のランドマークの尤度をさらに変形（添字は省略）
+    * <span style="font-size:75%">$\big\langle p(\V{z}\_t | \V{m}, \V{x}\_t) \big\rangle\_{ p(\V{m} | \hat{\V{m}}\_{t-1}, \Sigma\_{t-1}) } = \eta \Big[\\!\\!\Big[ \exp\big\\{ -\frac{1}{2} \big[ \V{z}\_t - \V{h}(\V{m}) \big]^\top Q({\V{m}})^{-1} \big[ \V{z}\_t - \V{h}(\V{m}) \big] \\\\ \qquad\qquad\qquad\qquad\qquad\qquad -\frac{1}{2} ( \V{m} - \hat{\V{m}}\_{t-1})^\top \Sigma\_{t-1}^{-1} ( \V{m} - \hat{\V{m}}\_{t-1}) \big\\} \Big]\\!\\!\Big]\_\V{m}$</span>
+        * ランドマークの位置推定のときに出てきた$p(\V{m}|\hat{\V{m}}\_t, \Sigma\_t)$の式と同じ
+        * 今度は分布を近似するのではなく、値を求めなければならない
+
+---
+
+### 尤度の算出手順
+
+* 前ページで得た式を変数$\V{z}\_t$のガウス分布に近似
+    * カルマンフィルタの章で移動後の分布を求める際に使ったテクニックを利用し、$\V{z}_t$の分布と$\V{m}$の分布を分離して後者を消去
+        * 参考: 前ページ最後の式の積分
+            * <span style="font-size:80%">$ [\\![ \exp \\{ -\frac{1}{2} \big[ \V{z}\_t - \V{h}(\V{m}) \big]^\top Q({\V{m}})^{-1} \big[ \V{z}\_t - \V{h}(\V{m}) \big] -\frac{1}{2} ( \V{m} - \hat{\V{m}}\_{t-1})^\top \Sigma\_{t-1}^{-1} ( \V{m} - \hat{\V{m}}\_{t-1}) \\} ]\\!]\_\V{m}$</span>
+        * このように$\V{m}$の分布を消去
+            * $\big\langle p(\V{z}\_t | \V{m}, \V{x}\_t) \big\rangle\_{ p(\V{m} | \hat{\V{m}}\_{t-1}, \Sigma\_{t-1}) } = \eta \exp\\{L(\V{z}_t) \\} \big[\\!\\!\big[ L'(\V{m}) \big]\\!\\!\big]\_\V{m} = \eta\exp \\{ L(\V{z}_t) \\}$
+        * ここで$L(\V{z}\_t)$は次のような式になる（センサ値$\V{z}_t$から値を計算可能）
+            * $L(\V{z}\_t) = -\frac{1}{2}[\V{z}\_t -\V{h}(\hat{\V{m}}\_{t-1})]^\top [H\Sigma\_{t-1}H^\top + Q(\hat{\V{m}}\_{t-1})]^{-1}[\V{z}\_t -\V{h}(\hat{\V{m}}\_{t-1})]$<br />　
+* 求まる尤度の性質
+    * 時刻$t-1$の時点でのランドマーク推定位置からセンサ値$\V{z}_t$が離れていると値が小さく
+    * 計算に使う分布の共分散行列は、ランドマークの推定位置の曖昧さを表す$H\Sigma_{t-1}H^\top$とセンサ値の曖昧さを表す$Q$の和
+
+---
+
+### <span style="text-transform:none">FastSLAM</span>の完成
+
+* 重みの計算が入り、リサンプリングが働くように
+* 重みは姿勢ではなくこれまでの軌跡の重み
+    * MCLと異なることに注意
+
+![](../figs/fastslam_1.0.gif)
+
+---
+
+## <span style="text-transform:none">FastSLAM 2.0</span>
+
+* いままでのFastSLAMの実装を工夫したバージョン
+    * いままでのFastSLAMはFastSLAM 1.0と呼ばれる<br />　
+* 工夫: リサンプリングの際、センサの値も考慮
+    * FastSLAM 1.0: リサンプリングしてからセンサ値で重みを変更
+
