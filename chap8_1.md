@@ -368,12 +368,3 @@ $= [\\![ p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) 
 
 ![](../figs/fastslam_1.0.gif)
 
----
-
-## <span style="text-transform:none">FastSLAM 2.0</span>
-
-* いままでのFastSLAMの実装を工夫したバージョン
-    * いままでのFastSLAMはFastSLAM 1.0と呼ばれる<br />　
-* 工夫: リサンプリングの際、センサの値も考慮
-    * FastSLAM 1.0: リサンプリングしてからセンサ値で重みを変更
-
