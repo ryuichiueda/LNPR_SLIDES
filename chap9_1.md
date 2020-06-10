@@ -32,10 +32,10 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * $T$: ロボットが移動、観測を終了する時刻
         * $\textbf{z}_0$の存在を仮定（あとで不要に）<br />　
 * FastSLAM同様、軌跡の分布と地図の分布に分離
-    * $p(\boldsymbol{x}\_{1:T}, \textbf{m} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T}) = p(\boldsymbol{x}\_{1:T} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T}) p(\textbf{m} | \boldsymbol{x}\_{0:T}, \textbf{z}\_{0:T}) $<br />　
+    * $p(\V{x}\_{1:T}, \textbf{m} | \V{x}\_0, \V{u}\_{1:T}, \textbf{z}\_{0:T}) = p(\V{x}\_{1:T} | \V{x}\_0, \V{u}\_{1:T}, \textbf{z}\_{0:T}) p(\textbf{m} | \V{x}\_{0:T}, \textbf{z}\_{0:T}) $<br />　
 * FastSLAMと異なり、次の手順を踏む
-    * $\boldsymbol{x}\_{1:T}^\* = \text{argmax}\_{\boldsymbol{x}\_{1:T}} p(\boldsymbol{x}\_{1:T} | \boldsymbol{x}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T})$で軌跡を算出
-    * $\textbf{m}^\* = \text{argmax}\_{\textbf{m}} p(\textbf{m} | \V{x}\_0, \boldsymbol{x}\_{1:T}^*, \textbf{z}\_{0:T})$で地図を算出
+    * $\V{x}\_{1:T}^\* = \text{argmax}\_{\V{x}\_{1:T}} p(\V{x}\_{1:T} | \V{x}\_0, \V{u}\_{1:T}, \textbf{z}\_{0:T})$で軌跡を算出
+    * $\textbf{m}^\* = \text{argmax}\_{\textbf{m}} p(\textbf{m} | \V{x}\_0, \V{x}\_{1:T}^*, \textbf{z}\_{0:T})$で地図を算出
 
 推定というより最適化
 
@@ -44,13 +44,13 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ## 9.1.1 軌跡の算出問題
 
 * 解く問題（<span style="color:red">「ポーズ調整」</span>と呼ばれる）
-    * $\boldsymbol{x}\_{0:T}^\* = \text{argmax}\_{\boldsymbol{x}\_{0:T}} p(\boldsymbol{x}\_{0:T} | \hat{\boldsymbol{x}}\_0, \boldsymbol{u}\_{1:T}, \textbf{z}\_{0:T})$
+    * $\V{x}\_{0:T}^\* = \text{argmax}\_{\V{x}\_{0:T}} p(\V{x}\_{0:T} | \hat{\V{x}}\_0, \V{u}\_{1:T}, \textbf{z}\_{0:T})$
         * 前ページと違って$\V{x}_0$を変数に
         * 条件にあった$\V{x}_0$は$\hat{\V{x}}_0$に
             * 下記のように初期値を条件とする
-    * <span style="color:red">初期値$\hat{\boldsymbol{x}}\_{0:T}$を決めて$\boldsymbol{x}\_{0:T}^\*$まで探索</span><br />　
-* 初期値$\hat{\boldsymbol{x}}\_{0:T}$の決め方
-    * 雑音を考慮せず状態方程式で$\hat{\boldsymbol{x}}\_{0:T}$を決める
+    * <span style="color:red">初期値$\hat{\V{x}}\_{0:T}$を決めて$\V{x}\_{0:T}^\*$まで探索</span><br />　
+* 初期値$\hat{\V{x}}\_{0:T}$の決め方
+    * 雑音を考慮せず状態方程式で$\hat{\V{x}}\_{0:T}$を決める
     * 各初期値をノードに
 
 ---
@@ -59,9 +59,90 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * 位置情報で関係（<span style="color:red">拘束</span>）のあるノードをエッジでつなぐ
     1. 時刻が前後するノードは状態方程式で互いに関係
-        * 移動エッジ: $\text{e}\_{t\_1,t\_2} = (\hat{\boldsymbol{x}}\_{t\_1}, \hat{\boldsymbol{x}}\_{t\_2}, \boldsymbol{u}\_{t\_2})$
+        * 移動エッジ: $\text{e}\_{t\_1,t\_2} = (\hat{\V{x}}\_{t\_1}, \hat{\V{x}}\_{t\_2}, \V{u}\_{t\_2})$
+            * $t_2 = t_1 + 1$
     2. 同じランドマークが観測された2姿勢はセンサ値を通じて互いに関係
-        * 仮想移動エッジ: $\text{e}\_{j,t\_1,t\_2} = ( \hat{\boldsymbol{x}}\_{t\_1}, \hat{\boldsymbol{x}}\_{t\_2}, \boldsymbol{z}\_{j, t\_1}, \boldsymbol{z}\_{j, t\_2})$
+        * 仮想移動エッジ: $\text{e}\_{j,t\_1,t\_2} = ( \hat{\V{x}}\_{t\_1}, \hat{\V{x}}\_{t\_2}, \V{z}\_{j, t\_1}, \V{z}\_{j, t\_2})$
             * 「仮想移動エッジ」というのはあくまで本書の呼び方です
 
 <img width="40%" src="./figs/virtual_edges.jpg" />
+
+---
+
+### 残差と残差関数の準備（移動エッジ）
+
+* 移動エッジの両端のノードを動かそうとすると状態遷移関数からずれる
+
+* 現状のズレの量（残差と呼ぶ）
+    * $\hat{\V{e}}\_{t\_1,t\_2} = \hat{\V{x}}\_{t\_2} - \V{f}(\hat{\V{x}}\_{t\_1},\V{u}\_{t_2})$
+        * いまのところゼロ
+
+* ノードを動かしたときのズレの量（残差関数と呼ぶ）
+    * $\V{e}\_{t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2}) = \V{x}\_{t\_2} - \V{f}(\V{x}\_{t\_1},\V{u}\_{t_2})$
+
+---
+
+### 残差と残差関数の準備<br />（仮想移動エッジ）
+
+* 現状のズレの量（残差）
+    * $\hat{\V{e}}\_{j, t\_1,t\_2} = \V{h}^{-1}(\hat{\V{x}}\_{t\_1}, \V{z}\_{j,t\_1}) - \V{h}^{-1}(\hat{\V{x}}\_{t\_2}, \V{z}\_{j,t\_2})$
+        * $\V{h}^{-1}$は姿勢とセンサ値からランドマークの位置を計算する関数<br />　
+* ノードを動かしたときのズレの量（残差関数）
+    * $\V{e}\_{j, t\_1,t\_2} = \V{h}^{-1}(\V{x}\_{t\_1}, \V{z}\_{j,t\_1}) - \V{h}^{-1}(\V{x}\_{t\_2}, \V{z}\_{j,t\_2})$<br />　
+* ズレが大きいほど歪む
+    * しかし、残差は起こりやすいものと起こりにくいものがあるので均一に小さくすればよいわけではない
+
+---
+
+### 残差の確率モデルの準備
+
+* 次のような分布で残差の発生しやすさを考える
+    * $p(\V{e}) = \mathcal{N}(\V{e} | \V{0}, \Omega\_\text{e}^{-1}) = \eta \exp \left( -\dfrac{1}{2} \V{e}^\top \Omega\_{\text{e}} \V{e} \right)$
+        * $\V{e}$: 移動エッジまたは仮想移動エッジの残差関数の値
+        * $\Omega\_\text{e}$: 残差に関する精度行列<br />　
+* $p(\V{e})$の性質（具体的な計算は9.2.4項で）
+    * 例えばセンサ値の距離が大きいと$\V{e}$が大きくても$p(\V{e})$の値は小さくならない
+
+残差の最小化ではなく全エッジの$p(\V{e})$の最大化を目標にノードを移動するとよい
+
+---
+
+### 最適化問題を作る
+
+* 前ページの分布の掛け算で評価関数を作る
+    * $f( \V{x}\_{0:T}) = p_0(\V{x}\_0)\big\\{ \prod\_{\textbf{e}\_\textbf{z} } p(\V{e}\_{j,t\_1,t\_2}) \big\\} \big\\{ \prod\_{ \textbf{e}\_\textbf{x} } p(\V{e}\_{t\_1,t\_2}) \big\\}^\lambda$
+        * $\textbf{e}\_\textbf{z}$: 全仮想移動エッジ
+        * $\textbf{e}\_\textbf{x}$: 全移動エッジ
+        * $p_0(\V{x}\_0)$は$\hat{\V{x}}\_0$まわりの鋭いガウス分布
+            * $\V{x}を\hat{\V{x}}\_0$から動かすと大きなペナルティーを与えて座標系を固定
+        * $\lambda$: 移動エッジをどれだけ重視するか決める定数（当面$\lambda = 1$）<br />　
+* 対数をとって整理すると次のような問題に
+    * <span style="color:red">$\V{x}\_{0:T}^\* = \text{argmin}\_{\V{x}\_{0:T}} J(\V{x}\_{0:T})$</span>
+        * ここで
+            * $J(\V{x}\_{0:T}) = (\V{x}\_{0} - \hat{\V{x}}\_0)^\top \Omega\_0 (\V{x}\_{0} - \hat{\V{x}}\_0) + J\_\textbf{z}(\V{x}\_{0:T}) + \lambda J\_\textbf{x}(\V{x}\_{0:T})$
+                * $J\_\textbf{z}(\V{x}\_{0:T}) =  \sum\_{\textbf{e}\_\textbf{z}} \left\\{\V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}^\top \Omega\_{j,t\_1,t\_2} \left\\{ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}$
+                * $J\_\textbf{x}(\V{x}\_{0:T}) =  \sum\_{\textbf{e}\_\textbf{x}} \left\\{\V{e}\_{t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}^\top \Omega\_{t\_1,t\_2} \left\\{ \V{e}\_{t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}$
+
+
+
+---
+
+## 9.1.2 地図の算出問題
+
+* $\V{x}\_{0:T}^\*$を使って各ランドマーク$\text{m}_j$の位置$\V{m}_j$を求める
+    * 各ランドマーク$\text{m}_j$に対して独立に計算可能<br />　
+* 手続き
+     1. $\text{m}_j$が観測された各姿勢と$\text{m}_j$を結んでエッジとする
+        * エッジの集合を$\textbf{I}\_{\V{z}\_j}$とする
+     2. 残差関数と残差の分布、分布の積を考える
+        * 残差関数: $\V{e}\_{j,t}(\V{m}\_j) = \V{m}\_j - \V{h}^{-1}(\V{x}\_t^\*, \V{z}\_{j,t})$
+        * 残差の分布: $p\_{j,t}(\V{e}\_{j,t}) = \eta \exp \left(-\dfrac{1}{2} \V{e}\_{j,t}^\top \Omega\_{j,t} \V{e}\_{j,t} \right)$
+        * 分布の積: $f(\V{m}\_j ) = \prod\_{\textbf{I}\_{\V{z}\_j}} p\_{j,t}(\V{e}\_{j,t})$
+     3. 分布の積の対数から作った最適化の問題を解く
+        *  $\V{m}\_j^\* = \text{argmin}\_{\V{m}\_j} \sum\_{\textbf{I}\_{\V{z}\_j}} \{\V{e}\_{j,t}(\V{m}\_j)\}^\top \Omega\_{j,t} \{\V{e}\_{j,t}(\V{m}\_j)\}$
+
+
+---
+
+## 9.2 仮想移動エッジによる軌跡の算出
+
