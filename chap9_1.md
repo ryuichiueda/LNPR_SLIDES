@@ -124,6 +124,17 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
                 * $J\_\textbf{x}(\V{x}\_{0:T}) =  \sum\_{\textbf{e}\_\textbf{x}} \left\\{\V{e}\_{t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}^\top \Omega\_{t\_1,t\_2} \left\\{ \V{e}\_{t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}$
 
 
+---
+
+### マハラノビス距離
+
+* 前ページの$J$の式に出てきた$\V{e}^\top \Omega \V{e}$の値の平方根
+    * $\sqrt{\V{e}^\top \Omega \V{e}}$
+* $\V{e}^\top \V{e}$: 誤差の内積 $=$ 変数の誤差の二乗和
+* $\V{e}^\top \Omega \V{e}$: 精度行列をはさんだ誤差の二乗和
+    * $\V{e}$の各変数の重みが変わる
+    * 確率的に起こりにくい誤差ほど大きく評価される<br />　
+* <span style="color:red">前ページの最適化問題: マハラノビス距離の二乗和を最小化する問題</span>
 
 ---
 
@@ -185,3 +196,18 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ## 9.2.2 仮想移動エッジの作成
 
+* 実装なので割愛
+
+---
+
+## 9.2.3 残差の計算
+
+* 残差: エッジの両側の姿勢から計算されるランドマークの姿勢の差
+    * <span style="font-size:80%">$\hat{\boldsymbol{e}}\_{j,t\_1,t\_2} = \begin{pmatrix} \hat{x}\_{t\_2} + \ell\_{j,t\_2}\cos (\hat{\theta}\_{t\_2} + \varphi\_{j,t\_2})  \\\\ \hat{y}\_{t\_2} + \ell\_{j,t\_2}\sin (\hat{\theta}\_{t\_2} + \varphi\_{j,t\_2})  \\\\ \hat{\theta}\_{t\_2} + \varphi\_{j,t\_2} - \psi\_{j,t\_2} \end{pmatrix} - \begin{pmatrix} \hat{x}\_{t\_1} + \ell\_{j,t\_1}\cos (\hat{\theta}\_{t\_1} + \varphi\_{j,t\_1}) \\\\ \hat{y}\_{t\_1} + \ell\_{j,t\_1}\sin (\hat{\theta}\_{t\_1} + \varphi\_{j,t\_1}) \\\\ \hat{\theta}\_{t\_1} + \varphi\_{j,t\_1} - \psi\_{j,t\_1} \end{pmatrix}$</span>
+        * ただし$\theta$成分は$[-\pi,\pi)$の範囲に正規化
+* 残差関数
+    * <span style="font-size:80%">$\boldsymbol{e}\_{j,t\_1,t\_2}(\boldsymbol{x}\_{t\_1}, \boldsymbol{x}\_{t\_2}) = \\\\ \begin{pmatrix} {x}\_{t\_2} + \ell\_{j,t\_2}\cos ({\theta}\_{t\_2} + \varphi\_{j,t\_2}) \\\\ {y}\_{t\_2} + \ell\_{j,t\_2}\sin ({\theta}\_{t\_2} + \varphi\_{j,t\_2}) \\\\ {\theta}\_{t\_2} + \varphi\_{j,t\_2} - \psi\_{j,t\_2} \end{pmatrix} - \begin{pmatrix} {x}\_{t\_1} + \ell\_{j,t\_1}\cos ({\theta}\_{t\_1} + \varphi\_{j,t\_1}) \\\\ {y}\_{t\_1} + \ell\_{j,t\_1}\sin ({\theta}\_{t\_1} + \varphi\_{j,t\_1}) \\\\ {\theta}\_{t\_1} + \varphi\_{j,t\_1} - \psi\_{j,t\_1} \end{pmatrix}$</span>
+
+---
+
+## 9.2.4 マハラノビス距離を決める精度行列の導出
