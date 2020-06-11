@@ -146,3 +146,26 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ## 9.2 仮想移動エッジによる軌跡の算出
 
+* やること
+    * 仮想移動エッジだけでポーズ調整<br />　
+* 解く式
+    * $\V{x}\_{0:T}^\* = \text{argmin}\_{\V{x}\_{0:T}} \left\\{ (\V{x}\_{0} - \hat{\V{x}}\_0)^\top \Omega\_0 (\V{x}\_{0} - \hat{\V{x}}\_0)  \\\\ +  \sum\_{\textbf{e}\_\textbf{z}} \left[ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right]^\top \Omega\_{j,t\_1,t\_2} \left[ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right]\right\\}$
+        * 第一項: $\V{x}_0$を固定
+        * 第二項: 仮想移動エッジの歪みの評価
+
+---
+
+## 9.2.1 ログの記録と初期化
+
+* やること
+    * $\V{m}$を「ランドマークの姿勢」として3次元ベクトルに再定義
+        * 移動エッジを使わない場合、センサ値の次元が足りないので
+            * あとで2次元に戻す
+            * 例: ランドマークに絵が描いてあるような場合
+        * $\V{m} = (m_x \  m_y \ m_\theta)^\top$
+            * $m_\theta$: ランドマークの方角
+        * $\V{z} = (\ell \ \varphi \ \psi)^\top$
+            * $\psi$: ランドマークのどのツラを見ているかを表す角度
+<img width="40%" src="./figs/9.3.jpg" />
+    * シミュレータのロボットを動かして$\hat{\V{x}}\_{0:T}$と$\textbf{z}\_{0:T}$を記録
+
