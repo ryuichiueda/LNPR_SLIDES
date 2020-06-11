@@ -21,7 +21,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * ロボットの各離散時刻での推定姿勢
     * エッジ: 位置姿勢関係の情報がある<br />ノード同士を結ぶ
 
-<img width="30%" src="../figs/graph_based_slam.png" />
+<img width="30%" src="./figs/graph_based_slam.png" />
 
 
 ---
@@ -36,7 +36,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * <span style="color:red">最も歪みが少なくなるノードの位置を探す</span>
 
 
-<img width="30%" src="../figs/graph_based_slam.png" />
+<img width="30%" src="./figs/graph_based_slam.png" />
 
 ---
 
@@ -65,7 +65,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * $t\_2 = t\_1+1$
         * デッドレコニング情報
 
-<img width="40%" src="../figs/graph.png" />
+<img width="40%" src="./figs/graph.png" />
 
 ---
 
@@ -131,7 +131,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 相対的なものなので原点は適当でよい
 
 
-<img width="40%" src="../figs/psi.png" />
+<img width="40%" src="./figs/psi.png" />
 
 ---
 
@@ -145,7 +145,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * あとの処理の関係でセンサ値のない姿勢は記録されていない
     * そのまま絵にすると下図のようにセンサ値に矛盾
 
-<img width="30%" src="../figs/draw_graphslam_log.png" />
+<img width="30%" src="./figs/draw_graphslam_log.png" />
 
 
 ---
@@ -169,7 +169,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * マハラノビス距離: 下の評価式（再掲）の$\boldsymbol{e}^\top \Omega \boldsymbol{e}$
             * $J\_\textbf{z}(\boldsymbol{x}\_{0:T}) =  \sum\_{(j,t\_1,t\_2) \in \textbf{I}\_{\textbf{e}\_\textbf{z}}} \left\\{\boldsymbol{e}\_{j,t\_1,t\_2}(\boldsymbol{x}\_{t\_1},\boldsymbol{x}\_{t\_2})\right\\}^\top \Omega\_{j,t\_1,t\_2} \left\\{ \boldsymbol{e}\_{j,t\_1,t\_2}(\boldsymbol{x}\_{t\_1},\boldsymbol{x}\_{t\_2})\right\\}$
 
-<img style="width:45%" src="../figs/edge_relation.png" />
+<img style="width:45%" src="./figs/edge_relation.png" />
 
 
 ---
@@ -273,7 +273,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * センサ値の先が揃う（地図が推定できている）
 * 軌跡はガタガタ（移動エッジを考慮していないので）
 
-![](../figs/traj_estimation_with_ve.png)
+![](./figs/traj_estimation_with_ve.png)
 
 
 ---
@@ -288,7 +288,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 残差関数が減る方向に推定値$\hat{\boldsymbol{x}}_{0:T}$を動かす
     * ただし精度行列で重みをつける（下図）
 
-<img width="30%" src="../figs/motion_edge.png" />
+<img width="30%" src="./figs/motion_edge.png" />
 
 ---
 
@@ -360,7 +360,7 @@ $\left.\begin{matrix} -\\nu\_{t\_2}\\omega\_{t\_2}^{-2}\\left\\{\\sin( \\theta\_
     * (d): 収束後<br />$ $<br />$ $<br />$ $<br />$ $<br />$ $
 
 
-<img width="55%" src="../figs/traj_estimation_with_me.png" />
+<img width="55%" src="./figs/traj_estimation_with_me.png" />
 
 ---
 
@@ -396,8 +396,8 @@ $\left.\begin{matrix} -\\nu\_{t\_2}\\omega\_{t\_2}^{-2}\\left\\{\\sin( \\theta\_
 
 * [コード（section_graph_slam/graphbasedslam8.ipynb）](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_graph_slam/graphbasedslam8.ipynb)
 
-<img width="45%" src="../figs/logger2image.png" />
-<img width="45%" src="../figs/graphslam_map3d_complete.png" />
+<img width="45%" src="./figs/logger2image.png" />
+<img width="45%" src="./figs/graphslam_map3d_complete.png" />
 
 ---
 
@@ -421,7 +421,7 @@ $\left.\begin{matrix} -\\nu\_{t\_2}\\omega\_{t\_2}^{-2}\\left\\{\\sin( \\theta\_
     * センサ値にランドマークの向きの情報がない
     * センサ値にバイアスがあり
 
-<img width="35%" src="../figs/slam_sensor_2d_image.png" />
+<img width="35%" src="./figs/slam_sensor_2d_image.png" />
 
 ---
 
@@ -434,4 +434,4 @@ $\left.\begin{matrix} -\\nu\_{t\_2}\\omega\_{t\_2}^{-2}\\left\\{\\sin( \\theta\_
     * 右: センサ値が2変数、$\lambda = 100$
         * 2変数でも歪みの小さい地図が得られる
 
-<img src="../figs/graphslam_result.png" />
+<img src="./figs/graphslam_result.png" />
