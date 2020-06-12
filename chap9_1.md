@@ -161,35 +161,38 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 仮想移動エッジだけでポーズ調整<br />　
 * 解く式
     * $\V{x}\_{0:T}^\* = \text{argmin}\_{\V{x}\_{0:T}} \left\\{ (\V{x}\_{0} - \hat{\V{x}}\_0)^\top \Omega\_0 (\V{x}\_{0} - \hat{\V{x}}\_0)  \\\\ +  \sum\_{\textbf{e}\_\textbf{z}} \left[ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right]^\top \Omega\_{j,t\_1,t\_2} \left[ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right]\right\\}$
-        * 第一項: $\V{x}_0$を固定
+        * 第一項: $\V{x}_0$を固定（<span style="color:red">アンカー項</span>と呼ぶ。）
         * 第二項: 仮想移動エッジの歪みの評価
+        * $\Omega_0$は対角成分が$\infty$であとはゼロの$3\times 3$行列
+    * 姿勢が3次元、残差が2次元で解けないので、説明のために暫定的にセンサ値を3次元に（次ページ）
+
+---
+
+### センサ値の3次元化
+
+<span style="font-size:80%">※ あくまで説明のためで、あとから2次元に戻します</span>
+
+* $\V{m}$を3次元ベクトルに（左図）
+    * 「ランドマークの位置」から「ランドマークの姿勢」にする
+    * $\V{m} = (m_x \  m_y \ m_\theta)^\top$
+        * $m_\theta$: ランドマークの方角
+    * $\V{z} = (\ell \ \varphi \ \psi)^\top$
+        * $\psi$: ランドマークのどのツラを見ているかを表す角度
+<img width="40%" src="./figs/9.3.jpg" />
+<img width="36%" src="./figs/9.4.jpg" />
+* 最終的には2姿勢間の$\psi$の相対値だけ必要になる（右図）
+
 
 ---
 
 ## 9.2.1 ログの記録と初期化
 
-* その前に、問題を易しくしておく
-    * $\V{m}$を「ランドマークの姿勢」として3次元ベクトルに（左図）
-        * 移動エッジを使わない場合、センサ値の次元が足りないので
-            * あとで2次元に戻す
-        * $\V{m} = (m_x \  m_y \ m_\theta)^\top$
-            * $m_\theta$: ランドマークの方角
-        * $\V{z} = (\ell \ \varphi \ \psi)^\top$
-            * $\psi$: ランドマークのどのツラを見ているかを表す角度
-<img width="40%" src="./figs/9.3.jpg" />
-<img width="36%" src="./figs/9.4.jpg" />
-    * 最終的には2姿勢間の$\psi$の相対値だけ必要になる（右図）
-
-
----
-
-### 記録された軌跡とセンサ値
-
 * シミュレータのロボットを動かして$\hat{\V{x}}\_{0:T}$と$\textbf{z}\_{0:T}$を記録
+    * 注意: 書籍ではセンサ値が多くならないようにシミュレータの更新時間を長くしてある
     * $\hat{\V{x}}\_{0:T}$は状態遷移関数を信じて記録
     * 結果、$\hat{\V{x}}\_{0:T}$が実際とずれており、センサ値が指し示すランドマークの位置もばらばらに
 
-<img width="40%" src="./figs/draw_graphslam_log.png" />
+<img width="35%" src="./figs/draw_graphslam_log.png" />
 
 
 ---
@@ -232,7 +235,77 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ---
 
-## 9.2.5 
+## 9.2.5 最適化問題の解法
 
-* 
+* 最適化の式を満たす$\V{x}_{0:T}$を探す
+    * 最適化の式: $\V{x}\_{0:T}^\* = \text{argmin}\_{\V{x}\_{0:T}} J(\V{x}\_{0:T})$
+        * $J(\V{x}\_{0:T}) = \left\\{ (\V{x}\_{0} - \hat{\V{x}}\_0)^\top \Omega\_0 (\V{x}\_{0} - \hat{\V{x}}\_0)  \\\\ \qquad\qquad +  \sum\_{\textbf{e}\_\textbf{z}} \left[ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right]^\top \Omega\_{j,t\_1,t\_2} \left[ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right]\right\\}$
+    * グラフ上では、ノードを動かして$J$の小さいところを探索するイメージ<br />　
+* 方法
+    * $J$を、$\V{x}\_{0:T}$をすべてつなげた$3(T+1)$次元のベクトル$\V{x}\_{[0:T]}$の関数とみなす
+    * $J$を$\V{x}\_{[0:T]}$のガウス分布の指数部とみなし、ガウス分布の中心を求めると、$J$が最小になる$\V{x}\_{[0:T]}$が求まる
+        * すべての$\V{e}\_{j,t_1,t_2}$を線形化して整理し、$\V{x}\_{[0:T]}$の多項式を作る
 
+---
+
+### $\V{e}_{j,t_1,t_2}$の線形化
+
+* 線形化
+    * $\boldsymbol{e}\_{j,t\_1,t\_2}(\boldsymbol{x}\_{t\_1}, \boldsymbol{x}\_{t\_2}) \approx  \boldsymbol{e}\_{j,t\_1,t\_2}(\hat{\boldsymbol{x}}\_{t\_1}, \hat{\boldsymbol{x}}\_{t\_2}) + B\_{j,t\_1} (\boldsymbol{x}\_{t\_1} - \hat{\boldsymbol{x}}\_{t\_1}) + B\_{j,t\_2} (\boldsymbol{x}\_{t\_2} - \hat{\boldsymbol{x}}\_{t\_2}) $
+        * $B\_{j,t\_1} = \frac{\partial \boldsymbol{e}\_{j,t\_1,t\_2} } {\partial \boldsymbol{x}\_{t\_1}} \Big|\_{\boldsymbol{x}\_{t\_1} = \hat{\V{x}}\_{t\_1}}$、$B\_{j,t\_2} = \frac{\partial \boldsymbol{e}\_{j,t\_1,t\_2} } {\partial \boldsymbol{x}\_{t\_2}} \Big|\_{\boldsymbol{x}\_{t\_2} = \hat{\V{x}}\_{t\_2}}$<br />　
+* 差分$\Delta\V{x}\_{0:T} = \V{x}\_{0:T} - \hat{\V{x}}\_{0:T}$の式に
+    * $\boldsymbol{e}\_{j,t\_1,t\_2}(\Delta \boldsymbol{x}\_{t\_1}, \Delta \boldsymbol{x}\_{t\_2}) \approx \hat{\boldsymbol{e}}\_{j,t\_1,t\_2} + B\_{j,t\_1} \Delta \boldsymbol{x}\_{t\_1} + B\_{j,t\_2} \Delta \boldsymbol{x}\_{t\_2}$
+        * ここで
+            * $ B\_{j,t\_1} = - \begin{pmatrix} 1 & 0 & -\ell\_{j,t\_1} \sin(\theta\_{t\_1} + \varphi\_{j,t\_1}) \\\\ 0 & 1 & \ell\_{j,t\_1} \cos(\theta\_{t\_1} + \varphi\_{j,t\_1})\\\\ 0 & 0  & 1\\\\ \end{pmatrix} $, $\quad B\_{j,t\_2} = \begin{pmatrix} 1 & 0 & -\ell\_{j,t\_2} \sin(\theta\_{t\_2} + \varphi\_{j,t\_2}) \\\\ 0 & 1 & \ell\_{j,t\_2} \cos(\theta\_{t\_2} + \varphi\_{j,t\_2})\\\\ 0 & 0  & 1\\\\ \end{pmatrix} $
+    * これで$J$が$\Delta\V{x}\_{0:T}$内のそれぞれの$\V{x}\_t$の多項式で表される
+
+まだ$\Delta\V{x}\_{[0:T]}$の式ではない
+
+---
+
+### $\Delta\V{x}\_{[0:T]}$の多項式への変換
+
+* 次のような形式にする
+    * $J(\Delta\V{x}\_{[0:T]}) = (\Delta\V{x}\_{[0:T]} - \Delta\V{x}\_{[0:T]}^\*)^\top \Omega (\Delta\V{x}\_{[0:T]} - \Delta\V{x}\_{[0:T]}^\*) +$定数<br />
+    $ = \Delta\V{x}\_{[0:T]}^\top \Omega \Delta\V{x}\_{[0:T]} - 2 \Delta\V{x}\_{[0:T]}^\top \V{\xi}+$ 定数
+        * $\Omega$: $3(T+1)\times 3(T+1)$行列、$\V{\xi}$: $3(T+1)$ベクトル<br />　
+    * $J$を最小にする$\Delta\V{x}\_{[0:T]}^\*$は、上の式の中辺と右辺を比較すると
+<span style="color:red">$$\Delta\V{x}\_{[0:T]}^\* = \Omega^{-1}\V{\xi}$$</span>
+* $J(\Delta\V{x}_{0:T})$からの変形のしかた
+    * 線形化した$J$の各ノードの項（下の式）を$\Delta\V{x}\_{[0:T]}$を変数にして変形
+        * $(\hat{\boldsymbol{e}}\_{j,t\_1,t\_2} + B\_{j,t\_1}\Delta\boldsymbol{x}\_{t\_1} + B\_{j,t\_2}\Delta\boldsymbol{x}\_{t\_2} )^\top \Omega\_{j,t\_1,t\_2} (\hat{\boldsymbol{e}}\_{j,t\_1,t\_2} + B\_{j,t\_1}\Delta\boldsymbol{x}\_{t\_1} + B\_{j,t\_2}\Delta\boldsymbol{x}\_{t\_2} )$
+    * そうすると係数が$3(T+1)\times3(T+1)$行列と$3(T+1)$次元ベクトルに（次のページ）$\rightarrow$合計すると$\Omega, \V{\xi}$に
+
+---
+
+### $\Omega, \V{\xi}$の計算
+
+* 各ノードの係数を求める
+    * <span style="font-size:50%">$\Omega^*\_{j,t_1,t_2} = \begin{pmatrix} \ddots \&  \&  \&  \&  \\\\ \& B\_{j,t\_1}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_1} \& \cdots \& B\_{j,t\_1}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_2} \&  \\\\ \& \vdots \& \ddots \& \vdots \\\\ \& B\_{j,t\_2}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_1} \& \cdots \& B\_{j,t\_2}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_2} \&  \\\\ \& \& \& \& \ddots \end{pmatrix}$、${\boldsymbol{\xi}}^\\ast\_{j,t_1,t_2} = - \begin{pmatrix} \vdots \\\\ B\_{j,t\_1}^\top \\\\ \vdots \\\\ B\_{j,t\_2}^\top \\\\ \vdots \end{pmatrix} \Omega\_{j,t\_1,t\_2} \hat{\boldsymbol{e}}\_{j,t\_1,t\_2}$</span>
+        * 省略されているところは全てゼロが埋まる<br />　
+* あとは足して、前のページの式を適用するとノードの移動量$\Delta\V{x}\_{[0:T]}$が求まる
+    * $\Omega = \sum\_{\textbf{e}\_\textbf{z}}\Omega^*\_{j,t_1,t_2} + \begin{pmatrix}\Omega_0 & O \\\\ O & O \end{pmatrix}$
+        * 第二項はアンカー項の精度行列
+    * $\V{\xi} = \sum\_{\textbf{e}\_\textbf{z}} {\boldsymbol{\xi}}^\\ast\_{j,t_1,t_2}$
+
+
+---
+
+## 9.2.6 仮想移動エッジによる軌跡推定の実装
+
+* ログから各行列を計算して$\Omega, \V{\xi}$に足し込むコードを記述<br />　
+
+* 注意点
+    * 観測のない姿勢のデータは孤立したノードになるので除去
+    * ノードの移動は何回か繰り返す必要がある
+        * $\V{x}\_{[0:T]}^\* = \Delta\V{x}\_{[0:T]} + \hat{\V{x}}\_{[0:T]}$には線形化の影響で誤差が混入
+        * $\V{x}\_{[0:T]}^\*$を新たな初期値$\hat{\V{x}}\_{[0:T]}$として再度ノードの移動量を求める
+
+---
+
+### 得られた軌跡
+
+* センサ値がランドマークの位置に揃うように軌跡が逆算される
+    * 移動ノードを使っていないので軌跡が実際よりもガタガタする
+
+<img src="./figs/9.8.jpg" />
