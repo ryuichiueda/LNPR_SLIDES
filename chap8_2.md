@@ -62,7 +62,7 @@ $= \eta \big\langle p( \V{z}\_{j,t} | \V{x}\_t, \V{m}\_j) \big\rangle\_{\mathcal
     1. 積分の中を$\V{z}\_{t}$の分布$\mathcal{N}(\V{\mu}\_{\V{z}\_t}, Q\_{\V{z\_t}})$に近似<br />
 （積分内を$\V{z}\_{t}$と$\V{m}$の分布に分けて$\V{z}\_{t}$の分布を積分外に）
         * $Q\_{\V{z}\_t} = H\_{\V{m}} \Sigma\_{t-1}^{(i)} H\_{\V{m}}^\top + Q\_{\hat{\V{z}}\_t}$
-        * $\V{\mu}\_{\V{z}\_t} = \hat{\V{z}}\_t - H\_{\V{m}}\hat{\V{m}}^{(i)}\_{t-1} + H\_{\V{x}\_t} (\V{x}\_t - \hat{\V{x}}\_t ) + H\_{\V{m}}\hat{\V{m}}\_{t-1}^{(i)}$
+        * $\V{\mu}\_{\V{z}\_t} = \hat{\V{z}}\_t + H\_{\V{x}\_t} (\V{x}\_t - \hat{\V{x}}\_t )$
     2. 1でできた式$\eta \mathcal{N}(\V{z}\_t |\V{\mu}\_{\V{z}\_t}, Q\_{\V{z}\_t}) p(\V{x}\_t | \V{x}^{(i)}\_{t-1}, \V{u}\_t)$について、$\V{x}\_t$のガウス分布$\mathcal{N}(\V{\mu}\_t, \Sigma_t)$に近似
         * 結果は次ページ
 
