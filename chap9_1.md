@@ -88,7 +88,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $\hat{\V{e}}\_{j, t\_1,t\_2} = \V{h}^{-1}(\hat{\V{x}}\_{t\_1}, \V{z}\_{j,t\_1}) - \V{h}^{-1}(\hat{\V{x}}\_{t\_2}, \V{z}\_{j,t\_2})$
         * $\V{h}^{-1}$は姿勢とセンサ値からランドマークの位置を計算する関数<br />　
 * ノードを動かしたときのズレの量（残差関数）
-    * $\V{e}\_{j, t\_1,t\_2} = \V{h}^{-1}(\V{x}\_{t\_1}, \V{z}\_{j,t\_1}) - \V{h}^{-1}(\V{x}\_{t\_2}, \V{z}\_{j,t\_2})$<br />　
+    * $\V{e}\_{j, t\_1,t\_2}(\boldsymbol{x}\_{t\_1}, \boldsymbol{x}\_{t\_2})  = \V{h}^{-1}(\V{x}\_{t\_1}, \V{z}\_{j,t\_1}) - \V{h}^{-1}(\V{x}\_{t\_2}, \V{z}\_{j,t\_2})$<br />　
 * ズレが大きいほど歪む
     * しかし、残差は起こりやすいものと起こりにくいものがあるので均一に小さくすればよいわけではない
 
@@ -144,13 +144,13 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 各ランドマーク$\text{m}_j$に対して独立に計算可能<br />　
 * 手続き
      1. $\text{m}_j$が観測された各姿勢と$\text{m}_j$を結んでエッジとする
-        * エッジの集合を$\textbf{I}\_{\V{z}\_j}$とする
+        * エッジの集合を$\textbf{e}\_{\V{z}\_j}$とする
      2. 残差関数と残差の分布、分布の積を考える
         * 残差関数: $\V{e}\_{j,t}(\V{m}\_j) = \V{m}\_j - \V{h}^{-1}(\V{x}\_t^\*, \V{z}\_{j,t})$
         * 残差の分布: $p\_{j,t}(\V{e}\_{j,t}) = \eta \exp \left(-\dfrac{1}{2} \V{e}\_{j,t}^\top \Omega\_{j,t} \V{e}\_{j,t} \right)$
-        * 分布の積: $f(\V{m}\_j ) = \prod\_{\textbf{I}\_{\V{z}\_j}} p\_{j,t}(\V{e}\_{j,t})$
+        * 分布の積: $f(\V{m}\_j ) = \prod\_{\textbf{e}\_{\V{z}\_j}} p\_{j,t}(\V{e}\_{j,t})$
      3. 分布の積の対数から作った最適化の問題を解く
-        *  $\V{m}\_j^\* = \text{argmin}\_{\V{m}\_j} \sum\_{\textbf{I}\_{\V{z}\_j}} \{\V{e}\_{j,t}(\V{m}\_j)\}^\top \Omega\_{j,t} \{\V{e}\_{j,t}(\V{m}\_j)\}$
+        *  $\V{m}\_j^\* = \text{argmin}\_{\V{m}\_j} \sum\_{\textbf{e}\_{\V{z}\_j}} \{\V{e}\_{j,t}(\V{m}\_j)\}^\top \Omega\_{j,t} \{\V{e}\_{j,t}(\V{m}\_j)\}$
 
 
 ---
@@ -180,7 +180,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * $\psi$: ランドマークのどのツラを見ているかを表す角度
 <img width="40%" src="./figs/9.3.jpg" />
 <img width="36%" src="./figs/9.4.jpg" />
-* 最終的には2姿勢間の$\psi$の相対値だけ必要になる（右図）
+* 実装では2姿勢間の$\psi$の相対値だけ必要（右図）
 
 
 ---
