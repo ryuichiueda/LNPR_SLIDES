@@ -159,14 +159,29 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ## 9.5 センサ値が2変数の場合
 
+* 移動エッジがあれば仮想移動エッジの残差の次元が3である必要がない<br />　
 * やること
     * $\psi$に関する行列の要素を除去
     * うまくいかなくなるので調整
 
 ---
 
-
-### 9.5.1 センサ値を2変数に戻す
+## 9.5.1 センサ値を2変数に戻す
 
 * $\psi$に関する行列の要素を除去していく
+    * 残差関数
+        * <span style="font-size:80%">$\V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1}, \V{x}\_{t\_2}) = \begin{pmatrix} {x}\_{t\_2} + \ell\_{j,t\_2}\cos ({\theta}\_{t\_2} + \varphi\_{j,t\_2}) \\\\ {y}\_{t\_2} + \ell\_{j,t\_2}\sin ({\theta}\_{t\_2} + \varphi\_{j,t\_2}) \end{pmatrix} - \begin{pmatrix} {x}\_{t\_1} + \ell\_{j,t\_1}\cos ({\theta}\_{t\_1} + \varphi\_{j,t\_1}) \\\\ {y}\_{t\_1} + \ell\_{j,t\_1}\sin ({\theta}\_{t\_1} + \varphi\_{j,t\_1}) \end{pmatrix}$</span><br />　
+    * $\V{z}$の$\ell\varphi$空間を$\V{m}$の$XY$平面に映すヤコビ行列
+        * <span style="font-size:80%">$R\_{j,t\_1} = \dfrac{\partial \hat{\V{e}}\_{j,t\_1,t\_2}} {\partial \V{z}\_{j,a}} \Big|\_{\V{z}\_{j,a} = \V{z}\_{j,t\_1}} = - \begin{pmatrix} \cos(\hat{\theta}\_{t\_1} + \varphi\_{t\_1}) & -\ell\_{j,t\_1}\sin(\hat{\theta}\_{t\_1} + \varphi\_{t\_1})\\\\ \sin(\hat{\theta}\_{t\_1} + \varphi\_{t\_1}) & \ell\_{j,t\_1}\cos(\hat{\theta}\_{t\_1} + \varphi\_{t\_1}) \end{pmatrix}$</span>
+            * $R\_{j,t\_2}$は上の式の$1$を$2$に入れ替えたもの<br />　
+    * $J\_\textbf{z}(\V{x}\_{0:T})$を$\V{x}$の多項式に近似するためのヤコビ行列
+        * <span style="font-size:80%">$J\_\textbf{z}(\V{x}\_{0:T}) =  \sum\_{\textbf{e}\_\textbf{z}} \left\\{\V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}^\top \Omega\_{j,t\_1,t\_2} \left\\{ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}$</span>
+        * <span style="font-size:80%">$B_{j,t_1} = - \begin{pmatrix} 1 & 0 & -\ell_{j,t_1} \sin(\theta_{t_1} + \varphi_{j,t_1}) \\\\ 0 & 1 & \ell_{j,t_1} \cos(\theta_{t_1} + \varphi_{j,t_1}) \end{pmatrix}$</span>
+            * $B\_{j,t\_2}$は上の式の$1$を$2$に入れ替えたもの
+            * このヤコビ行列で3次元の$\V{x}$が二次元の$\V{e}$に
+
+---
+
+
+### 実行結果
 
