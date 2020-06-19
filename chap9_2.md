@@ -87,7 +87,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ## 9.3.5 移動エッジによる<br />処理の実装
 
 * 軌跡の推定がなめらかに
-    * 仮想移動エッジがノード<br />をひっぱって歪めた軌跡<br />を移動エッジが引っ張り<br />戻す<br />　<br />　<br />　<br />　
+    * 仮想移動エッジがノード<br />をひっぱって歪めた軌跡<br />を移動エッジが引っ張り<br />戻す<br />　<br />　<br />　<br />　<br />　<br />　<br />　
 
 <img width="50%" src="./figs/9.11.jpg" />
 
@@ -175,13 +175,75 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * <span style="font-size:80%">$R\_{j,t\_1} = \dfrac{\partial \hat{\V{e}}\_{j,t\_1,t\_2}} {\partial \V{z}\_{j,a}} \Big|\_{\V{z}\_{j,a} = \V{z}\_{j,t\_1}} = - \begin{pmatrix} \cos(\hat{\theta}\_{t\_1} + \varphi\_{t\_1}) & -\ell\_{j,t\_1}\sin(\hat{\theta}\_{t\_1} + \varphi\_{t\_1})\\\\ \sin(\hat{\theta}\_{t\_1} + \varphi\_{t\_1}) & \ell\_{j,t\_1}\cos(\hat{\theta}\_{t\_1} + \varphi\_{t\_1}) \end{pmatrix}$</span>
             * $R\_{j,t\_2}$は上の式の$1$を$2$に入れ替えたもの<br />　
     * $J\_\textbf{z}(\V{x}\_{0:T})$を$\V{x}$の多項式に近似するためのヤコビ行列
-        * <span style="font-size:80%">$J\_\textbf{z}(\V{x}\_{0:T}) =  \sum\_{\textbf{e}\_\textbf{z}} \left\\{\V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}^\top \Omega\_{j,t\_1,t\_2} \left\\{ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}$</span>
+        * <span style="font-size:80%">（参考）$J\_\textbf{z}(\V{x}\_{0:T}) =  \sum\_{\textbf{e}\_\textbf{z}} \left\\{\V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}^\top \Omega\_{j,t\_1,t\_2} \left\\{ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}$</span>
         * <span style="font-size:80%">$B_{j,t_1} = - \begin{pmatrix} 1 & 0 & -\ell_{j,t_1} \sin(\theta_{t_1} + \varphi_{j,t_1}) \\\\ 0 & 1 & \ell_{j,t_1} \cos(\theta_{t_1} + \varphi_{j,t_1}) \end{pmatrix}$</span>
             * $B\_{j,t\_2}$は上の式の$1$を$2$に入れ替えたもの
             * このヤコビ行列で3次元の$\V{x}$が二次元の$\V{e}$に
 
 ---
 
+### グラフの精度行列と係数ベクトルに<br />足す値
 
-### 実行結果
+* センサ値を2次元にしても同じ
+    * <span style="font-size:55%">$\Omega^*\_{j,t_1,t_2} = \begin{pmatrix} \ddots \&  \&  \&  \&  \\\\ \& B\_{j,t\_1}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_1} \& \cdots \& B\_{j,t\_1}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_2} \&  \\\\ \& \vdots \& \ddots \& \vdots \\\\ \& B\_{j,t\_2}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_1} \& \cdots \& B\_{j,t\_2}^\top\Omega\_{j,t\_1,t\_2}B\_{j,t\_2} \&  \\\\ \& \& \& \& \ddots \end{pmatrix}$、${\boldsymbol{\xi}}^\\ast\_{j,t_1,t_2} = - \begin{pmatrix} \vdots \\\\ B\_{j,t\_1}^\top \\\\ \vdots \\\\ B\_{j,t\_2}^\top \\\\ \vdots \end{pmatrix} \Omega\_{j,t\_1,t\_2} \hat{\boldsymbol{e}}\_{j,t\_1,t\_2}$</span>
+        * $3(T+1)\times 3(T+1)$行列、$3(T+1)$次元ベクトル
+
+---
+
+### 実装・実行
+
+* 軌跡が途中で折れることがある
+    * 地図は相対的に正しい　　　　　　　　　　　　　　　
+
+<img width="50%" src="./figs/9.13.jpg" />
+
+---
+
+## 9.5.2 軌跡の推定失敗への対応
+
+* 失敗の考察（証明したわけではない）
+    * 2次元空間と3次元空間のマハラノビス距離を比較している
+    * 移動エッジに比べて仮想移動エッジの数が多い
+        * センサ値にバイアスがなければ問題ないが、あるので仮想移動エッジがノードをひっぱりすぎる
+
+
+<img width="60%" src="./figs/9.14.jpg" />
+
+---
+
+### 重みの活用
+
+* 移動エッジのマハラノビス距離に重みをつける
+    * 最適化の式（再掲）
+        * $J(\V{x}\_{0:T}) = (\V{x}\_{0} - \hat{\V{x}}\_0)^\top \Omega\_0 (\V{x}\_{0} - \hat{\V{x}}\_0) + J\_\textbf{z}(\V{x}\_{0:T}) + \lambda J\_\textbf{x}(\V{x}\_{0:T})$
+            * $J\_\textbf{z}(\V{x}\_{0:T}) =  \sum\_{\textbf{e}\_\textbf{z}} \left\\{\V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}^\top \Omega\_{j,t\_1,t\_2} \left\\{ \V{e}\_{j,t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}$
+            * $J\_\textbf{x}(\V{x}\_{0:T}) =  \sum\_{\textbf{e}\_\textbf{x}} \left\\{\V{e}\_{t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}^\top \Omega\_{t\_1,t\_2} \left\\{ \V{e}\_{t\_1,t\_2}(\V{x}\_{t\_1},\V{x}\_{t\_2})\right\\}$
+    * $\lambda$を大きくすると移動エッジを重視できる<br />（軌跡が曲がりにくくなる）<br />　
+* 注意: 特にスタンダードな方法ではない
+    * ただ、ベイズ的でない機械学習の手法で過学習防止のために同様の手法が見られる
+    * FastSLAMでは起こらない
+    * 違う種類の情報源を混ぜるのは難しい
+
+---
+
+### $\lambda = 100$での結果
+
+* 移動エッジ数の100倍水増しに相当
+
+<img width="60%" src="./figs/9.16.jpg" />
+
+---
+
+## 9.6 まとめ
+
+* グラフベースSLAMを実装<br />　
+* 8章、9章で扱っていないことは多い
+    * ランドマークのIDが未知
+    * LiDARでのSLAMの方法（スキャンマッチ中心）
+    * 外れ値（大きなセンサ値の誤り）の問題
+    * 主流のSLAMソフトウェアの構造<br />　
+* 本書のSLAMの内容が物足りない場合
+    * 友納正裕: SLAM入門: ロボットの自己位置推定と地図構築の技術, オーム社, 2018. 
+
+
 
