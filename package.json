@@ -32,13 +32,13 @@
     "grunt-sass": "^3.1.0",
     "grunt-zip": "~0.18.2",
     "load-grunt-tasks": "^5.1.0",
-    "mustache": "^3.1.0",
-    "node-sass": "^4.13.1",
+    "mustache": "^3.2.1",
+    "node-sass": "^4.14.1",
     "socket.io": "^2.3.0"
   },
   "license": "MIT",
   "dependencies": {
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.4"
   },
   "bugs": {
     "url": "https://github.com/hakimel/reveal.js/issues"
