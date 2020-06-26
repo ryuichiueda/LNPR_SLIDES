@@ -97,3 +97,47 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * $\V{x}_0$から$\Pi$でロボットを動かしたときの$J$の期待値を<span style="color:red">価値</span>$V^\Pi(\V{x}_0)$と表記
     * 価値の性質を調べてみましょう
 
+
+---
+
+### 価値の性質
+
+* $V^\Pi(\V{x}\_0) = \left\langle \sum\_{t=1}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T) \right\rangle\_{p(\V{x}\_{1:T}, a\_{1:T}|\V{x}\_0, \Pi)}$
+    * $T$は可変だが、固定として扱える
+        * 早くタスクが完了したら、終端状態で何もしない状態遷移（報酬ゼロ）を繰り返して評価を先延ばしにすればよい
+        * この先延ばしで$T=0$（初期状態=終端状態の場合）でも上式が成立
+    * 終端状態の評価は価値の定義に含まれる<br />　
+* $\V{x}_0$は必ずしも初期状態である必要がない
+    * マルコフ性の前提から、$\V{x}\_{-1}$以前のことは$V^\Pi(\V{x}\_0)$に無関係
+    * 方策でも$\V{x}\_{-1}$以前を考慮する意味はない
+    * タスクのどの時点の状態でも価値$V^\Pi(\V{x})$が考えられる<br />　
+* <span style="color:red">関数$V^\Pi: \mathcal{X} \to \Re$の存在$\Longrightarrow$状態価値関数</span>
+
+
+---
+
+### 逐次式による価値の表現
+
+* 価値の式を逐次式にしてみましょう
+    * <span style="font-size:75%">$V^\Pi(\V{x}\_0) = \left\langle r(\V{x}\_0, a\_1, \V{x}\_1) + \sum\_{t=2}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{1:T}, a\_{1:T} |\V{x}\_0, \Pi)}$
+$= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_{1:T}, a\_{1:T} |\V{x}\_0, \Pi)} + \left\langle \sum\_{t=2}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{1:T}, a\_{1:T} |\V{x}\_0, \Pi)}$
+$= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_1 , a\_1 | \V{x}\_0, \Pi )} + \left\langle \sum\_{t=2}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{2:T}, a\_{2:T} |\V{x}\_1, a\_1, \V{x}\_0, \Pi)p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi)}$<br />
+（↑第一項: 余計な変数の消去. 第二項: 乗法定理）
+$= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_1 , a\_1 | \V{x}\_0, \Pi )} + \left\langle \sum\_{t=2}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{2:T}, a\_{2:T} |\V{x}\_1, \Pi)p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi)}$<br />
+（↑第二項: マルコフ性から$\V{x}\_1$が分かれば条件$\V{x}\_0,a\_1$は不要）</span>
+
+次ページに続く
+
+---
+
+### 逐次式による価値の表現（続き）
+
+* 逐次式になる
+    * <span style="font-size:75%">$=\Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi )} + \left\langle \left\langle \sum\_{t=2}^\top r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{2:T}, a\_{2:T}|\V{x}\_1, \Pi)} \right\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi)}$
+$= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi )} + \left\langle V^\Pi(\V{x}\_1) \right\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi)}$<br />
+ （↑第二項: $\V{x}\_1$は$\V{x}\_0$と同様, 初期状態である必要がない）
+$=\Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi )}$<br />
+$= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{x}\_1 | \V{x}\_0, a\_1, \Pi )P(a\_1 | \V{x}\_0, \Pi)}$<br />
+$= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{x}\_1 | \V{x}\_0, a\_1 )P(a\_1 | \V{x}\_0, \Pi)}$</span>
+* $\V{x}_0$が初期状態である必要はないので時刻を取り払う
+    * $V^\Pi(\V{x}) = \left\langle r(\V{x}, a, \V{x}') + V^\Pi(\V{x}') \right\rangle\_{p(\V{x}' | \V{x}, a )P(a | \V{x}, \Pi)}$
