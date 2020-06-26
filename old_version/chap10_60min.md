@@ -115,7 +115,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
     * 水たまり無視でゴールへ直行
     * 評価を高めるように改善したい
 
-<img width="40%" src="../figs/puddle_world4.gif" />
+<img width="40%" src="./figs/puddle_world4.gif" />
 
 
 ---
@@ -132,7 +132,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 ### 離散化の方法
 
 * 次のように空間を均等に分割<br />
-<img width="60%" src="../figs/divide.png" /><br />
+<img width="60%" src="./figs/divide.png" /><br />
     * [別の離散化の例](https://www.semanticscholar.org/paper/Vector-quantization-for-state-action-map-Ueda-Fukase/3c8cb20cac652e0f7fd4e5f967ee2418e62ba3b5)
 * 各区画: 離散状態、あるいはセルと呼ぶ
     * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation1.ipynb)
@@ -148,7 +148,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
         * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation2.ipynb)
 
 
-<img width="40%" src="../figs/init_value1.png" />
+<img width="40%" src="./figs/init_value1.png" />
 
 ---
 
@@ -159,7 +159,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
         * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation3.ipynb)
         * 図: ロボットの向きが左向き（$180 \le \theta \lt 190$）のときの行動
 
-<img width="50%" src="../figs/init_policy.png" />
+<img width="50%" src="./figs/init_policy.png" />
 
 ---
 
@@ -169,7 +169,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
     * 計算で済むなら計算で
         * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation4.ipynb)ではモンテカルロ法で求めている
 
-<img width="80%" src="../figs/divide_transition.png" />
+<img width="80%" src="./figs/divide_transition.png" />
 
 ---
 
@@ -178,7 +178,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 * 状態遷移モデルの離散化と同じ
     * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation5.ipynb): こちらもモンテカルロ法で求めている
 
-<img width="60%" src="../figs/digitized_reward.png" />
+<img width="60%" src="./figs/digitized_reward.png" />
 
 
 ---
@@ -194,9 +194,9 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
     * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation6.ipynb)
     * 図: 左から10, 20, 50スイープ後
 
-<img width="30%" src="../figs/policy_evaluation_10sweeps.png" />
-<img width="30%" src="../figs/policy_evaluation_20sweeps.png" />
-<img width="30%" src="../figs/policy_evaluation_50sweeps.png" />
+<img width="30%" src="./figs/policy_evaluation_10sweeps.png" />
+<img width="30%" src="./figs/policy_evaluation_20sweeps.png" />
+<img width="30%" src="./figs/policy_evaluation_50sweeps.png" />
 
 
 ---
@@ -209,7 +209,7 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
         * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/policy_evaluation7.ipynb)
     * 図: ロボットの向きが左向き（$180 \le \theta \lt 190$）のときの価値
 
-<img width="60%" src="../figs/policy_evaluation_end_sweeps.png" />
+<img width="60%" src="./figs/policy_evaluation_end_sweeps.png" />
 
 ---
 
@@ -234,13 +234,13 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
     * 下図: 10, 20, 120スイープ後の方策（$180 \le \theta \lt 190$）
 
 <br />
-<img width="25%" src="../figs/value_iteration_10sweeps.png" />
-<img width="25%" src="../figs/value_iteration_20sweeps.png" />
-<img width="25%" src="../figs/value_iteration_conv.png" /> 
+<img width="25%" src="./figs/value_iteration_10sweeps.png" />
+<img width="25%" src="./figs/value_iteration_20sweeps.png" />
+<img width="25%" src="./figs/value_iteration_conv.png" /> 
 <br />
-<img width="25%" src="../figs/value_iteration_10sweeps_p.png" />
-<img width="25%" src="../figs/value_iteration_20sweeps_p.png" />
-<img width="25%" src="../figs/value_iteration_conv_p.png" /> 
+<img width="25%" src="./figs/value_iteration_10sweeps_p.png" />
+<img width="25%" src="./figs/value_iteration_20sweeps_p.png" />
+<img width="25%" src="./figs/value_iteration_conv_p.png" /> 
 
 ---
 
@@ -248,4 +248,4 @@ $\Rightarrow$ 一般的な枠組みで移動を考えてみる
 
 * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_mdp/dp_policy_agent.ipynb)
 
-<img width="50%" src="../figs/optimal_policy.gif" /> 
+<img width="50%" src="./figs/optimal_policy.gif" /> 
