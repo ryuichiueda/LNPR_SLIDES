@@ -79,6 +79,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * $r(\boldsymbol{x}\_{t-1}, a\_t, \boldsymbol{x}\_t) \in \Re$: 状態遷移ごとに与える評価を決める関数
             * 報酬モデルと呼ぶ
             * 値を<span style="color:red">報酬</span>と呼ぶ
+            * $t=0$から$t=T$までの状態遷移、行動履歴、報酬をまとめて<span style="color:red">エピソード</span>と呼ぶ
         * $V\_\text{f}(\boldsymbol{x}\_T)$: <span style="color:red">終端状態</span>の評価<br />　
 * 終端状態
     * 良くも悪くもタスクが終わった状態
@@ -199,3 +200,16 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
         * ふたつ重なった部分: 20倍
 
 <img width="35%" src="./figs/puddle_world4.gif" />
+
+---
+
+## 10.2.2 エピソードの評価
+
+* 単純に各ステップの$r$を積算して、$J$とする
+    * ゴールした状態の価値を$0$に
+    * $r$は負なので$J$は$0$に近いほど良い
+
+---
+
+## 10.3 方策の評価
+
