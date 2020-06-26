@@ -141,3 +141,35 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
 $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{x}\_1 | \V{x}\_0, a\_1 )P(a\_1 | \V{x}\_0, \Pi)}$</span>
 * $\V{x}_0$が初期状態である必要はないので時刻を取り払う
     * $V^\Pi(\V{x}) = \left\langle r(\V{x}, a, \V{x}') + V^\Pi(\V{x}') \right\rangle\_{p(\V{x}' | \V{x}, a )P(a | \V{x}, \Pi)}$
+        * 価値は、報酬と遷移後の価値の期待値の和と釣り合う
+
+---
+
+### 決定論的方策
+
+* $V^\Pi(\V{x}) = \left\langle r(\V{x}, a, \V{x}') + V^\Pi(\V{x}') \right\rangle\_{p(\V{x}' | \V{x}, a )P(a | \V{x}, \Pi)}$
+    * $a$は、そのときの状態$\V{x}$と方策$\Pi$から確率的に決まるという式になっているが、ロボットが自分で選択可能
+    * $r(\V{x}, a, \V{x}'), V^\Pi(\V{x}'), p(\V{x}' | \V{x}, a )$の値が分かればベストな行動$a^\*$が決まる
+        * $\Pi$から方策を改善できる
+        * 全状態で$\V{x}$に対して$a^*$を決定していくと$\Pi$より性能がよくなる<br />
+<span style="color:red">$\Longrightarrow$確率的な方策があると、それより性能がよい決定論的な方策が存在</span><br />　
+* 方策を実装するときはこの形式で十分
+    * $\Pi: \mathcal{X} \to \mathcal{A}$（<span style="color:red">決定論的方策</span>）
+* $\Pi$が決定論的方策の場合の価値の逐次式
+    * $V^\Pi(\V{x}) = \left\langle r(\V{x}, a, \V{x}') + V^\Pi(\V{x}') \right\rangle\_{p(\V{x}' | \V{x}, a )} \qquad (a =\Pi(\V{x}))$
+
+---
+
+## 10.1.5 マルコフ決定過程のまとめ
+
+* これらの記号で定義される
+    * 時間: $t = 0,1,2,\dots,T$（$T$は不定でよい）
+    * 状態と状態空間: $\V{x} \in \mathcal{X}$
+    * 終端状態と終端状態の集合: $\V{x} \in \mathcal{X}_\text{f} \subset \mathcal{X}$
+    * 行動と行動の集合: $a \in \mathcal{A}$
+    * 状態遷移モデル: $p(\V{x}' | \V{x}, a) \ge 0 \quad (\V{x} \in \mathcal{X}-\mathcal{X}_\text{f}, a \in \mathcal{A}, \V{x}' \in \mathcal{X})$
+    * 報酬モデル: $r(\V{x}, a, \V{x}') \in \Re \quad (\V{x} \in \mathcal{X}-\mathcal{X}_\text{f}, a \in \mathcal{A}, \V{x}' \in \mathcal{X})$
+    * 終端状態の価値: $V_\text{f}(\V{x}) \in \Re \quad (\V{x} \in \mathcal{X}_\text{f})$
+    * 評価: $J(\V{x}\_{0:T}, a\_{1:T}) = \sum\_{t=1}^\top r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V\_\text{f}(\V{x}\_T)$
+* なるべく良い方策$\Pi: \mathcal{X} \to \mathcal{A}$を求めたい
+    * 求めた価値の逐次式が解決に重要な役割
