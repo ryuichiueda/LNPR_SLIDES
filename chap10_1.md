@@ -231,3 +231,13 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
         * 実装での区間の幅: $X,Y$軸が200[mm]、$\theta$軸が10[deg]
 <img width="40%" src="./figs/10.4.jpg" />
 * $s_{(i_x,i_y,i_\theta)}$: <span style="color:red">離散状態</span>
+
+---
+
+### 価値関数の初期化
+
+* 終端状態の価値を0、それ以外を大きな負の値にしておく
+* 図: $i_\theta$を固定したときの$XY$平面での価値関数
+    * 白いところがゴール
+
+<img width="40%" src="./figs/init_policy_evaluation.png" />
