@@ -1,6 +1,6 @@
 $\newcommand{\V}[1]{\boldsymbol{#1}}$
 
-# 10. マルコフ決定過程と動的計画法
+# 10. マルコフ決定過程と動的計画法<br />（前半）
 
 千葉工業大学 上田 隆一
 
@@ -218,8 +218,10 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
 * 価値が確定している終端状態からさかのぼっていくと$V^\Pi(\V{x})$の値が計算できる
     * 使う式: $V^\Pi(\V{x}) = \left\langle r(\V{x}, a, \V{x}') + V^\Pi(\V{x}') \right\rangle\_{p(\V{x}' | \V{x}, a )}$
     * ただし$V^\Pi(\V{x})$はそのままでは計算不可能
-        * $\V{x}$が無限にあるので<br />　
-    * 本書では$\mathcal{X}$を格子状に区切って離散化して計算（次ページ）
+        * $\V{x}$が無限にあるので
+    * 本書では$\mathcal{X}$を格子状に区切って離散化して計算（次ページ）<br />　
+* 例題
+    * スライド15ページにある、水たまりを無視して一直線にゴールに向かう方策（書籍ではpuddle ignore policy）を評価
 
 ---
 
@@ -250,7 +252,16 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
     * 価値関数の式: $V^\Pi(s) = \big\langle R(s, a, s') + V^\Pi(s') \big\rangle\_{ P(s' | s, a) } \\\\ \qquad = \sum\_{s'\in \mathcal{S}} P(s' | s, a) \left[ R(s, a, s') + V^\Pi(s') \right]$
         * $P(s' | s, a)$: 離散化した状態遷移関数（あとで計算）
         * $R(s,a,s')$: 離散化した報酬（これもあとで計算）<br />　
-    * 求める方策の形式: $\Pi: \mathcal{S} \to \mathcal{A}$
+    * 終端状態: 中に含まれるすべての$\V{x}$が終端状態のものを選ぶ<br />　
+
+---
+
+### 方策の離散化
+
+* 各離散状態の中心座標でのpuddle ignore policyの行動を、その離散状態の行動に
+* 方策の形式: $\Pi: \mathcal{S} \to \mathcal{A}$
+
+<img width="50%" src="./figs/init_policy.png" />
 
 
 ---
@@ -270,3 +281,26 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
 * $R(s, a, s')$: 状態$s'$での水の深さの平均値で$w(\V{x}')$を代用して計算
 
 <img width="50%" src="./figs/depth.png" />
+
+---
+
+## 10.3.3 方策評価の実装
+
+* ある方策$\Pi$に対して終端状態以外で次の手続きをひたすら繰り返す
+    * $V^\Pi(s) \longleftarrow \sum\_{s'\in \mathcal{S}} P(s' | s, a) \left[ R(s, a, s') + V^\Pi(s') \right]$
+    * すべての離散状態で一通り計算することをスイープと呼ぶ
+* 下図: puddle ignore policyに対する計算
+
+<img src="./figs/10.6.jpg" />
+
+---
+
+## 10.3.4 計算終了の判定
+
+* 次の手続きで計算を止める
+    * $V^\Pi(s)$の変化量を記録
+    * 全離散状態での変化量の最大値が閾値を下回ったら停止
+* 下図: 変化量$0.01$[s]以下で止めて得られた$V^\Pi$
+    * 92スイープで停止
+
+<img width="50%" src="./figs/policy_evaluation_end_sweeps.png" />
