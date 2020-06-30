@@ -241,3 +241,10 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
     * 白いところがゴール
 
 <img width="40%" src="./figs/init_policy_evaluation.png" />
+
+---
+
+## 10.3.2 離散状態間の状態遷移と状態遷移に対する報酬
+
+* 数式を$\V{x}$から$s$に離散化
+* 価値の逐次式
