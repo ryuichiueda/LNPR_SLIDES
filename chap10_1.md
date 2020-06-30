@@ -247,4 +247,7 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
 ## 10.3.2 離散状態間の状態遷移と状態遷移に対する報酬
 
 * 数式を$\V{x}$から$s$に離散化
-* 価値の逐次式
+    * 価値関数の式: $V^\Pi(s) = \big\langle R(s, a, s') + V^\Pi(s') \big\rangle\_{ P(s' | s, a) } \\\\ \qquad = \sum\_{s'\in \mathcal{S}} P(s' | s, a) \left[ R(s, a, s') + V^\Pi(s') \right]$
+        * $P(s' | s, a)$: 離散化した状態遷移関数（あとで計算）
+        * $R(s,a,s')$: 離散化した報酬（これもあとで計算）<br />　
+    * 求める方策の形式: $\Pi: \mathcal{S} \to \mathcal{A}$
