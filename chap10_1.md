@@ -120,7 +120,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 逐次式による価値の表現
 
 * 価値の式を逐次式にしてみましょう
-    * <span style="font-size:75%">$V^\Pi(\V{x}\_0) = \left\langle r(\V{x}\_0, a\_1, \V{x}\_1) + \sum\_{t=2}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{1:T}, a\_{1:T} |\V{x}\_0, \Pi)}$
+    * <span style="font-size:60%">$V^\Pi(\V{x}\_0) = \left\langle r(\V{x}\_0, a\_1, \V{x}\_1) + \sum\_{t=2}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{1:T}, a\_{1:T} |\V{x}\_0, \Pi)}$
 $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_{1:T}, a\_{1:T} |\V{x}\_0, \Pi)} + \left\langle \sum\_{t=2}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{1:T}, a\_{1:T} |\V{x}\_0, \Pi)}$
 $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_1 , a\_1 | \V{x}\_0, \Pi )} + \left\langle \sum\_{t=2}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{2:T}, a\_{2:T} |\V{x}\_1, a\_1, \V{x}\_0, \Pi)p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi)}$<br />
 （↑第一項: 余計な変数の消去. 第二項: 乗法定理）
@@ -134,7 +134,7 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_1 , a\_1 | \V{
 ### 逐次式による価値の表現（続き）
 
 * 逐次式になる
-    * <span style="font-size:75%">$=\Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi )} + \left\langle \left\langle \sum\_{t=2}^\top r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{2:T}, a\_{2:T}|\V{x}\_1, \Pi)} \right\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi)}$
+    * <span style="font-size:60%">$=\Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi )} + \left\langle \left\langle \sum\_{t=2}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V(\V{x}\_T)  \right\rangle\_{p(\V{x}\_{2:T}, a\_{2:T}|\V{x}\_1, \Pi)} \right\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi)}$
 $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) \Big\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi )} + \left\langle V^\Pi(\V{x}\_1) \right\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi)}$<br />
  （↑第二項: $\V{x}\_1$は$\V{x}\_0$と同様, 初期状態である必要がない）
 $=\Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{x}\_1, a\_1 | \V{x}\_0, \Pi )}$<br />
@@ -163,17 +163,18 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
 
 ## 10.1.5 マルコフ決定過程のまとめ
 
-* これらの記号で定義される
+* 系
     * 時間: $t = 0,1,2,\dots,T$（$T$は不定でよい）
-    * 状態と状態空間: $\V{x} \in \mathcal{X}$
-    * 終端状態と終端状態の集合: $\V{x} \in \mathcal{X}_\text{f} \subset \mathcal{X}$
-    * 行動と行動の集合: $a \in \mathcal{A}$
-    * 状態遷移モデル: $p(\V{x}' | \V{x}, a) \ge 0 \quad (\V{x} \in \mathcal{X}-\mathcal{X}_\text{f}, a \in \mathcal{A}, \V{x}' \in \mathcal{X})$
-    * 報酬モデル: $r(\V{x}, a, \V{x}') \in \Re \quad (\V{x} \in \mathcal{X}-\mathcal{X}_\text{f}, a \in \mathcal{A}, \V{x}' \in \mathcal{X})$
+    * 状態と行動: $\V{x} \in \mathcal{X}$、$a \in \mathcal{A}$
+        * 一部の状態が終端状態: $\V{x} \in \mathcal{X}_\text{f} \subset \mathcal{X}$
+    * 状態遷移モデル: $p(\V{x}' | \V{x}, a) \ge 0$
+* 評価
+    * 報酬モデル: $r(\V{x}, a, \V{x}') \in \Re$
     * 終端状態の価値: $V_\text{f}(\V{x}) \in \Re \quad (\V{x} \in \mathcal{X}_\text{f})$
-    * 評価: $J(\V{x}\_{0:T}, a\_{1:T}) = \sum\_{t=1}^\top r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V\_\text{f}(\V{x}\_T)$
-* なるべく良い方策$\Pi: \mathcal{X} \to \mathcal{A}$を求めたい
-    * 求めた価値の逐次式が解決に重要な役割
+    * 評価: $J(\V{x}\_{0:T}, a\_{1:T}) = \sum\_{t=1}^T r(\V{x}\_{t-1}, a\_t, \V{x}\_t) + V\_\text{f}(\V{x}\_T)$
+* 解く問題
+    * なるべく良い方策$\Pi: \mathcal{X} \to \mathcal{A}$を求めたい
+        * 求めた価値の逐次式が解決に重要な役割
 
 ---
 
@@ -207,9 +208,26 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
 
 * 単純に各ステップの$r$を積算して、$J$とする
     * ゴールした状態の価値を$0$に
-    * $r$は負なので$J$は$0$に近いほど良い
+    * $J$: かかった時間と水たまりのペナルティーの和<br />　
+* $r$は負なので$J$は$0$に近いほど良い
 
 ---
 
 ## 10.3 方策の評価
 
+* 価値が確定している終端状態からさかのぼっていくと$V^\Pi(\V{x})$の値が計算できる
+    * 使う式: $V^\Pi(\V{x}) = \left\langle r(\V{x}, a, \V{x}') + V^\Pi(\V{x}') \right\rangle\_{p(\V{x}' | \V{x}, a )}$
+    * ただし$V^\Pi(\V{x})$はそのままでは計算不可能
+        * $\V{x}$が無限にあるので<br />　
+    * 本書では$\mathcal{X}$を格子状に区切って離散化して計算（次ページ）
+
+---
+
+## 10.3.1 状態空間の離散化
+
+* $XY\theta$空間を図のように離散化
+    * 各区画を$s_{(i_x,i_y,i_\theta)}$と番号づけ
+        * $i_x,i_y,i_\theta$: 各軸の区画つけた$0,1,2,\dots$という番号
+        * 実装での区間の幅: $X,Y$軸が200[mm]、$\theta$軸が10[deg]
+<img width="40%" src="./figs/10.4.jpg" />
+* $s_{(i_x,i_y,i_\theta)}$: <span style="color:red">離散状態</span>
