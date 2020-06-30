@@ -261,3 +261,12 @@ $= \Big\langle r(\V{x}\_0, a\_1, \V{x}\_1) + V^\Pi(\V{x}\_1) \Big\rangle\_{p(\V{
     * $i_x, i_y$については相対値でよい
 
 <img width="100%" src="./figs/10.5.jpg" />
+
+---
+
+### $R(s, a, s')$の計算
+
+* 元の式: $r(\V{x}, a, \V{x}') = -\Delta t - cw(\V{x}')\Delta t$
+* $R(s, a, s')$: 状態$s'$での水の深さの平均値で$w(\V{x}')$を代用して計算
+
+<img width="50%" src="./figs/depth.png" />
