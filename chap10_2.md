@@ -47,3 +47,20 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
             * $V^*$: 収束した状態価値関数（<span style="color:red">最適状態価値関数</span>）
             * $\Pi^*$: <span style="color:red">最適方策</span>
 
+---
+
+### 価値反復の実行
+
+* 状態価値関数<br />
+<img width="70%" src="./figs/10.7.jpg" />
+* 方策<br />
+<img width="70%" src="./figs/10.8.jpg" />
+
+---
+
+### 方策を用いた行動決定
+
+* $\Pi^*$: どの状態に対しても最適な行動が記録されている
+    * ロボットは$\Pi^*$を使って反射的に行動を選ぶと最適な経路でゴールに行ける
+
+<img width="40%" src="./figs/optimal_policy.gif" /> 
