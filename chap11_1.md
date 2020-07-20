@@ -178,3 +178,20 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 <img width="58%" src="./figs/11.3.jpg" />
 
+
+---
+
+### ここまでのまとめ
+
+* Q学習
+    * 価値反復から導出可能
+    * 離散状態に対して実装することは簡単
+        * ただし、状態数$\times$行動の種類だけメモリを消費<br />　
+* Sarsa
+    * 次のステップで最適な行動をとることを期待しない
+    * Q学習との優劣は単純に議論できない
+    * 拡張するときにQ学習より楽（後半）<br />　
+* Q学習、Sarsa共通の問題
+    * <span style="color:red">あるときに画期的な行動選択が行われても、1ステップ分しか価値が更新されない</span>
+        * その前の経緯も重要なのに、価値は更新されない
+
