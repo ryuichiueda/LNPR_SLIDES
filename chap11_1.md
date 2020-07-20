@@ -104,14 +104,17 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ## 11.1.4 $\varepsilon$-グリーディ方策
 
-* 学習のためには、同じ状態で別の行動を選択する機会が必要
-    * puddle ignore policyだけだともっと良い行動に気づけない<br />　
-* 書籍では次のような「<span style="color:red">$\varepsilon$-グリーディ方策</span>」を実装
+* 学習のためには、同じ状態で<br />別の行動を選択する機会が必要
+    * puddle ignore policyだけだと<br />もっと良い行動に気づけない<br />　
+* 書籍では次のような<br /><span style="color:red">$\varepsilon$-グリーディ方策</span>を実装
     * 確率$\varepsilon$で、ランダムに行動選択
-    * 確率$1-\varepsilon$で、$Q(s,a)$が最大になる行動を選択
+    * 確率$1-\varepsilon$で、$Q(s,a)$が<br />最大になる行動を選択
         * 書籍では$\varepsilon = 0.3$
 
-ある状態$s$で$Q(s,a)$の値が逆転すると、<br />方策が変わる
+<img width="40%" src="./figs/agent_on_q_learning.gif" />
+
+ある状態$s$で$Q(s,a)$の値が逆転すると<br />方策が変わる
+
 
 ---
 
@@ -131,7 +134,8 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ## 11.1.6 Q学習の結果
 
 * 図: 学習中の$Q(s,a)$から最大の$a$を選択して得た行動
-    * ゴールに近い初期姿勢から水たまりが回避できるように
+    * ただしロボットが左右回転を交互に選んだときは強制的に前進
+    * ゴールに近い初期姿勢から水たまり回避行動の学習が進行
 
 <img width="70%" src="./figs/11.1.jpg" />
 
@@ -141,5 +145,6 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * 図: 最良の行動価値関数から作った状態価値関数
     * 水たまり回避ルートが開拓されていく
+        * 一回の状態遷移で一個の$Q(s,a)$しか変更できないので少しずつ
 
 <img width="70%" src="./figs/11.2.jpg" />

@@ -65,7 +65,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * [コード](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_reinforcement_learning/q1.ipynb)
     * `QAgent`クラスに、とりあえずゴールにまっすぐ向かう方策（PuddleIgnoreAgent）を実装しておく（`policy`メソッド）<br />
-<img width="35%" src="../figs/q_puddle_ignore.png" />
+<img width="35%" src="./figs/q_puddle_ignore.png" />
 * PuddleIgnoreAgentの方策評価`policy_evaluation.ipynb`の結果をファイルに書き出し
 
 ---
@@ -116,13 +116,13 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * [試行の繰り返しの実装](https://github.com/ryuichiueda/LNPR_BOOK_CODES/blob/master/section_reinforcement_learning/q5.ipynb)
         * `WarpRobot`クラス
 
-<img width="35%" src="../figs/agent_on_q_learning.gif" />
+<img width="35%" src="./figs/agent_on_q_learning.gif" />
 
 ---
 
 ### 学習結果: 方策から得られる行動
 
-<img width="80%" src="../figs/q_result_traj.png" />
+<img width="80%" src="./figs/q_result_traj.png" />
 
 ---
 
@@ -131,7 +131,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 各状態で最大のQ値を選んで描画したもの
     * $\theta$は$180\sim 190$[deg]の区間に固定
 
-<img width="80%" src="../figs/q_result_value_function.png" />
+<img width="80%" src="./figs/q_result_value_function.png" />
 
 ---
 
@@ -159,7 +159,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 学習結果: 方策から得られる行動
 
-<img width="64%" src="../figs/sarsa_result_traj.png" />
+<img width="64%" src="./figs/sarsa_result_traj.png" />
 
 * 水たまりを避ける行動が早く生成される
     * $a'$で水たまりに突っ込んだ場合に$Q(s,a)$の値が悪くなる
@@ -169,7 +169,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ### 学習結果: 状態価値関数
 
-<img width="80%" src="../figs/sarsa_result_value_function.png" />
+<img width="80%" src="./figs/sarsa_result_value_function.png" />
 
 
 ---
@@ -212,13 +212,13 @@ $=$ 現在の状態行動対の価値+得た報酬を$n$ステップ前の状態
 
 ### 学習結果: 方策から得られる行動
 
-<img width="80%" src="../figs/nstep_sarsa_result_traj.png" />
+<img width="80%" src="./figs/nstep_sarsa_result_traj.png" />
 
 ---
 
 ### 学習結果: 状態価値関数
 
-<img width="80%" src="../figs/nstep_sarsa_result_value_function.png" />
+<img width="80%" src="./figs/nstep_sarsa_result_value_function.png" />
 
 ---
 
@@ -229,7 +229,7 @@ $=$ 現在の状態行動対の価値+得た報酬を$n$ステップ前の状態
     * Q値が改善（改悪）された場合、その前の状態行動対の価値もすべて同じだけ更新すべきではないのか？
         * 例えば下図の$Q=-100 \rightarrow Q = -20$の更新
 
-<img width="80%" src="../figs/multi_improvement.png" />
+<img width="80%" src="./figs/multi_improvement.png" />
 
 ---
 
@@ -258,11 +258,11 @@ $=$ 現在の状態行動対の価値+得た報酬を$n$ステップ前の状態
 
 ### 学習結果: 方策から得られる行動
 
-<img width="80%" src="../figs/sarsa_lambda_result_traj.png" />
+<img width="80%" src="./figs/sarsa_lambda_result_traj.png" />
 
 ---
 
 ### 学習結果: 状態価値関数
 
-<img width="80%" src="../figs/sarsa_lambda_result_value_function.png" />
+<img width="80%" src="./figs/sarsa_lambda_result_value_function.png" />
 
