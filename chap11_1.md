@@ -148,3 +148,16 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * 一回の状態遷移で一個の$Q(s,a)$しか変更できないので少しずつ
 
 <img width="70%" src="./figs/11.2.jpg" />
+
+---
+
+## 11.2 <span style="text-transform:none">Sarsa</span>
+
+* Q学習の式を少し変える
+    * Q学習: $Q(s, a) \longleftarrow (1-\alpha)Q(s,a) + \alpha \big\[ r + \max_{a'}Q(s',a')\big\]$
+    * 変更: <span style="color:red">$\  Q(s, a) \longleftarrow (1-\alpha)Q(s,a) + \alpha \big\[ r + Q(s',a')\big\]$</span>
+        * $a'$には実際に選ぶものを使う
+        * $s,a,r,s',a'$を使うのでSarsaと呼ばれる手法になる<br >　
+* Sarsaの性質
+    * 価値反復の近似ではなくなる
+    * 最適方策ではなく$\varepsilon$-グリーディ方策の価値関数を求めることに
