@@ -160,4 +160,21 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * $s,a,r,s',a'$を使うのでSarsaと呼ばれる手法になる<br >　
 * Sarsaの性質
     * 価値反復の近似ではなくなる
-    * 最適方策ではなく$\varepsilon$-グリーディ方策の価値関数を求めることに
+    * 最適方策ではなく$\varepsilon$-グリーディ方策の価値関数を求めることに（on-policyという）
+        * Q学習はoff-policy
+
+
+---
+
+### <span style="text-transform:none">Sarsa</span>によって得られる方策
+
+* （このタスクでは）
+    * Q学習よりも水たまり<br />を早い段階から回避
+        * $a'$が最適であること<br />を期待しないので<br />水たまりのリスクを<br />大きく評価
+    * 経路が蛇行
+        * $\varepsilon$-グリーディ方策の<br />
+	価値を学習するため、<br />
+	最初のうちはゴール<br />へ向かう行動の価値<br />が悪化
+
+<img width="58%" src="./figs/11.3.jpg" />
+
