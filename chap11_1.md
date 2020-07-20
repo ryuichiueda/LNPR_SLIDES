@@ -73,8 +73,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 妥協して更新前の値との折衷案に
     * <span style="color:red">$Q(s, a) \longleftarrow (1-\alpha)Q(s,a) + \alpha \big\[ r + \max_{a'}Q(s',a')\big\]$</span>
     * $\alpha$を小さくするほど過去を忘れにくい
+        * 書籍では$\alpha = 0.5$
 
-ロボットをなんらかの方策で動かしながら$Q(s, a)$を更新していき、収束を目論む
+ロボットをなんらかの方策で動かしながら$Q(s, a)$を更新していき、（だいたいの）収束を目論む
 
 ---
 
@@ -103,3 +104,42 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ## 11.1.4 $\varepsilon$-グリーディ方策
 
+* 学習のためには、同じ状態で別の行動を選択する機会が必要
+    * puddle ignore policyだけだともっと良い行動に気づけない<br />　
+* 書籍では次のような「<span style="color:red">$\varepsilon$-グリーディ方策</span>」を実装
+    * 確率$\varepsilon$で、ランダムに行動選択
+    * 確率$1-\varepsilon$で、$Q(s,a)$が最大になる行動を選択
+        * 書籍では$\varepsilon = 0.3$
+
+ある状態$s$で$Q(s,a)$の値が逆転すると、<br />方策が変わる
+
+---
+
+## 11.1.5 行動価値関数の更新
+
+* $Q(s, a) \longleftarrow (1-\alpha)Q(s,a) + \alpha \big\[ r + \max_{a'}Q(s',a')\big\]$<br />を実装<br />　
+
+## 11.1.6 試行を繰り返すための<br />ロボットの実装
+
+* ロボットがゴールに入ると初期姿勢に戻るようにシミュレータを改造
+    * 初期姿勢はランダムに選択
+    * ただし学習の効率をあげるために少し範囲を限定
+    * ゴールから見て水たまりの向こう側に
+
+---
+
+## 11.1.6 Q学習の結果
+
+* 図: 学習中の$Q(s,a)$から最大の$a$を選択して得た行動
+    * ゴールに近い初期姿勢から水たまりが回避できるように
+
+<img width="70%" src="./figs/11.1.jpg" />
+
+---
+
+### 状態価値関数の変化
+
+* 図: 最良の行動価値関数から作った状態価値関数
+    * 水たまり回避ルートが開拓されていく
+
+<img width="70%" src="./figs/11.2.jpg" />
