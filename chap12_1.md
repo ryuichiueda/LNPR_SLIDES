@@ -66,3 +66,14 @@ MDPと異なり、$\V{x}$が分からない
     * $\hat{\V{x}}_t$と真の姿勢がずれると水たまりに引きずり込まれる
 
 <img width="65%" src="./figs/12.1.jpg" />
+
+---
+
+## 12.1.3 信念分布を用いる場合のPOMDP
+
+* 方策$\Pi_\text{b}(b_t)$を考える
+    * 信念分布から行動を選択
+    * 信念分布$b_t$はMDPにおける状態に相当$\Rightarrow$<span style="color:red">信念状態</span><br />　
+* 信念状態を状態とみなすと<span style="color:red">価値反復が利用可能</span>
+    * 状態遷移モデルを$p(\V{x}' | \V{x}, a)$から$p(b' | b, a)$に置き換え
+
