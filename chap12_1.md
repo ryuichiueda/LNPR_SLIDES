@@ -1,0 +1,21 @@
+$\newcommand{\V}[1]{\boldsymbol{#1}}$
+
+# 12. 部分観測マルコフ決定過程<br />（前半）
+
+千葉工業大学 上田 隆一
+
+<p style="font-size:50%">
+This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
+</p>
+
+---
+
+## 12.1 POMDP
+
+* POMDP
+    * MDPで、エージェントが状態推定をしなければならない問題<br />　
+* 名前の意味
+    * partially observable Markov decision process
+    * 部分観測マルコフ決定過程
