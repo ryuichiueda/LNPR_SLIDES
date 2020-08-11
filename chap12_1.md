@@ -76,4 +76,26 @@ MDPと異なり、$\V{x}$が分からない
     * 信念分布$b_t$はMDPにおける状態に相当$\Rightarrow$<span style="color:red">信念状態</span><br />　
 * 信念状態を状態とみなすと<span style="color:red">価値反復が利用可能</span>
     * 状態遷移モデルを$p(\V{x}' | \V{x}, a)$から$p(b' | b, a)$に置き換え
+    * <span style="color:red">belief MDP</span>と呼ばれる
+
+
+---
+
+### <span style="text-transform:none">belief MDP</span>の状態数
+
+* ものすごく多い
+    * 全通りの確率分布
+        * 信念状態の数は非負の実数の状態数乗$\Re^\V{\mathcal{X}}$
+        * 離散の場合でも、例えば100個のパーティクルを1個ずつ57600個の離散状態に割り振るだけで$10^{318}$通り<br />　
+* まともには攻略できないので近似を考える
+    * 12.2節〜12.4節
+
+
+---
+
+## 12.2 Q-MDP
+
+* 通常のMDPで得られた行動価値関数$Q(a,\V{x})$と信念分布$b$から期待値で行動を決定
+    * $Q_\text{MDP}(a,b) = \Big\langle Q(a, \V{x}) \Big\rangle_{b(\V{x})}$
+    * $\Pi(b) = \text{argmax}_a Q_\text{MDP}(a,b)$
 
