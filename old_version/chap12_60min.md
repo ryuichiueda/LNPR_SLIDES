@@ -23,7 +23,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 人間なら状況が不確かならどうするだろうか？
     * 調べる、警戒する、迂闊に危険に近づかない
 
-<img src="../figs/uncertain_navigation_1.png" />
+<img src="./figs/uncertain_navigation_1.png" />
 
 ---
 
@@ -31,7 +31,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * 外側から見ていると非常に不可解
 
-<img src="../figs/uncertain_navigation_2.png" />
+<img src="./figs/uncertain_navigation_2.png" />
 
 ---
 
@@ -115,8 +115,8 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 左: 最尤なパーティクルを使って行動決定
     * 右: Q-MDP
 
-<img width="30%" src="../figs/non_qmdp.gif" />
-<img width="30%" src="../figs/qmdp.gif" />
+<img width="30%" src="./figs/non_qmdp.gif" />
+<img width="30%" src="./figs/qmdp.gif" />
 
 ---
 
@@ -133,7 +133,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * センサリセットが起こった状態から
 * 姿勢が一意に推定できない
 
-<img width="30%" src="../figs/pfc_environment.png" />
+<img width="30%" src="./figs/pfc_environment.png" />
 
 ---
 
@@ -141,7 +141,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 * 途中で$Q_\text{MDP}$値が釣り合って止まる
 
-<img width="40%" src="../figs/one_landmark_qmdp.gif" />
+<img width="40%" src="./figs/one_landmark_qmdp.gif" />
 
 ---
 
@@ -158,9 +158,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### PFCによるロボットの挙動
 
 
-<img width="31%" src="../figs/pfc_ok.gif" />
-<img width="31%" src="../figs/pfc_ok2.gif" />
-<img width="31%" src="../figs/pfc_ok3.gif" />
+<img width="31%" src="./figs/pfc_ok.gif" />
+<img width="31%" src="./figs/pfc_ok2.gif" />
+<img width="31%" src="./figs/pfc_ok3.gif" />
 
 ---
 
@@ -231,7 +231,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * ランドマークを観測しながらバックでゴールに向かう
     * <span style="color:red">観測しやすさが方策に反映</span>
 
-<img width="30%" style="color:red" src="../figs/amdp_back.gif" />
+<img width="30%" style="color:red" src="./figs/amdp_back.gif" />
 
 ---
 
@@ -253,6 +253,6 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 * 事前に水たまりを避けるようになる
     * 水たまりの張り出しの少ない右回りのルートをとる頻度が高くなる
 
-<img style="color:red" width="35%" src="../figs/amdp.gif" />
-<img style="color:red" width="35%" src="../figs/amdp2.gif" />
+<img style="color:red" width="35%" src="./figs/amdp.gif" />
+<img style="color:red" width="35%" src="./figs/amdp2.gif" />
 
