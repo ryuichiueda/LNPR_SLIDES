@@ -62,4 +62,6 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $\hat{\sigma}\_t = |\sigma\_{t-1}^2F\_t F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top|^{1/6}$
         * カルマンフィルタで計算した$\hat{\Sigma}\_t = F\_t\Sigma\_{t-1}F\_t^\top + A\_{t-1}M\_t A\_{t-1}^\top$に$\Sigma\_{t-1} = \sigma^2\_{t-1}I$を代入
             * 移動前の共分散行列を動きのヤコビ行列で移した共分散行列と、動きの不確かさによる共分散行列を足すと移動後の共分散行列に<br />　
-
+* 離散状態での状態遷移の計算
+   1. 離散状態の$XY\theta\sigma$から状態を等間隔にサンプリング
+   2. 上の式で遷移させ、遷移後の$\V{x}'$が存在する離散状態について$\V{x}'$を数えて遷移確率を算出
