@@ -19,7 +19,7 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
         * ランドマークが観測できるルートをとる
         * 10歩先の信念分布の広がりにあわせて障害物から距離をとる
     * Q-MDPでは無理<br />　
-* <span style="color:red">信念状態を状態とみなして価値反復</span>
+* <span style="color:red">信念分布を状態（信念状態）とみなして価値反復</span>
     * 状態空間を信念分布を表すパラメータで拡張
         * augmented MDP、AMDP
     * 信念分布に価値がつく$\Longrightarrow$状態が確かなほど価値が高く
@@ -79,7 +79,67 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 ### 価値反復の実行
 
 * この時点で価値反復は実行可能
+    * 状態数も遷移先も増えるので計算量は$5$倍以上に
 * しかし$\sigma$が悪くなる一方なので収束はしない
     * 観測が反映されていない
 
 <img width="80%" src="./figs/12.7.jpg" />
+
+---
+
+## 12.4.3 観測による不確かさの遷移の計算
+
+* センサ値を$\sigma$の遷移モデルに反映
+    1. 移動後の分布の中心$\hat{\V\mu}$で観測できるランドマークを調べ、センサ値の分布を得る
+    2. センサ値の分布から次の計算で$\sigma$を更新
+        * $\sigma = | \hat{\sigma}^2( I - KH ) |^{1/6}$
+        * カルマンフィルタでの計算から
+            * $\Sigma = ( I - KH ) \hat\Sigma$に$\hat\Sigma = \hat\sigma^2 I$、$K = \hat\Sigma H^\top (Q +  H \hat\Sigma H^\top )^{-1}$を代入
+        * ふたつ以上センサ値が得られる場合は上の$\sigma$の式を繰り返し適用
+    3. （書籍の実装では）離散状態の$XY\theta\sigma$空間での中心だけを使って状態遷移を計算
+        * 手抜きです
+
+---
+
+## 12.4.4 動作確認
+
+* 図: 以下の条件のもと価値反復で得た方策による行動決定
+    * 「前進」「左回転」「右回転」に「バック」を追加
+    * バックで移動しないとゴールの際に自己位置が不確かになる
+* $\Longrightarrow$うしろを向いてゴールに入るようになる
+    * Q-MDPでは無理
+
+<img width="35%" style="color:red" src="./figs/amdp_back.gif" />
+
+---
+
+### 動作確認2
+
+* バックの速度を10%下げる
+    * 前進で向かう場合（歩数重視）とバックで向かう場合（観測重視）の両方の行動が見られる
+
+<img width="90%" style="color:red" src="./figs/12.9.jpg" />
+
+---
+
+### 動作確認3
+
+* 前ページと同じ条件
+    * ゴールに入るときに振り返り動作
+
+<img width="100%" style="color:red" src="./figs/12.10.jpg" />
+
+---
+
+## 12.4.5 信念状態の遷移に対する報酬
+
+まだ実装は完了してません！
+
+* 信念状態から水たまりに入る期待値を計算して報酬に
+    * これまでの価値反復では報酬がMDPのときのものを使用
+        * $\V{\mu}$が水たまりに入らなければよいという方策が得られている<br />　
+* 報酬の期待値
+    * $r(b_{t-1}, a_t, b_t) = -\Delta t - c\Delta t \Big\langle w(\V{x}) \Big\rangle_{b_t(\V{x})}$
+        * 元の報酬の式: $r(\V{x}_{t-1}, a_t, \V{x}_t) = -\Delta t - cw(\V{x}_t)\Delta t$
+            * $c$: 係数、$w$: 水たまりの深さ
+        * 遷移後の分布に対する期待値に
