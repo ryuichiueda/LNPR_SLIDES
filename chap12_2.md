@@ -142,4 +142,44 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * $r(b_{t-1}, a_t, b_t) = -\Delta t - c\Delta t \Big\langle w(\V{x}) \Big\rangle_{b_t(\V{x})}$
         * 元の報酬の式: $r(\V{x}_{t-1}, a_t, \V{x}_t) = -\Delta t - cw(\V{x}_t)\Delta t$
             * $c$: 係数、$w$: 水たまりの深さ
-        * 遷移後の分布に対する期待値に
+    * 各離散状態の位置$(x,y)$、分布の広さ$\sigma$に対して計算
+        * ガウス分布から位置をサンプリングして計算
+
+---
+
+### 最終的に得られた方策
+
+* 行動はバックを除いて元の3種類に
+* 得られた方策による行動
+    * 早い段階で水たまりから遠ざかる行動をとるようになる
+    * 左回りの経路をとりやすくなる
+        * 歩数が余計にかかるが水たまりの張り出しが小さい
+
+<img style="color:red" width="35%" src="./figs/amdp.gif" />
+<img style="color:red" width="35%" src="./figs/amdp2.gif" />
+
+---
+
+### AMDPの評価
+
+* Q-MDPとランドマークの配置を同じにして評価
+* 結果: さらに評価値が向上
+    * 条件にもよるが、あらかじめ不確かさを考慮して価値反復することで良好な結果が得られた
+
+<img width="100%" style="color:red" src="./figs/table12.2.jpg" />
+
+---
+
+## 12.5 まとめ
+
+* Q-MDP: 前半のスライドのまとめの通り<br />　
+* AMDP
+    * 本書の実装では、信念分布の不確かさを5段階に離散化するだけでも、不確かさを考慮した行動決定が実現
+    * 課題は計算量
+        * MDPよりさらに強度な次元の呪い
+        * （今は計算機が速いので応用に耐えうるかも） <br />　
+* POMDP全般について
+    * <span style="color:red">ロボットの問題はPOMDPか、それ以上（+協調）の問題</span>
+    * 強化学習と同様、関数近似手法と組み合わされる
+    * belief MDPではなく時系列情報に着目した手法も
+        * RNN、LSTMなど
