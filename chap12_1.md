@@ -74,7 +74,7 @@ MDPと異なり、$\V{x}$が分からない
 * 方策$\Pi_\text{b}(b_t)$を考える
     * 信念分布から行動を選択
     * 信念分布$b_t$はMDPにおける状態に相当$\Rightarrow$<span style="color:red">信念状態</span><br />　
-* 信念状態を状態とみなすと<span style="color:red">価値反復が利用可能</span>
+* <span style="color:red">信念状態を状態とみなす</span>
     * 状態遷移モデルを$p(\V{x}' | \V{x}, a)$から$p(b' | b, a)$に置き換え
     * <span style="color:red">belief MDP</span>と呼ばれる
 
