@@ -39,3 +39,14 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
     * 全ての基礎なので
 
 
+---
+
+## 集合
+
+* こういうもの
+    * じゃんけんの手 = {グー, チョキ, パー}
+        * 「じゃんけんの手」が<span style="color:red">集合</span>
+        * 「グー」，「チョキ」，「パー」が<span style="color:red">要素</span>（「元」とも言う）<br />　
+* なんで集合というものがあるのか
+    * なにかを寄せ集めた集団に名前をつけたいから
+
