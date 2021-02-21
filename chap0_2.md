@@ -104,3 +104,4 @@ $\quad\ \ x \mapsto 2x$</span>
     * $x \in \mathbb{R}$
     * $y = 2x$は$y = f(x)$と書ける（$f$という名前がつく）
   * <span style="color:red">$f(x) = 2x \ (\forall x \in \mathbb{R})$</span>と書いてもよい
+    * ただし、あくまで関数は$f$で、$f(x)$は値
