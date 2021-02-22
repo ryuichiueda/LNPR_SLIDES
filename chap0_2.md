@@ -90,7 +90,7 @@ $\Rightarrow$「読む」に焦点を当てて数式を解説
 
 ---
 
-## $y = 2x$
+## 例1: $y = 2x$
 
 * 話し言葉では関数だけど、これは等式
   * 関数が明記されていない
@@ -105,3 +105,17 @@ $\quad\ \ x \mapsto 2x$</span>
     * $y = 2x$は$y = f(x)$と書ける（$f$という名前がつく）
   * <span style="color:red">$f(x) = 2x \ (\forall x \in \mathbb{R})$</span>と書いてもよい
     * ただし、あくまで関数は$f$で、$f(x)$は値
+
+---
+
+## 例2: $f(x,y) = 2x + 3y$
+
+* どの集合からどの集合への関数？
+  * $x \in \mathbb{R}, y \in \mathbb{R}$としましょう<br />　
+* こたえ
+  * $f: \mathbb{R}\times \mathbb{R} \to \mathbb{R}$
+    * $\mathbb{R}$から実数をふたつ選んで入力すると実数を出力<br />　
+* 補足（プログラミングでの表現）
+  * C/C++だと「double f(double x, double y)」
+  * Haskellだと「f :: Double -> Double -> Double」
+
