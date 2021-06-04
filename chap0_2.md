@@ -119,3 +119,17 @@ $\quad\ \ x \mapsto 2x$</span>
   * C/C++だと「double f(double x, double y)」
   * Haskellだと「f :: Double -> Double -> Double」
 
+---
+
+## まとめ
+
+* 関数
+    * 工学的には「何かを入力したら、何かを出力するもの」<br />　
+* 表記をちゃんと読めるようにしましょう
+    * 表記の例
+        * $f: \mathbb{R} \times \mathbb{R} \to \mathbb{R}$<br />$\quad\quad\ \ x,y \mapsto 2x+3y$
+        * 大事なことが全部含まれる
+            * なにを入力対象とするのか（プログラミングでは入力の型）
+            * なにを出力するのか（プログラミングでは返す値の型）
+            * どんなふうに変換するのか（プログラミングでは実装）
+
