@@ -329,7 +329,7 @@ $= [\\![ p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) 
         * 本当はパーティクルの数だけ地図が存在することに注意
     * ランドマーク位置推定について、初期化と更新の様子が見られる
 
-<img width="35%" src="../figs/fastslam_update_landmarks.gif" />
+<img width="35%" src="./figs/fastslam_update_landmarks.gif" />
 
 ---
 
@@ -366,5 +366,5 @@ $= [\\![ p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) 
 * 重みは姿勢ではなくこれまでの軌跡の重み
     * MCLと異なることに注意
 
-![](../figs/fastslam_1.0.gif)
+![](./figs/fastslam_1.0.gif)
 
