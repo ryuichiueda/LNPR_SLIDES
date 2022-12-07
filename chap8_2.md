@@ -133,8 +133,8 @@ $\propto  [\\![ \mathcal{N}(\V{z}\_t | \V{\mu}\_{\V{z}\_t}, Q\_{\V{z}\_t}) p(\V{
 * 左: FastSLAM 1.0、右: FastSLAM 2.0
     * 一見違いはない（近似方法が少し違うだけで元の式は同じ）
 
-<img src="../figs/fastslam_1.0.gif" />
-<img src="../figs/fastslam_2.0.gif" />
+<img src="./figs/fastslam_1.0.gif" />
+<img src="./figs/fastslam_2.0.gif" />
 
 ---
 
@@ -144,13 +144,13 @@ $\propto  [\\![ \mathcal{N}(\V{z}\_t | \V{\mu}\_{\V{z}\_t}, Q\_{\V{z}\_t}) p(\V{
     * 2.0の方が消えるパーティクルの数が少ない<br />$\Longrightarrow$2.0の方がサンプリングバイアスが小さくなる
 
 <br />
-<img width="25%" src="../figs/fastslam1_trial1.png" />
-<img width="25%" src="../figs/fastslam1_trial2.png" />
-<img width="25%" src="../figs/fastslam1_trial3.png" />
+<img width="25%" src="./figs/fastslam1_trial1.png" />
+<img width="25%" src="./figs/fastslam1_trial2.png" />
+<img width="25%" src="./figs/fastslam1_trial3.png" />
 <div style="margin:-35pt">&nbsp;</div>
-<img width="25%" src="../figs/fastslam2_trial1.png" />
-<img width="25%" src="../figs/fastslam2_trial2.png" />
-<img width="25%" src="../figs/fastslam2_trial3.png" />
+<img width="25%" src="./figs/fastslam2_trial1.png" />
+<img width="25%" src="./figs/fastslam2_trial2.png" />
+<img width="25%" src="./figs/fastslam2_trial3.png" />
 
 ---
 
