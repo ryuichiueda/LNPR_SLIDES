@@ -309,7 +309,7 @@ $= [\\![ p(\textbf{z}\_t | \textbf{m}, \V{x}\_{0:t}^{(i)}, \textbf{z}\_{1:t-1}) 
 * 分布の指数部
     * $-\frac{1}{2} \left[ \V{z}\_t - \V{h}(\V{m}) \right]^\top Q(\V{m})^{-1} \left[ \V{z}\_t - \V{h}(\V{m}) \right]$<br />　
 * $\V{h}$を近似して$\V{m}$の多項式に
-    * $\V{h}(\V{m}) \approx \hat{\V{m}} + H (\V{m} - \hat{\V{m}})$
+    * $\V{h}(\V{m}) \approx \V{h}(\hat{\V{m}}) + H (\V{m} - \hat{\V{m}})$
         * $\hat{\V{m}}$はパーティクルの姿勢とセンサ値から計算されるランドマークの位置
 * $Q(\V{m})$を定数に
     * $\V{m}$の代わりに$\hat{\V{m}}$を使用（$Q(\V{m})$を以後$Q$と表記）<br />　
